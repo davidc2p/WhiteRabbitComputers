@@ -1,0 +1,193 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway:100,300);
+body {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 100;
+    color: rgba(255, 255, 255, 0.5);
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 50px;
+    font-weight: 400;
+    color: #E5C41A;
+}
+
+h5 {
+    font-size: 14px;
+    font-weight: 100;
+    color: #E5C41A;
+}
+
+a {
+    color: #E5C41A;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.inputnumber {
+    width: 100%;
+    text-align: right;
+    background: lightgray;
+    /* background: transparent !important; */
+}
+
+.invalid-feedback {
+    color: white;
+}
+
+
+/* Banner configuration */
+
+#waves {
+    border: 1px solid black;
+    height: 230px;
+    background-color: #222;
+    background-image: -moz-linear-gradient(top, #f1dc17 0%, #b86726 50%, #ee5610 100%);
+    background-image: -webkit-linear-gradient(top, #f1dc17 0%, #b86726 50%, #ee5610 100%);
+    background-image: linear-gradient(to bottom, #f1dc17 0%, #b86726 50%, #ee5610 100%);
+}
+
+.full-width-div {
+    position: relative;
+}
+
+.compimage {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#title {
+    position: absolute;
+    color: #FFFFFF;
+    top: 10px;
+    left: 10px;
+    font-size: 30px;
+    font-weight: 400;
+    z-index: 100;
+    margin: 0;
+    padding: 0;
+}
+
+#title2 {
+    position: absolute;
+    color: #FFFFFF;
+    top: 50px;
+    left: 10px;
+    font-size: 20px;
+    font-weight: 100;
+    z-index: 100;
+    margin: 0;
+    padding: 0;
+}
+
+div.middle_icon {
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    width: 178px;
+    height: 204px;
+    background: url(../tooplate_server_icon.png) no-repeat;
+}
+
+
+/* carousel */
+
+.carousel-inner {
+    background-color: #EBCF19;
+}
+
+.carousel-caption {
+    position: relative;
+    left: auto;
+    right: auto;
+    color: black;
+}
+
+.carousel-caption>h3 {
+    font-weight: 600;
+}
+
+.carousel-caption>p {
+    font-weight: 400;
+}
+
+.container {
+    background: #333333;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.card-body {
+    background: #111111;
+}
+
+.card {
+    background-color: #EBCF19;
+}
+
+.card-title {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.inline {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+
+.nav {
+    font-size: 18px;
+    font-weight: 200;
+}
+
+hr {
+    background-color: lightgrey;
+    width: 60%;
+    margin-right: 10px;
+}
+
+.header {
+    background-color: black;
+}
+
+.footer {
+    min-height: 50px;
+    vertical-align: middle;
+    font-size: 10px;
+    background-color: black;
+}
+
+footer {
+    color: white;
+}
+
+footer a {
+    color: #bfffff;
+}
+
+footer a:hover {
+    color: white;
+}
+
+.footer-bottom {
+    background: #3d6277;
+    padding: 2em;
+}
+
+.footer-top {
+    background: #2d4958;
+}
+
+.footer-middle {
+    background: #3d6277;
+    padding-top: 2em;
+    color: white;
+}
