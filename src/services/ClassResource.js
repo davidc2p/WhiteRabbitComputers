@@ -169,4 +169,50 @@ export default class ClassResource {
         let out = n.length >= width ? n : new Array(width - n.length + 1).join(z) + n
         return out
     }
+
+    calculateNetPricex(total) {
+        let netPrice = 0
+
+        if (total > 0) {
+            netPrice = Math.floor(Number(total / 100)) * 100
+            switch (true) {
+                case (total < 500):
+                    netPrice += (total - netPrice < 50) ? 149.9 : 199.9
+                    break
+
+                case (total >= 500 && total < 1000):
+                    netPrice += (total - netPrice < 50) ? 199.9 : 249.9
+                    break
+
+                case (total >= 1000):
+                    netPrice += (total - netPrice < 50) ? 249.9 : 299.9
+                    break
+
+            }
+        }
+        return netPrice
+    }
+
+    calculateNetPrice(total) {
+        let netPrice = total
+
+        if (total > 0) {
+            switch (true) {
+                case (total < 500):
+                    netPrice += 100
+                    break
+
+                case (total >= 500 && total < 1000):
+                    netPrice += 120
+                    break
+
+                case (total >= 1000):
+                    netPrice += 150
+                    break
+
+            }
+            netPrice = Math.floor(Number(netPrice / 10)) * 10 + 9.9
+        }
+        return netPrice
+    }
 }

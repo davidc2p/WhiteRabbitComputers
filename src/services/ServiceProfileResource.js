@@ -1,91 +1,144 @@
-import Api from './Api.js'
-import Ajax from './Ajax.js'
+import { Api } from './Api.js'
 
 export default {
 
-    updateContext(access_token) {
-
-        Ajax().get('setContext.php?access_token=' + access_token)
-
+    setContext(context) {
+        // Put the object into storage
+        localStorage.setItem('context', JSON.stringify(context));
     },
 
-    renewToken(access_token, companyid) {
-        //let service = 'http://127.0.0.1:8080/my-oauth2-walkthrough/API/V1/token/create.php'
-        return Api().put('token/create.php', {
+    updateContext(access_token) {
+        //Get the context from localStorage
+        let context = JSON.parse(localStorage.getItem('context'))
+        context.access_token = access_token
+        localStorage.setItem('context', JSON.stringify(context))
+    },
+
+    renewToken(access_token, email) {
+        //let service = 'http://127.0.0.1:8080/Vue/WhiteRabbitComputers/oauth2/token/create.php'
+        return Api.put('token/create.php', {
             access_token: access_token,
             lang: 'en',
             dev: 1,
-            client_id: companyid
+            client_id: email
         })
 
     },
 
-    validateToken(access_token, companyid) {
+    validateToken(access_token, email) {
 
-        return Api().get('token/validate.php?access_token=' + access_token + '&lang=en&dev=1')
-
-    },
-
-    getContextTest() {
-
-        return Api().get('getContext.php')
+        return Api.get('token/validate.php?access_token=' + access_token + '&lang=en&dev=1')
 
     },
 
-    async getContext() {
+    getContext() {
+        // Retrieve the object from storage
+        let context = JSON.parse(localStorage.getItem('context'))
 
-        const result = { updated: false, data: {} }
-        const res = await Ajax().get('getContext.php')
-        result.data = res.data
-
-        //result.data.access_token = '89355040a2f383a1074c3285b06c868feb5753e6'
-
-        if (typeof(result.data.companyid) !== 'undefined' && typeof(result.data.access_token) !== 'undefined' && result.data.access_token !== null) {
-            //validate the token
-            const newToken = await this.validateToken(result.data.access_token, result.data.companyid)
-
-            if (typeof(newToken.data.message) !== 'undefined' && typeof(newToken.data.success) !== 'undefined') {
-                if (newToken.data.message === 'Token is valid' && newToken.data.success === 0) {
-                    console.log('Token is valid')
-                    result.updated = true
-                } else {
-                    if (newToken.data.message === 'Token has expired') {
-                        //renew token
-                        const renewToken = await this.renewToken(result.data.access_token, result.data.companyid)
-                        if (typeof(renewToken.data.access_token) !== 'undefined') {
-                            result.data.access_token = renewToken.data.access_token
-                            await this.updateContext(result.data.access_token)
-                            result.updated = true
+        if (context !== null) {
+            if (typeof(context.email) !== 'undefined' && typeof(context.access_token) !== 'undefined' && context.access_token !== null) {
+                //validate the token
+                this.validateToken(context.access_token, context.email)
+                    .then(newToken => {
+                        if (typeof(newToken.data.message) !== 'undefined' && typeof(newToken.data.success) !== 'undefined') {
+                            if (newToken.data.message === 'Token is valid' && newToken.data.success === 0) {
+                                //Token is valid
+                            } else {
+                                if (newToken.data.message === 'Token has expired') {
+                                    //renew token
+                                    this.renewToken(context.access_token, context.email)
+                                        .then(renewToken => {
+                                            if (typeof(renewToken.data.access_token) !== 'undefined') {
+                                                context.access_token = renewToken.data.access_token
+                                                this.updateContext(renewToken.data.access_token)
+                                            }
+                                        })
+                                } else {
+                                    //error
+                                    if (newToken.data.message === 'Invalid token') {
+                                        this.destroyContext()
+                                    }
+                                }
+                            }
                         }
-                    } else {
-                        //error
-                        if (newToken.data.message === 'Invalid token') {
-                            await this.destroyContext()
+                    }).catch(error => {
+                        if (error.response) {
+                            alert(error.response);
                         }
-                        console.log(newToken.data.message)
-                        result.updated = true
-                    }
-                }
+                    })
             } else {
-                //error
-                console.log('Token error')
-                result.updated = true
+                context = { access_token: null, name: null, authenticate: false, admin: null, email: null, uid: null, creationdate: null }
             }
         } else {
-            result.updated = true
+            context = { access_token: null, name: null, authenticate: false, admin: null, email: null, uid: null, creationdate: null }
         }
 
-        return result
+
+
+        return context
     },
 
-    async destroyContext() {
-        await Ajax().get('destroyContext.php')
+    destroyContext() {
+        let context = { access_token: null, name: null, authenticate: false, admin: null, email: null, uid: null, creationdate: null }
+        localStorage.setItem('context', JSON.stringify(context));
 
-        const res = await this.getContext()
-
-        return res
+        return context
     },
+    /*
+        async getContext() {
 
+            const result = { updated: false, data: {} }
+            const res = await Api.get('getContext.php')
+            result.data = res.data
+
+            //result.data.access_token = '89355040a2f383a1074c3285b06c868feb5753e6'
+
+            if (typeof(result.data.email) !== 'undefined' && typeof(result.data.access_token) !== 'undefined' && result.data.access_token !== null) {
+                //validate the token
+                const newToken = await this.validateToken(result.data.access_token, result.data.email)
+
+                if (typeof(newToken.data.message) !== 'undefined' && typeof(newToken.data.success) !== 'undefined') {
+                    if (newToken.data.message === 'Token is valid' && newToken.data.success === 0) {
+                        console.log('Token is valid')
+                        result.updated = true
+                    } else {
+                        if (newToken.data.message === 'Token has expired') {
+                            //renew token
+                            const renewToken = await this.renewToken(result.data.access_token, result.data.email)
+                            if (typeof(renewToken.data.access_token) !== 'undefined') {
+                                result.data.access_token = renewToken.data.access_token
+                                await this.updateContext(result.data.access_token)
+                                result.updated = true
+                            }
+                        } else {
+                            //error
+                            if (newToken.data.message === 'Invalid token') {
+                                await this.destroyContext()
+                            }
+                            console.log(newToken.data.message)
+                            result.updated = true
+                        }
+                    }
+                } else {
+                    //error
+                    console.log('Token error')
+                    result.updated = true
+                }
+            } else {
+                result.updated = true
+            }
+
+            return result
+        },
+
+        async destroyContext() {
+            await Api.get('destroyContext.php')
+
+            const res = await this.getContext()
+
+            return res
+        },
+    */
     /**
      * Secure Hash Algorithm (SHA1)
      * http://www.webtoolkit.info/
@@ -94,21 +147,21 @@ export default {
         function rotate_left(n, s) {
             var t4 = (n << s) | (n >>> (32 - s));
             return t4;
-        };
-
-        function lsb_hex(val) {
-            var str = '';
-            var i;
-            var vh;
-            var vl;
-            for (i = 0; i <= 6; i += 2) {
-                vh = (val >>> (i * 4 + 4)) & 0x0f;
-                vl = (val >>> (i * 4)) & 0x0f;
-                str += vh.toString(16) + vl.toString(16);
-            }
-            return str;
-        };
-
+        }
+        /*
+                function lsb_hex(val) {
+                    var str = '';
+                    var i;
+                    var vh;
+                    var vl;
+                    for (i = 0; i <= 6; i += 2) {
+                        vh = (val >>> (i * 4 + 4)) & 0x0f;
+                        vl = (val >>> (i * 4)) & 0x0f;
+                        str += vh.toString(16) + vl.toString(16);
+                    }
+                    return str;
+                }
+        */
         function cvt_hex(val) {
             var str = '';
             var i;
@@ -118,7 +171,7 @@ export default {
                 str += v.toString(16);
             }
             return str;
-        };
+        }
 
         function Utf8Encode(string) {
             string = string.replace(/\r\n/g, '\n');
@@ -137,7 +190,7 @@ export default {
                 }
             }
             return utftext;
-        };
+        }
         var blockstart;
         var i, j;
         var W = new Array(80);
@@ -220,7 +273,7 @@ export default {
             H3 = (H3 + D) & 0x0ffffffff;
             H4 = (H4 + E) & 0x0ffffffff;
         }
-        var temp = cvt_hex(H0) + cvt_hex(H1) + cvt_hex(H2) + cvt_hex(H3) + cvt_hex(H4);
+        temp = cvt_hex(H0) + cvt_hex(H1) + cvt_hex(H2) + cvt_hex(H3) + cvt_hex(H4);
 
         return temp.toLowerCase();
     }

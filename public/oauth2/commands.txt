@@ -1,0 +1,18 @@
+C:\xampp\apache\bin\curl -u testclient:testpass http://127.0.0.1:8080/my-oauth2-walkthrough/token.php -d grant_type=client_credentials
+
+C:\xampp\apache\bin\curl "http://127.0.0.1:8080/my-oauth2-walkthrough/resource.php" -d "access_token=590531c063057d6b8798e814ab4b18ff8fbefae4"
+
+C:\xampp\apache\bin\curl "http://127.0.0.1:8080/my-oauth2-walkthrough/authorize.php" -d "response_type=code&client_id=testclient&redirect_uri=http://127.0.0.1:8080/my-oauth2-walkthrough/error.php)
+
+//create a password token
+C:\xampp\apache\bin\curl -v "http://127.0.0.1:8080/my-oauth2-walkthrough/user.php" -d "grant_type=password&client_id=testclient&client_secret=testpass&username=dadomingues@gmail.com&password=1234567&response_type=code&state=on&code=10e6f25256e47ff921f075b267df1ef37c201dad&redirect_uri=http://127.0.0.1:8080/my-oauth2-walkthrough/error.php"
+
+
+userdemo.php
+
+C:\xampp\apache\bin\curl -u 1:thisismysecret "http://127.0.0.1:8080/my-oauth2-walkthrough/token.php" -d "grant_type=password&username=dadomingues@gmail.com&password=12345678"
+
+refreshtoken.php
+
+
+http://127.0.0.1:8080/my-oauth2-walkthrough/API/V1/token/create.php?lang=en&dev=1&access_token=111&client_id=1&client_secret=thisismysecret

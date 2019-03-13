@@ -1,36 +1,36 @@
 <template>
   <div id="app">
     <div class="container">
-      <Header context="dataContext" keynav="counter" />
-      <Wave id="Wave" titles="titles" />
-      <!-- <img alt="Vue logo" src="./assets/logo.png">
-      <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-      <router-view context="dataContext" keybody="counter" v-on:changeContext="changeContext" />
-      <Footer context="dataContext" keyfooter="counter" />
+      <Header :context="dataContext" :keynav="counter" v-on:changeContext="changeContext" />
+      <router-view :context="dataContext" :keybody="counter" v-on:changeContext="changeContext" />
+      <Footer :context="dataContext" :keyfooter="counter" />
     </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
-import Wave from './components/Wave.vue'
-import Home from './components/Home.vue'
 
 export default {
   name: 'app',
-  data: {
-    titles: {
-                head: 'Os desktops mais baratos do mercado',
-                desc: 'Montamos o seu computador a sua medida'
-            }
+  data: function () { 
+    return {
+      dataContext: [],
+      counter: 0
+    }
   },
   components: {
-    HelloWorld,
     Header,
-    Wave,
     Footer
+  },
+  methods: {
+      changeContext: function(newContext) {
+          this.dataContext = newContext
+          this.updatedContext = true
+
+          this.counter++
+      }
   }
 }
 </script>
@@ -41,7 +41,5 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

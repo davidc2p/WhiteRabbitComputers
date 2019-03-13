@@ -40,24 +40,28 @@ export default {
     data: function() {
         return {
             //Context
-            companyid: this.context.companyid,
+            admin: this.context.admin,
+            authenticate: this.context.authenticate,
+            email: this.context.email,
             lang: this.context.lang,
             access_token: this.context.access_token,
             webpath: this.context.webpath,
             name: this.context.name,
-            avatar: this.context.avatar
+            uid: this.context.uid
         }
     },
     mounted: function() {},
     watch: {
         keyfooter: function() {},
         context: function(newdata) {
-            this.companyid = newdata.companyid
+            this.admin = newdata.admin
+            this.authenticate = newdata.authenticate
+            this.email = newdata.email
             this.lang = newdata.lang
             this.access_token = newdata.access_token
             this.webpath = newdata.webpath
             this.name = newdata.name
-            this.avatar = newdata.avatar
+            this.uid = newdata.uid
         }
     }
 }

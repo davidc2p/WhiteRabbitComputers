@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import SineWaves from 'sine-waves'
+
 export default {
     name: 'Wave',
     props: ['titles'],
