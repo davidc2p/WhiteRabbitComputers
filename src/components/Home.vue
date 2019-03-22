@@ -141,12 +141,9 @@ import ClassResource from '../services/ClassResource.js'
 
 const classResourceService = new ClassResource()
 
-//services
-import serviceProfile from '../services/ServiceProfileResource.js'
 
 export default {
     name: 'Home',
-    props: ['context', 'keybody'],
     components: {
         Wave
     },
@@ -245,16 +242,16 @@ export default {
         document.title = 'Montamos os PC mais baratos do mercado'
         document.description = ''
 
-        this.ctx = serviceProfile.getContext()
-        //update Context in main app
-        this.$emit('changeContext', this.ctx)
+        // this.ctx = serviceProfile.getContext()
+        // //update Context in main app
+        // this.$emit('changeContext', this.ctx)
 
         this.getComputer(1)
         this.getComputer(2)
         this.getComputer(3)
 
-
-        console.log(process.env.VUE_APP_BASE_URI)
+        this.$store.dispatch("validate");
+        //console.log(process.env.VUE_APP_BASE_URI)
     },
     watch: {
         keybody: function() {},

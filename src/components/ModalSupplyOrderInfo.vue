@@ -69,8 +69,6 @@
     //Components
     import Message from './Message.vue'
 
-    //services
-    import serviceProfile from '../services/ServiceProfileResource.js'
 
     //Classes
     import ClassResource from '../services/ClassResource.js'
@@ -78,14 +76,13 @@
     const classResourceService = new ClassResource()
 
 export default {
-    props: ['context', 'componentes'],
+    name: 'ModalSupplyOrderInfo',
+    props: ['componentes'],
     components: {
         Message
     },
     data: function() {
         return {
-
-            ctx: this.context,
 
             error: '',
             id: 0,

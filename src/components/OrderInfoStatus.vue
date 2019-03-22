@@ -84,7 +84,7 @@
         </div>
     </div>
 
-    <Modal-Supply-Order-Info v-if="showModalSupplyOrderInfo" :context="ctx" :componentes="componentes" @close="showModalSupplyOrderInfo = false"></Modal-Supply-Order-Info>
+    <Modal-Supply-Order-Info v-if="showModalSupplyOrderInfo" :componentes="componentes" @close="showModalSupplyOrderInfo = false"></Modal-Supply-Order-Info>
 </div>
 </template>
 
@@ -95,16 +95,13 @@
     import Message from './Message.vue'
     import ModalSupplyOrderInfo from './ModalSupplyOrderInfo.vue'
 
-    //services
-    import serviceProfile from '../services/ServiceProfileResource.js'
-
     //Classes
     import ClassResource from '../services/ClassResource.js'
 
     const classResourceService = new ClassResource()
 
     export default {
-        name: 'User',
+        name: 'OrderInfoStatus',
         props: ['context', 'keybody'],
         components: {
             Message,
@@ -112,8 +109,6 @@
         },
         data: function() {
             return {
-
-                ctx: this.context,
 
                 //componentes de uma encomenda
                 componentes: [],
@@ -155,7 +150,7 @@
                 this.pagenumber = pagenumber || 1
                 this.status = status
 
-                let url = 'orderinfo/index.php?pagenumber=' + this.pagenumber + '&itemsperpage=' + this.itemsperpage 
+                let url = 'orderinfo/index.php?access_token='+this.$store.state.access_token+'&pagenumber=' + this.pagenumber + '&itemsperpage=' + this.itemsperpage 
                 url += (status=='All')?'':'&status='+status 
 
                 Api.get(url)
@@ -274,7 +269,7 @@
 
                 Api.put('orderinfo/index.php',
                     {
-                        'access_token': this.ctx.access_token,
+                        'access_token': this.$store.state.access_token,
                         'method': 'updOrderInfoStatus',
                         'orderinfoid': OrderInfoID,
                         'status': status
@@ -318,12 +313,9 @@
         },
         mounted: function() {
 
-            this.ctx = serviceProfile.getContext()
+            this.$store.dispatch("validate")
 
-            if (this.ctx.authenticate && this.ctx.admin == 1) {
-
-                //update Context in main app
-                this.$emit('changeContext', this.ctx)
+            if (this.isAuthenticate && this.isAdmin == 1) {
 
                 this.pagenumber = 1
                 this.status = 'All'
@@ -334,15 +326,15 @@
                 this.$router.push({name: 'Login'})
             }
         },
-        watch: {
-
-            context: function() {
-                this.ctx = this.context
-            }
-        },
         computed: {
             creationDate() {
-            return data => `${data}`.substring(0, 10)
+                return data => `${data}`.substring(0, 10)
+            },
+            isAuthenticate() { 
+                return this.$store.getters.authenticate
+            },
+            isAdmin() {
+                return this.$store.getters.admin
             }
         }
     } 

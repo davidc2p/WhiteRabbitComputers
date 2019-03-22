@@ -14,17 +14,21 @@
   </div>
 
     <div class="row">
-        <div class="col-1">&nbsp;</div>
-        <div class="col-1"><button class="btn btn-dark" v-on:click="getComponents('All',1)">Todos</button></div>
-        <div class="col-1"><button class="btn btn-dark" v-on:click="getComponents('Cpu',1)">CPU</button></div>
-        <div class="col-1"><button class="btn btn-dark" v-on:click="getComponents('PG',1)">PG</button></div>
-        <div class="col-1"><button class="btn btn-dark" v-on:click="getComponents('Mb',1)">MB</button></div>
-        <div class="col-1"><button class="btn btn-dark" v-on:click="getComponents('Caixa',1)">Caixa</button></div>
-        <div class="col-1"><button class="btn btn-dark" v-on:click="getComponents('Disco',1)">Disco</button></div>
-        <div class="col-1"><button class="btn btn-dark" v-on:click="getComponents('Power',1)">Alim</button></div>
-        <div class="col-1"><button class="btn btn-dark" v-on:click="getComponents('Fan',1)">Fan</button></div>
-        <div class="col-1">&nbsp;</div>
-        <div class="col-1"><button class="btn btn-primary" v-on:click="insertComponentes">+Novo</button></div>
+        <div class="col-xs-12 col-sm-8 offset-sm-2">
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+                <button class="btn btn-dark" :class="{'active': componente.type=='All'}" v-on:click="getComponents('All',1)">Todos</button>
+                <button class="btn btn-dark" :class="{'active': componente.type=='Cpu'}" v-on:click="getComponents('Cpu',1)">CPU</button>
+                <button class="btn btn-dark" :class="{'active': componente.type=='PG'}" v-on:click="getComponents('PG',1)">PG</button>
+                <button class="btn btn-dark" :class="{'active': componente.type=='Mb'}" v-on:click="getComponents('Mb',1)">MB</button>
+                <button class="btn btn-dark" :class="{'active': componente.type=='Caixa'}" v-on:click="getComponents('Caixa',1)">Caixa</button>
+                <button class="btn btn-dark" :class="{'active': componente.type=='Disco'}" v-on:click="getComponents('Disco',1)">Disco</button>
+                <button class="btn btn-dark" :class="{'active': componente.type=='Power'}" v-on:click="getComponents('Power',1)">Alim</button>
+                <button class="btn btn-dark" :class="{'active': componente.type=='Fan'}" v-on:click="getComponents('Fan',1)">Fan</button>
+            </div>
+            <div class="btn-group mr-2" role="group" aria-label="Second group">
+                <button class="btn btn-primary" v-on:click="insertComponentes">+Novo</button>
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -80,7 +84,7 @@
             </nav>
         </div>
     </div>
-    <Modal-Update-Componentes v-if="showModalUpdateComponentes" :context="ctx" :componente="componente" :action="action" :ModalCounter="count3" @close="updateTab"></Modal-Update-Componentes>
+    <Modal-Update-Componentes v-if="showModalUpdateComponentes" :componente="componente" :action="action" :ModalCounter="count3" @close="updateTab"></Modal-Update-Componentes>
     
  </div>
 </template>
@@ -92,9 +96,6 @@
     import Message from './Message.vue'
     import ModalUpdateComponentes from './ModalUpdateComponentes.vue'
 
-    //services
-    import serviceProfile from '../services/ServiceProfileResource.js'
-
     //Classes
     import ClassResource from '../services/ClassResource.js'
 
@@ -102,16 +103,12 @@
 
 export default {
     name: 'User',
-    props: ['context', 'keybody'],
     components: {
         Message,
         ModalUpdateComponentes
     },
     data: function() {
         return {
-
-            ctx: this.context,
-
             //componentes
             dataComponentes: [],
             componente: {
@@ -239,7 +236,7 @@ export default {
         },
         deleteComponente: function(id) {
             
-            Api.delete('component/index.php?access_token=' + this.ctx.access_token + '&id=' + id)
+            Api.delete('component/index.php?access_token=' + this.$store.state.access_token + '&id=' + id)
                 .then(response => {
 
                     this.message.info = ''
@@ -311,12 +308,9 @@ export default {
     },
     mounted: function() {
 
-        this.ctx = serviceProfile.getContext()
+        this.$store.dispatch("validate")
 
-        if (this.ctx.authenticate && this.ctx.admin == 1) {
-
-            //update Context in main app
-            this.$emit('changeContext', this.ctx)
+        if (this.isAuthenticate && this.isAdmin ) {
 
             this.pagenumber = 1
 
@@ -326,11 +320,13 @@ export default {
             this.$router.push({name: 'Login'})
         }
     },
-    watch: {
-
-        context: function() {
-            this.ctx = this.context
+    computed: {
+        isAuthenticate() { 
+            return this.$store.getters.authenticate;
         },
-    }
+        isAdmin() {
+            return this.$store.getters.admin;
+        }
+    } 
 } 
 </script>

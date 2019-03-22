@@ -13,11 +13,11 @@
     <div class="row">
         <div class="col">&nbsp;</div>
     </div>
-
+    <form @submit.prevent="send()">
     <div class="form-group row justify-content-center" :class="{'has-error': errors.has('contactEmail') }">
         <label for="contactEmail" class="col-10 col-sm-2 col-form-label text-sm-right">Email</label>
         <div class="col-10 col-sm-8">
-        <input v-validate="'required|email'" :readonly="ctx.authenticate" class="form-control"  :class="{'is-error': errors.has('contactEmail') }" name="contactEmail" type="text" data-vv-delay="1000" placeholder="email@example.com" v-model="contactEmail">
+        <input v-validate="'required|email'" :readonly="isAuthenticate" class="form-control"  :class="{'is-error': errors.has('contactEmail') }" name="contactEmail" type="text" data-vv-delay="1000" placeholder="email@example.com" v-model="contactEmail">
         <p class="invalid-feedback" v-if="errors.has('contactEmail')">{{ errors.first('contactEmail') }}</p>
         </div>
     </div>
@@ -46,9 +46,10 @@
 
     <div class="form-group row justify-content-center">
       <div class="col-12 text-right">
-        <button type="button" name="send" class="btn btn-primary" v-on:click="send">Enviar</button>
+        <button type="button" name="send" class="btn btn-warning" v-on:click="send">Enviar</button>
       </div>
     </div>
+    </form>
 
  </div>
 </template>
@@ -60,9 +61,6 @@
     import Message from './Message.vue'
     import Wave from './Wave.vue'
 
-    //services
-    import serviceProfile from '../services/ServiceProfileResource.js'
-
     //Classes
     import ClassResource from '../services/ClassResource.js'
 
@@ -70,15 +68,12 @@
 
 export default {
     name: 'Contact',
-    props: ['context', 'keybody'],
     components: {
         Message,
         Wave
     },
     data: function() {
         return {
-
-            ctx: this.context,
 
             //form
             contactEmail: '',
@@ -145,21 +140,19 @@ export default {
     },
     mounted: function() {
 
-        this.ctx = serviceProfile.getContext()
+        this.$store.dispatch("validate")
 
-        if (this.ctx.authenticate) {
-            this.contactEmail = this.ctx.email
-            
-            //update Context in main app
-            this.$emit('changeContext', this.ctx)
-    
+        if (this.isAuthenticate) {
+            this.contactEmail = this.$store.state.email
         } 
     },
-    watch: {
-
-        context: function() {
-            this.ctx = this.context
+    computed: {
+        isAuthenticate() { 
+            return this.$store.getters.authenticate;
         },
+        isAdmin() {
+            return this.$store.getters.admin;
+        }
     }
 } 
 </script>

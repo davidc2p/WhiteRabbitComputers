@@ -35,34 +35,6 @@
 
 <script>
 export default {
-    name: 'Footer',
-    props: ['context', 'keyfooter'],
-    data: function() {
-        return {
-            //Context
-            admin: this.context.admin,
-            authenticate: this.context.authenticate,
-            email: this.context.email,
-            lang: this.context.lang,
-            access_token: this.context.access_token,
-            webpath: this.context.webpath,
-            name: this.context.name,
-            uid: this.context.uid
-        }
-    },
-    mounted: function() {},
-    watch: {
-        keyfooter: function() {},
-        context: function(newdata) {
-            this.admin = newdata.admin
-            this.authenticate = newdata.authenticate
-            this.email = newdata.email
-            this.lang = newdata.lang
-            this.access_token = newdata.access_token
-            this.webpath = newdata.webpath
-            this.name = newdata.name
-            this.uid = newdata.uid
-        }
-    }
+    name: 'Footer'
 }
 </script>

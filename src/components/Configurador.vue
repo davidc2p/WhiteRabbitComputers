@@ -15,7 +15,7 @@
   </div>
   
   <div class="row">
-      <div class="col"><h3>Escolher uma configuração:</h3></div>
+      <div class="col offset-1"><h3>Escolher uma configuração:</h3></div>
   </div>
   
   <div class="row">
@@ -33,11 +33,11 @@
   </div>
 
   <div class="row">
-      <div class="col"><h3>ou</h3></div>
+      <div class="col offset-1"><h3>ou</h3></div>
   </div>
 
     <div class="row">
-      <div class="col"><h3>Escolher por peças:</h3></div>
+      <div class="col offset-1"><h3>Escolher por peças:</h3></div>
   </div>
 
   <div class="row">
@@ -116,9 +116,8 @@
 
     <div class="row ">
 
-        <div class="offset-1 col-2 configurador configuradorprice"><h2>Total</h2></div>
-        <div class="col-7 configurador configuradorprice"><h2>{{ total }}</h2></div>
-        <div class="col-1 configurador configuradorprice">&nbsp;</div>
+        <div class="col-10 offset-1 configurador configuradorprice"><h2>Total {{ total }}</h2></div>
+
     </div>
     
     <!-- linha sem nada -->
@@ -126,10 +125,10 @@
         <div class="col">&nbsp;</div>
     </div>
 
-    <div class="row ">
-        <div class="col-12">
+    <div class="row justify-content-end">
+        <div class="col-2 offset-1">
         <!-- path:'/Encomendar/1', -->
-            <button class="btn btn-warning mt-auto" tag="button" v-on:click="routing">Encomendar</button>
+            <button class="btn btn-warning" tag="button" v-on:click="routing">Encomendar</button>
             <!--  <router-link class="btn btn-warning mt-auto" tag="button" :to="{ name: 'Encomendar', params: { computerId: 0, computerData: { age: 37, name: 'Patrick'} } }">Encomendar</router-link> -->
         </div>
     </div>
@@ -148,9 +147,6 @@
     import Message from './Message.vue'
     import Wave from './Wave.vue'
 
-    //services
-    import serviceProfile from '../services/ServiceProfileResource.js'
-
     //Classes
     import ClassResource from '../services/ClassResource.js'
 
@@ -161,7 +157,6 @@
 
 export default {
     name: 'Configurador',
-    props: ['context', 'keybody'],
     components: {
         Message,
         Wave,
@@ -169,8 +164,6 @@ export default {
     },
     data: function() {
         return {
-
-            ctx: this.context,
       
             computer: [],
             computerIndex: 0,
@@ -632,7 +625,7 @@ export default {
     },
     mounted: function() {
 
-        this.ctx = serviceProfile.getContext()
+        this.$store.dispatch("validate")
 
         this.getComputers()
 
@@ -645,49 +638,33 @@ export default {
         this.getComponents('Power')
         
 
-        if (this.ctx.authenticate) {
-            this.contactEmail = this.ctx.email
-            
-            //update Context in main app
-            this.$emit('changeContext', this.ctx)
-    
+        if (this.isAuthenticate) {
+            this.contactEmail = this.$store.state.email
         }
-    },
-    watch: {
-
-        context: function() {
-            this.ctx = this.context
-        }
-        // },
-
-        // computercaseIndex: function() {
-        //   this.total = this.computercase[this.computercaseIndex].cost + this.processors[this.computerprocIndex].cost + this.graphic[this.graphicIndex].cost
-        // },
-        // computerprocIndex: function() {
-        //   this.total = this.computercase[this.computercaseIndex].cost + this.computerproc[this.computerprocIndex].cost + this.graphic[this.graphicIndex].cost
-        // },
-        // computergpuIndex: function() {
-        //   this.total = this.computercase[this.computercaseIndex].cost + this.computerproc[this.computerprocIndex].cost + this.graphic[this.graphicIndex].cost
-        // }
-
     },
     computed: {
-      total: function() {
-        let total = 0
-        if (this.processorsIndex > 0 && this.computercaseIndex > 0  && this.diskIndex > 0 && this.ramIndex > 0) {
-          if (this.computercase.length > 0 && this.processors.length > 0 && this.disk.length > 0 && this.ram.length > 0) {
-            total = Number(this.computercase[this.computercaseIndex].cost) 
-            + Number(this.processors[this.processorsIndex].cost) 
-            + Number(this.ram[this.ramIndex].cost) 
-            + Number(this.graphic[this.graphicIndex].cost) 
-            + Number(this.disk[this.diskIndex].cost)
-            + Number(this.fan[this.fanIndex].cost)
-            + Number(this.power[this.powerIndex].cost)
-          }
+        total: function() {
+            let total = 0
+            if (this.processorsIndex > 0 && this.computercaseIndex > 0  && this.diskIndex > 0 && this.ramIndex > 0) {
+                if (this.computercase.length > 0 && this.processors.length > 0 && this.disk.length > 0 && this.ram.length > 0) {
+                    total = Number(this.computercase[this.computercaseIndex].cost) 
+                    + Number(this.processors[this.processorsIndex].cost) 
+                    + Number(this.ram[this.ramIndex].cost) 
+                    + Number(this.graphic[this.graphicIndex].cost) 
+                    + Number(this.disk[this.diskIndex].cost)
+                    + Number(this.fan[this.fanIndex].cost)
+                    + Number(this.power[this.powerIndex].cost)
+                }
+            }
+            //return classResourceService.calculateNetPrice(total).toFixed(2) + ' ('+total+')'
+            return classResourceService.calculateNetPrice(total).toFixed(2) + " €"
+        },
+        isAuthenticate() { 
+            return this.$store.getters.authenticate;
+        },
+        isAdmin() {
+            return this.$store.getters.admin;
         }
-        //return classResourceService.calculateNetPrice(total).toFixed(2) + ' ('+total+')'
-        return classResourceService.calculateNetPrice(total).toFixed(2) + " €"
-      }
     }
 } 
 </script>

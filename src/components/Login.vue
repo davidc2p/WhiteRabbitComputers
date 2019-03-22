@@ -20,6 +20,7 @@
     </div>
   </div>
 
+  <form @submit.prevent="login({ email, password })">
   <div class="form-group row justify-content-center" :class="{'has-error': errors.has('email') }">
     <label for="email" class="col-10 col-sm-2 col-form-label text-sm-right">Email</label>
     <div class="col-10 col-sm-8">
@@ -47,6 +48,7 @@
       <button type="button" name="login" class="btn btn-warning mt-auto" v-on:click="login">Login</button>
     </div>
   </div>
+  </form>
 
  </div>
 </template>
@@ -58,26 +60,21 @@
     import Message from './Message.vue'
     import Wave from './Wave.vue'
 
-    //services
-    import serviceProfile from '../services/ServiceProfileResource.js'
-
     //Classes
     import ClassResource from '../services/ClassResource.js'
 
     const classResourceService = new ClassResource()
 
 export default {
-    name: 'Encomendar',
-    props: ['context', 'keybody'],
+    name: 'Login',
     components: {
         Message,
         Wave
     },
+    
     data: function() {
         return {
 
-            ctx: this.context,
-            
             email: '',
             password: '',
 
@@ -121,14 +118,7 @@ export default {
                   } else {
 
                         //set Context
-                        serviceProfile.setContext(this.dataResult)
-
-                        //Propagate context upstairs
-                        const ctx = serviceProfile.getContext()                        
-
-                        //update Context in main app
-                        //this.$router.app.$emit('changeContext', this.ctx)
-                        this.$emit('changeContext', ctx)
+                        this.$store.dispatch("login", { ...this.dataResult })
 
                         this.$router.push('/')
                   }
@@ -138,10 +128,9 @@ export default {
                     }
                 })
         },
-        getUser: function(email, authorized) {
+        getUser: function(email) {
           if (email) {
-            this.authorized = authorized
-            let self = this
+
             Api.get('login/index.php?method=getUser&email=' + email)
                 .then(response => {
 
@@ -163,32 +152,10 @@ export default {
                 })
           }
         }
-        // ,
-        // validateToken: function() {
-        //     if (typeof(this.ctx.access_token) !== undefined && typeof(this.ctx.email) !== undefined) {
-        //         serviceProfile.validateToken(this.ctx.access_token, this.ctx.email)
-        //             .then(response => {
-        //                 const authorized = serviceAuth.checkServiceAuth(response.data.message)
-        //                 this.getUser(this.ctx.email, authorized)
-        //             }).catch(error => {
-        //                 if (error.response) {
-        //                     alert(error.response);
-        //                 }
-        //             })
-        //     }
-        // }
     },
     mounted: function() {
-
-        this.ctx = serviceProfile.getContext()
-        
-    },
-    watch: {
-
-        context: function() {
-            this.ctx = this.context
-            this.validateToken()
-        }
+      this.$store.dispatch("validate");
+      //this.validateToken()
     }
 } 
 </script>

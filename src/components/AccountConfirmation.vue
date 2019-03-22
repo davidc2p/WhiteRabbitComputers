@@ -73,16 +73,13 @@
 
 export default {
     name: 'Encomendar',
-    props: ['context', 'keybody'],
     components: {
         Message,
         Wave
     },
     data: function() {
         return {
-
-            ctx: this.context,
-            
+        
             token: '',
             name: '',
             email: '',
@@ -110,7 +107,7 @@ export default {
             //const pass = serviceProfile.SHA1(this.password)
             const pass = this.password
             Api.put('login/index.php', {
-                'access_token': this.ctx.access_token,
+                'access_token': this.$store.state.access_token,
                 'method': 'confirm',
                 'dev': 1,
                 'password': pass,
@@ -156,12 +153,6 @@ export default {
         this.token = this.$route.params.token
         this.getUserFromToken(this.token)
 
-    },
-    watch: {
-
-        context: function() {
-            this.ctx = this.context
-        }
     }
 } 
 </script>

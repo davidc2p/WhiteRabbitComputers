@@ -63,17 +63,17 @@
   <div class="form-group row justify-content-center" :class="{'has-error': errors.has('email') }">
     <label for="email" class="col-10 col-sm-2 col-form-label text-sm-right">Email</label>
     <div class="col-10 col-sm-8">
-      <input v-validate="'required|email'" :readonly="ctx.authenticate" class="form-control"  :class="{'is-error': errors.has('email') }" name="email" type="text" data-vv-delay="1000" placeholder="email@example.com" v-model="orderinfo.customer.email" v-on:change="getUser(orderinfo.customer.email)">
+      <input v-validate="'required|email'" :readonly="isAuthenticate" class="form-control"  :class="{'is-error': errors.has('email') }" name="email" type="text" data-vv-delay="1000" placeholder="email@example.com" v-model="orderinfo.customer.email" v-on:change="getUser(orderinfo.customer.email)">
       <small id="emailHelp" class="form-text text-muted text-left">Nunca iremos partilhar o seu email com outras entidades</small>
       <p class="invalid-feedback" v-if="errors.has('email')">{{ errors.first('email') }}</p>
     </div>
   </div>
 
   <!-- dados pessoais -->
-  <slot v-if="ctx.authenticate || noLoginInfo">
+  <slot v-if="isAuthenticate || noLoginInfo">
   
     <div class="row panel panel-default">
-      <div class="panel-heading col-10">
+      <div class="panel-heading col-10 offset-1">
         <h3 class="panel-title">Dados da entrega</h3>
       </div>
     </div>
@@ -81,14 +81,14 @@
     <div class="form-group row justify-content-center">
       <label for="taxnumber" class="col-10 col-sm-2 col-form-label text-sm-right">NIF</label>
       <div class="col-10 col-sm-8">
-        <input type="text" :disabled="ctx.authenticate" v-model="orderinfo.customer.taxnumber" placeholder="NIF da facturação" v-validate="'numeric|required'" name="taxnumber" data-vv-as="Nif da faturação" class="form-control" :class="{ 'is-invalid': errors.has('taxnumber') }" />
+        <input type="text" :disabled="isAuthenticate" v-model="orderinfo.customer.taxnumber" placeholder="NIF da facturação" v-validate="'numeric|required'" name="taxnumber" data-vv-as="Nif da faturação" class="form-control" :class="{ 'is-invalid': errors.has('taxnumber') }" />
         <p v-if="errors.has('taxnumber')" class="invalid-feedback">{{ errors.first('taxnumber') }}</p>
       </div>
     </div>
     <div class="form-group row justify-content-center">
       <label for="phonenumber" class="col-10 col-sm-2 col-form-label text-sm-right">Telefone</label>
       <div class="col-10 col-sm-8">
-        <input type="text" :disabled="ctx.authenticate" v-model="orderinfo.customer.phonenumber" placeholder="Número de contacto" data-vv-as="Número de contacto" v-validate="'required'" name="phonenumber" class="form-control" :class="{ 'is-invalid': errors.has('phonenumber') }" />
+        <input type="text" :disabled="isAuthenticate" v-model="orderinfo.customer.phonenumber" placeholder="Número de contacto" data-vv-as="Número de contacto" v-validate="'required'" name="phonenumber" class="form-control" :class="{ 'is-invalid': errors.has('phonenumber') }" />
         <p v-if="errors.has('phonenumber')" class="invalid-feedback">{{ errors.first('phonenumber') }}</p>
       </div>
     </div>
@@ -96,42 +96,42 @@
     <div class="form-group row justify-content-center">
       <label for="deliveryname" class="col-10 col-sm-2 col-form-label text-sm-right">Nome</label>
       <div class="col-10 col-sm-8">
-        <input type="text" :disabled="ctx.authenticate" v-model="orderinfo.customer.delivery.name" placeholder="Nome da morada de entrega" data-vv-as="Nome da morada de entrega" v-validate="'required'" name="deliveryname" class="form-control" :class="{ 'is-invalid': errors.has('deliveryname') }" />
+        <input type="text" :disabled="isAuthenticate" v-model="orderinfo.customer.delivery.name" placeholder="Nome da morada de entrega" data-vv-as="Nome da morada de entrega" v-validate="'required'" name="deliveryname" class="form-control" :class="{ 'is-invalid': errors.has('deliveryname') }" />
         <p v-if="errors.has('deliveryname')" class="invalid-feedback">{{ errors.first('deliveryname') }}</p>
       </div>
     </div>
     <div class="form-group row justify-content-center">
       <label for="deliveryaddress" class="col-10 col-sm-2 col-form-label text-sm-right">Morada</label>
       <div class="col-10 col-sm-8">
-        <input type="text" :disabled="ctx.authenticate" v-model="orderinfo.customer.delivery.address" placeholder="Morada de entrega" data-vv-as="Morada de entrega" v-validate="'required'" name="deliveryaddress" class="form-control" :class="{ 'is-invalid': errors.has('deliveryaddress') }" />
+        <input type="text" :disabled="isAuthenticate" v-model="orderinfo.customer.delivery.address" placeholder="Morada de entrega" data-vv-as="Morada de entrega" v-validate="'required'" name="deliveryaddress" class="form-control" :class="{ 'is-invalid': errors.has('deliveryaddress') }" />
         <p v-if="errors.has('deliveryaddress')" class="invalid-feedback">{{ errors.first('deliveryaddress') }}</p>
       </div>
     </div>
     <div class="form-group row justify-content-center">
       <label for="deliveryzip" class="col-10 col-sm-2 col-form-label text-sm-right">Código postal</label>
       <div class="col-10 col-sm-8">
-        <input type="text" :disabled="ctx.authenticate" v-model="orderinfo.customer.delivery.zip" placeholder="Código postal da morada de entrega" data-vv-as="Código postal da morada de entrega" v-validate="'required'" name="deliveryzip" class="form-control" :class="{ 'is-invalid': errors.has('deliveryzip') }" />
+        <input type="text" :disabled="isAuthenticate" v-model="orderinfo.customer.delivery.zip" placeholder="Código postal da morada de entrega" data-vv-as="Código postal da morada de entrega" v-validate="'required'" name="deliveryzip" class="form-control" :class="{ 'is-invalid': errors.has('deliveryzip') }" />
         <p v-if="errors.has('deliveryzip')" class="invalid-feedback">{{ errors.first('deliveryzip') }}</p>
       </div>
     </div>
     <div class="form-group row justify-content-center">
       <label for="deliverycity" class="col-10 col-sm-2 col-form-label text-sm-right">Localidade</label>
       <div class="col-10 col-sm-8">
-        <input type="text" :disabled="ctx.authenticate" v-model="orderinfo.customer.delivery.city" placeholder="Localidade de entrega" data-vv-as="Localidade de entrega" v-validate="'required'" name="deliverycity" class="form-control" :class="{ 'is-invalid': errors.has('deliverycity') }" />
+        <input type="text" :disabled="isAuthenticate" v-model="orderinfo.customer.delivery.city" placeholder="Localidade de entrega" data-vv-as="Localidade de entrega" v-validate="'required'" name="deliverycity" class="form-control" :class="{ 'is-invalid': errors.has('deliverycity') }" />
         <p v-if="errors.has('deliverycity')" class="invalid-feedback">{{ errors.first('deliverycity') }}</p>
       </div>
     </div>
 
     <!-- dados de facturação -->
     <div class="row panel panel-default">
-      <div class="panel-heading col-10">
+      <div class="panel-heading col-10 offset-1">
         <h3 class="panel-title">Dados da faturação</h3>
       </div>
     </div>
 
     <div class="form-group row form-check">
       <div class="col-10 col-sm-8 offset-sm-2">
-        <input type="checkbox" :disabled="ctx.authenticate" v-model="cep" v-on:change="copyandprotect" class="form-check-input" id="sameasdelivery">
+        <input type="checkbox" :disabled="isAuthenticate" v-model="cep" v-on:change="copyandprotect" class="form-check-input" id="sameasdelivery">
         <label class="form-check-label" for="sameasdelivery">Mesmo dados de entrega e facturação</label>
       </div>
     </div>
@@ -139,35 +139,35 @@
     <div class="form-group row justify-content-center">
       <label for="invoicename" class="col-10 col-sm-2 col-form-label text-sm-right">Nome</label>
       <div class="col-10 col-sm-8">
-        <input type="text" :disabled="cep || ctx.authenticate" v-model="orderinfo.customer.invoice.name" placeholder="Nome da morada de faturação" data-vv-as="Nome da morada de faturação" v-validate="'required'" name="invoicename" class="form-control" :class="{ 'is-invalid': errors.has('invoicename') }" />
+        <input type="text" :disabled="cep || isAuthenticate" v-model="orderinfo.customer.invoice.name" placeholder="Nome da morada de faturação" data-vv-as="Nome da morada de faturação" v-validate="'required'" name="invoicename" class="form-control" :class="{ 'is-invalid': errors.has('invoicename') }" />
         <p v-if="errors.has('invoicename')" class="invalid-feedback">{{ errors.first('invoicename') }}</p>
       </div>
     </div>
     <div class="form-group row justify-content-center">
       <label for="invoiceaddress" class="col-10 col-sm-2 col-form-label text-sm-right">Morada</label>
       <div class="col-10 col-sm-8">
-        <input type="text" :disabled="cep || ctx.authenticate" v-model="orderinfo.customer.invoice.address" placeholder="Morada de faturação" data-vv-as="Morada de faturação" v-validate="'required'" name="invoiceaddress" class="form-control" :class="{ 'is-invalid': errors.has('invoiceaddress') }" />
+        <input type="text" :disabled="cep || isAuthenticate" v-model="orderinfo.customer.invoice.address" placeholder="Morada de faturação" data-vv-as="Morada de faturação" v-validate="'required'" name="invoiceaddress" class="form-control" :class="{ 'is-invalid': errors.has('invoiceaddress') }" />
         <p v-if="errors.has('invoiceaddress')" class="invalid-feedback">{{ errors.first('invoiceaddress') }}</p>
       </div>
     </div>
     <div class="form-group row justify-content-center">
       <label for="invoicezip" class="col-10 col-sm-2 col-form-label text-sm-right">Código postal</label>
       <div class="col-10 col-sm-8">
-        <input type="text" :disabled="cep || ctx.authenticate" v-model="orderinfo.customer.invoice.zip" placeholder="Código postal da morada de faturação" data-vv-as="Código postal da morada de faturação" v-validate="'required'" name="invoicezip" class="form-control" :class="{ 'is-invalid': errors.has('invoicezip') }" />
+        <input type="text" :disabled="cep || isAuthenticate" v-model="orderinfo.customer.invoice.zip" placeholder="Código postal da morada de faturação" data-vv-as="Código postal da morada de faturação" v-validate="'required'" name="invoicezip" class="form-control" :class="{ 'is-invalid': errors.has('invoicezip') }" />
         <p v-if="errors.has('invoicezip')" class="invalid-feedback">{{ errors.first('invoicezip') }}</p>
       </div>
     </div>
     <div class="form-group row justify-content-center">
       <label for="invoicecity" class="col-10 col-sm-2 col-form-label text-sm-right">Localidade</label>
       <div class="col-10 col-sm-8">
-        <input type="text" :disabled="cep || ctx.authenticate" v-model="orderinfo.customer.invoice.city" placeholder="Localidade de faturação" data-vv-as="Localidade de faturação" v-validate="'required'" name="invoicecity" class="form-control" :class="{ 'is-invalid': errors.has('invoicecity') }" />
+        <input type="text" :disabled="cep || isAuthenticate" v-model="orderinfo.customer.invoice.city" placeholder="Localidade de faturação" data-vv-as="Localidade de faturação" v-validate="'required'" name="invoicecity" class="form-control" :class="{ 'is-invalid': errors.has('invoicecity') }" />
         <p v-if="errors.has('invoicecity')" class="invalid-feedback">{{ errors.first('invoicecity') }}</p>
       </div>
     </div>
 
     <div class="form-group row justify-content-center">
       <div class="col-12 text-right">
-        <button type="button" name="register" class="btn btn-primary" v-on:click="finalizar">Finalizar</button>
+        <button type="button" name="register" class="btn btn-warning" v-on:click="finalizar">Finalizar</button>
       </div>
     </div>
   </slot>
@@ -208,18 +208,10 @@
 export default {
     name: 'Encomendar',
     props: {
-      context: {
-        type: Object,
-        required: true
-      },
       computerData: {
         type: Object,
         required: false // User can accept a userData object on params, or not. It's totally optional.
       },
-      keybody: {
-        type: Number,
-        required: true
-      }
     },
     components: {
         Message,
@@ -228,7 +220,6 @@ export default {
     data: function() {
         return {
 
-            ctx: this.context,
             password: '',
             noLoginInfo: true,
             compdetails: [],
@@ -316,14 +307,7 @@ export default {
                       }
                   } else {
                       //set Context
-                      serviceProfile.setContext(this.dataResult)
-
-                      //Propagate context upstairs
-                      const ctx = serviceProfile.getContext()                        
-
-                      //update Context in main app
-                      //this.$router.app.$emit('changeContext', this.ctx)
-                      this.$emit('changeContext', ctx)
+                      this.$store.dispatch("login", { ...this.dataResult })
                   }
                   this.count ++
               }).catch(error => {
@@ -457,34 +441,16 @@ export default {
                 })
           }
         }
-        //,
-        // validateToken: function() {
-        //     if (typeof(this.ctx.access_token) !== undefined && typeof(this.ctx.email) !== undefined) {
-        //         serviceProfile.validateToken(this.ctx.access_token, this.ctx.email)
-        //             .then(response => {
-        //                 const authorized = serviceAuth.checkServiceAuth(response.data.message)
-        //                 orderinfo.customer.email = this.ctx.email
-        //                 this.getUser(this.ctx.email, authorized)
-        //             }).catch(error => {
-        //                 if (error.response) {
-        //                     alert(error.response);
-        //                 }
-        //             })
-        //     }
-        // },
     },
     mounted: function() {
 
-        this.ctx = serviceProfile.getContext()
+        this.$store.dispatch("validate")
 
-        if (this.ctx.authenticate) {
-          this.orderinfo.customer.email = this.ctx.email
-          this.getUser(this.ctx.email)
+        if (this.isAuthenticate) {
+          this.orderinfo.customer.email = this.$store.state.email
+          this.getUser(this.$store.state.email)
         }
-        
         //update Context in main app
-        this.$emit('changeContext', this.ctx)
-
         this.computerid = this.$route.params.computerid
         if (this.computerid == 0) {
           let computerData = this.$route.params.computerData.encomenda
@@ -496,10 +462,6 @@ export default {
         }
     },
     watch: {
-
-        context: function() {
-            this.ctx = this.context
-        },
 
         qtd: function(newdata) {
             this.price = (this.compdetails[0].price * newdata).toFixed(2)
@@ -525,6 +487,14 @@ export default {
             this.IVA = Number(this.price - this.pricesemIVA).toFixed(2)
           }
         }
-    }
+    },
+    computed: {
+        isAuthenticate() { 
+            return this.$store.getters.authenticate;
+        },
+        isAdmin() {
+            return this.$store.getters.admin;
+        }
+    } 
 } 
 </script>

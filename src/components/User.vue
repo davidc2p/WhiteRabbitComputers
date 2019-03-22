@@ -17,16 +17,16 @@
   <div class="form-group row justify-content-center" :class="{'has-error': errors.has('email') }">
     <label for="email" class="col-10 col-sm-2 col-form-label text-sm-right">Email</label>
     <div class="col-10 col-sm-8">
-      <input v-validate="'required|email'" :readonly="ctx.authenticate" class="form-control"  :class="{'is-error': errors.has('email') }" name="email" type="text" data-vv-delay="1000" placeholder="email@example.com" v-model="userinfo.email" v-on:change="getUser(userinfo.email)">
+      <input v-validate="'required|email'" :readonly="isAuthenticate" class="form-control"  :class="{'is-error': errors.has('email') }" name="email" type="text" data-vv-delay="1000" placeholder="email@example.com" v-model="userinfo.email" v-on:change="getUser(userinfo.email)">
       <p class="invalid-feedback" v-if="errors.has('email')">{{ errors.first('email') }}</p>
     </div>
   </div>
 
   <!-- dados pessoais -->
-  <slot v-if="ctx.authenticate">
+  <slot v-if="isAuthenticate">
   
     <div class="row panel panel-default">
-      <div class="panel-heading col-10">
+      <div class="panel-heading col-10 offset-2">
         <h3 class="panel-title">Dados da entrega</h3>
       </div>
     </div>
@@ -77,13 +77,13 @@
 
     <!-- dados de facturação -->
     <div class="row panel panel-default">
-      <div class="panel-heading col-10">
+      <div class="panel-heading col-10 offset-2">
         <h3 class="panel-title">Dados da faturação</h3>
       </div>
     </div>
 
     <div class="form-group row form-check">
-      <div class="col-10 col-sm-8 offset-sm-2">
+      <div class="col-10 offset-2">
         <input type="checkbox" v-model="cep" v-on:change="copyandprotect" class="form-check-input" id="sameasdelivery">
         <label class="form-check-label" for="sameasdelivery">Mesmo dados de entrega e facturação</label>
       </div>
@@ -120,7 +120,7 @@
 
     <div class="form-group row justify-content-center">
       <div class="col-12 text-right">
-        <button type="button" name="atualizar" class="btn btn-primary" v-on:click="updateUser">Atualizar</button>
+        <button type="button" name="atualizar" class="btn btn-warning" v-on:click="updateUser">Atualizar</button>
       </div>
     </div>
   </slot>
@@ -134,9 +134,6 @@
     import Message from './Message.vue'
     import Wave from './Wave.vue'
 
-    //services
-    import serviceProfile from '../services/ServiceProfileResource.js'
-
     //Classes
     import ClassResource from '../services/ClassResource.js'
 
@@ -144,15 +141,12 @@
 
 export default {
     name: 'User',
-    props: ['context', 'keybody'],
     components: {
         Message,
         Wave
     },
     data: function() {
         return {
-
-            ctx: this.context,
 
             //form
             cep: false,
@@ -225,14 +219,14 @@ export default {
         },
         updateUser: function() {
 
-            this.ctx = serviceProfile.getContext()
+            this.$store.dispatch("validate");
 
             this.$validator.validateAll()
             if (!this.errors.any()) {
 
                 Api.put('login/index.php', {
                     'method': 'setUser',
-                    'access_token': this.ctx.access_token,
+                    'access_token': this.$store.state.access_token,
                     'userinfo': this.userinfo
                 }).then(response => {
 
@@ -307,24 +301,25 @@ export default {
     },
     mounted: function() {
 
-        this.ctx = serviceProfile.getContext()
+        this.$store.dispatch("validate")
 
-        if (this.ctx.authenticate) {
-            this.userinfo.email = this.ctx.email
-            this.getUser(this.ctx.email)
-
-            //update Context in main app
-            this.$emit('changeContext', this.ctx)
-    
+        if (this.isAuthenticate) {
+            this.userinfo.email = this.$store.state.email
+            this.getUser(this.$store.state.email)
         } else {
             this.$router.push('/login')
         }
     },
-    watch: {
-
-        context: function() {
-            this.ctx = this.context
+    computed: {
+        name() {
+            return this.$store.state.name
         },
-    }
+        isAuthenticate() { 
+            return this.$store.getters.authenticate;
+        },
+        isAdmin() {
+            return this.$store.getters.admin;
+        }
+    } 
 } 
 </script>

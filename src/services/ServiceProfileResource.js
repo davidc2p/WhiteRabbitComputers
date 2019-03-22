@@ -2,20 +2,11 @@ import { Api } from './Api.js'
 
 export default {
 
-    setContext(context) {
-        // Put the object into storage
-        localStorage.setItem('context', JSON.stringify(context));
-    },
-
     updateContext(access_token) {
-        //Get the context from localStorage
-        let context = JSON.parse(localStorage.getItem('context'))
-        context.access_token = access_token
-        localStorage.setItem('context', JSON.stringify(context))
+        localStorage.setItem('access_token', access_token)
     },
 
     renewToken(access_token, email) {
-        //let service = 'http://127.0.0.1:8080/Vue/WhiteRabbitComputers/oauth2/token/create.php'
         return Api.put('token/create.php', {
             access_token: access_token,
             lang: 'en',
@@ -25,7 +16,7 @@ export default {
 
     },
 
-    validateToken(access_token, email) {
+    validateToken(access_token) {
 
         return Api.get('token/validate.php?access_token=' + access_token + '&lang=en&dev=1')
 
@@ -33,12 +24,14 @@ export default {
 
     getContext() {
         // Retrieve the object from storage
-        let context = JSON.parse(localStorage.getItem('context'))
+        //let context = JSON.parse(localStorage.getItem('context'))
+        let access_token = localStorage.getItem('access_token')
+        let email = localStorage.getItem('email')
 
-        if (context !== null) {
-            if (typeof(context.email) !== 'undefined' && typeof(context.access_token) !== 'undefined' && context.access_token !== null) {
+        if (access_token !== null) {
+            if (typeof(email) !== 'undefined' && typeof(access_token) !== 'undefined' && access_token !== null) {
                 //validate the token
-                this.validateToken(context.access_token, context.email)
+                this.validateToken(access_token)
                     .then(newToken => {
                         if (typeof(newToken.data.message) !== 'undefined' && typeof(newToken.data.success) !== 'undefined') {
                             if (newToken.data.message === 'Token is valid' && newToken.data.success === 0) {
@@ -46,10 +39,10 @@ export default {
                             } else {
                                 if (newToken.data.message === 'Token has expired') {
                                     //renew token
-                                    this.renewToken(context.access_token, context.email)
+                                    this.renewToken(access_token, email)
                                         .then(renewToken => {
                                             if (typeof(renewToken.data.access_token) !== 'undefined') {
-                                                context.access_token = renewToken.data.access_token
+                                                access_token = renewToken.data.access_token
                                                 this.updateContext(renewToken.data.access_token)
                                             }
                                         })
@@ -67,22 +60,19 @@ export default {
                         }
                     })
             } else {
-                context = { access_token: null, name: null, authenticate: false, admin: null, email: null, uid: null, creationdate: null }
+                this.destroyContext()
             }
         } else {
-            context = { access_token: null, name: null, authenticate: false, admin: null, email: null, uid: null, creationdate: null }
+            this.destroyContext()
         }
-
-
-
-        return context
     },
 
     destroyContext() {
-        let context = { access_token: null, name: null, authenticate: false, admin: null, email: null, uid: null, creationdate: null }
-        localStorage.setItem('context', JSON.stringify(context));
-
-        return context
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("email");
+        localStorage.removeItem("name");
+        localStorage.removeItem("uid");
+        localStorage.removeItem("admin");
     },
     /*
         async getContext() {

@@ -100,23 +100,18 @@
     //Components
     import Message from './Message.vue'
 
-    //services
-    import serviceProfile from '../services/ServiceProfileResource.js'
-
     //Classes
     import ClassResource from '../services/ClassResource.js'
 
     const classResourceService = new ClassResource()
 
 export default {
-    props: ['context', 'componente', 'action', 'ModalCounter'],
+    props: ['componente', 'action', 'ModalCounter'],
     components: {
         Message
     },
     data: function() {
         return {
-
-            ctx: this.context,
 
             error: '',
             id: 0,
@@ -141,7 +136,7 @@ export default {
         updateComponente: function() {
              Api.put('component/index.php',
                 {
-                    'access_token': this.ctx.access_token,
+                    'access_token': this.$store.state.access_token,
                     'id': this.id,
                     'link': this.link,
                     'description': this.description,
@@ -177,7 +172,7 @@ export default {
         insertComponente: function() {
              Api.post('component/index.php',
                 {
-                    'access_token': this.ctx.access_token,
+                    'access_token': this.$store.state.access_token,
                     'link': this.link,
                     'description': this.description,
                     'cost': this.cost,

@@ -21,14 +21,14 @@ switch($request_method)
   case 'GET':
     // Get OrderInfo data
     $defs = array(
-      'method' 	    	      => array('filter'=>FILTER_SANITIZE_STRING),
-      'access_token' 	    	=> array('filter'=>FILTER_SANITIZE_STRING),
+        'method' 	    	    => array('filter'=>FILTER_SANITIZE_STRING),
+        'access_token' 	    	=> array('filter'=>FILTER_SANITIZE_STRING),
 	    'lang' 	    	        => array('filter'=>FILTER_SANITIZE_STRING),
 	    'dev' 	    	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
-      'orderinfoid'	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
-      'pagenumber'	    		=> array('filter'=>FILTER_SANITIZE_NUMBER_INT),
-      'itemsperpage'	    	=> array('filter'=>FILTER_SANITIZE_NUMBER_INT),
-      'status'    	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT)
+        'orderinfoid'	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
+        'pagenumber'	    	=> array('filter'=>FILTER_SANITIZE_NUMBER_INT),
+        'itemsperpage'	    	=> array('filter'=>FILTER_SANITIZE_NUMBER_INT),
+        'status'    	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT)
     );
     $input = filter_input_array(INPUT_GET, $defs);
 
@@ -37,37 +37,37 @@ switch($request_method)
   case 'POST':
     // Post OrderInfo data
     $defs = array(
-      'method' 	    	      => array('filter'=>FILTER_SANITIZE_STRING), 
-      'access_token' 	    	=> array('filter'=>FILTER_SANITIZE_STRING),
+        'method' 	    	    => array('filter'=>FILTER_SANITIZE_STRING), 
+        'access_token' 	    	=> array('filter'=>FILTER_SANITIZE_STRING),
 	    'lang' 	    	        => array('filter'=>FILTER_SANITIZE_STRING),
 	    'dev' 	    	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
-      'orderinfoid'	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
-      'computerid'  	    	=> array('filter'=>FILTER_SANITIZE_NUMBER_INT),
-      'computerdesc'  	    => array('filter'=>FILTER_SANITIZE_STRING),
-      'computercost'  	    => array('filter'=>FILTER_SANITIZE_NUMBER_FLOAT, 'flags' => FILTER_FLAG_ALLOW_FRACTION),
-      'computerprice'  	    => array('filter'=>FILTER_SANITIZE_NUMBER_FLOAT, 'flags' => FILTER_FLAG_ALLOW_FRACTION),
-      'computerqtd'  	      => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
-      'computervatprice'  	=> array('filter'=>FILTER_SANITIZE_NUMBER_FLOAT, 'flags' => FILTER_FLAG_ALLOW_FRACTION),
-      'computertotalprice'  => array('filter'=>FILTER_SANITIZE_NUMBER_FLOAT, 'flags' => FILTER_FLAG_ALLOW_FRACTION),
-      'email'  	    	      => array('filter'=>FILTER_VALIDATE_EMAIL),
-      'taxnumber'  	    	  => array('filter'=>FILTER_SANITIZE_STRING),
-      'phonenumber'  	    	=> array('filter'=>FILTER_SANITIZE_STRING),
-      'deliveryname'  	    => array('filter'=>FILTER_SANITIZE_STRING),
-      'deliverystreet'  	  => array('filter'=>FILTER_SANITIZE_STRING),
-      'deliveryzipcode'  	  => array('filter'=>FILTER_SANITIZE_STRING),
-      'deliverycity'  	    => array('filter'=>FILTER_SANITIZE_STRING),
-      'invoicename'  	      => array('filter'=>FILTER_SANITIZE_STRING),
-      'invoicestreet'  	    => array('filter'=>FILTER_SANITIZE_STRING),
-      'invoicezipcode'  	  => array('filter'=>FILTER_SANITIZE_STRING),
-      'invoicecity'  	      => array('filter'=>FILTER_SANITIZE_STRING),
-      'status'  	          => array('filter'=>FILTER_SANITIZE_NUMBER_INT)
+        'orderinfoid'	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
+        'computerid'  	    	=> array('filter'=>FILTER_SANITIZE_NUMBER_INT),
+        'computerdesc'  	    => array('filter'=>FILTER_SANITIZE_STRING),
+        'computercost'  	    => array('filter'=>FILTER_SANITIZE_NUMBER_FLOAT, 'flags' => FILTER_FLAG_ALLOW_FRACTION),
+        'computerprice'  	    => array('filter'=>FILTER_SANITIZE_NUMBER_FLOAT, 'flags' => FILTER_FLAG_ALLOW_FRACTION),
+        'computerqtd'  	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
+        'computervatprice'  	=> array('filter'=>FILTER_SANITIZE_NUMBER_FLOAT, 'flags' => FILTER_FLAG_ALLOW_FRACTION),
+        'computertotalprice'    => array('filter'=>FILTER_SANITIZE_NUMBER_FLOAT, 'flags' => FILTER_FLAG_ALLOW_FRACTION),
+        'email'  	    	    => array('filter'=>FILTER_VALIDATE_EMAIL),
+        'taxnumber'  	    	=> array('filter'=>FILTER_SANITIZE_STRING),
+        'phonenumber'  	    	=> array('filter'=>FILTER_SANITIZE_STRING),
+        'deliveryname'  	    => array('filter'=>FILTER_SANITIZE_STRING),
+        'deliverystreet'  	    => array('filter'=>FILTER_SANITIZE_STRING),
+        'deliveryzipcode'  	    => array('filter'=>FILTER_SANITIZE_STRING),
+        'deliverycity'  	    => array('filter'=>FILTER_SANITIZE_STRING),
+        'invoicename'  	        => array('filter'=>FILTER_SANITIZE_STRING),
+        'invoicestreet'  	    => array('filter'=>FILTER_SANITIZE_STRING),
+        'invoicezipcode'  	    => array('filter'=>FILTER_SANITIZE_STRING),
+        'invoicecity'  	        => array('filter'=>FILTER_SANITIZE_STRING),
+        'status'  	            => array('filter'=>FILTER_SANITIZE_NUMBER_INT)
     );
 
     if(empty($_POST)) {
-      $data = json_decode(file_get_contents("php://input"), TRUE);
-      $input = filter_var_array($data, $defs);
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $input = filter_var_array($data, $defs);
     } else {
-      $input = filter_input_array(INPUT_POST, $defs);	
+        $input = filter_input_array(INPUT_POST, $defs);	
     }
 
   break;
@@ -75,12 +75,12 @@ switch($request_method)
   case 'PUT':
     // Update OrderInfo data
     $defs = array(
-      'access_token' 	    	=> array('filter'=>FILTER_SANITIZE_STRING),
-      'method' 	    	      => array('filter'=>FILTER_SANITIZE_STRING),
-	    'lang' 	    	        => array('filter'=>FILTER_SANITIZE_STRING),
-	    'dev' 	    	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),      
-      'orderinfoid'	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
-      'status'  	          => array('filter'=>FILTER_SANITIZE_NUMBER_INT)
+        'access_token' 	    	=> array('filter'=>FILTER_SANITIZE_STRING),
+        'method' 	    	    => array('filter'=>FILTER_SANITIZE_STRING),
+        'lang' 	    	        => array('filter'=>FILTER_SANITIZE_STRING),
+        'dev' 	    	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),      
+        'orderinfoid'	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
+        'status'  	            => array('filter'=>FILTER_SANITIZE_NUMBER_INT)
     );
     $data = json_decode(file_get_contents("php://input"), TRUE);
     $input = filter_var_array($data, $defs);
@@ -103,12 +103,14 @@ switch($request_method)
 require_once '../../db/db_connect.php';
 require_once '../../class/generic.class.php';
 require_once '../../class/orderinfo.class.php';
+require_once '../../class/auth.class.php';
 require_once '../../assets/PHPMailer/PHPMailerAutoload.php';
 
 
 // include db config class
 $dbh = new DB_CONNECT($input['dev']);
 $connection = $dbh->getDb();
+$auth = new Auth($connection);
 $generic = new Generic();
 $orderinfo = new OrderInfo($connection);
 

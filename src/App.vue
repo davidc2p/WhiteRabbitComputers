@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <div class="container">
-      <Header :context="dataContext" :keynav="counter" v-on:changeContext="changeContext" />
-      <router-view :context="dataContext" :keybody="counter" v-on:changeContext="changeContext" />
-      <Footer :context="dataContext" :keyfooter="counter" />
+      <Header />
+      <router-view />
+      <Footer />
     </div>
   </div>
 </template>
@@ -14,32 +14,28 @@ import Footer from './components/Footer.vue'
 
 export default {
   name: 'app',
-  data: function () { 
-    return {
-      dataContext: [],
-      counter: 0
-    }
-  },
   components: {
     Header,
     Footer
-  },
-  methods: {
-      changeContext: function(newContext) {
-          this.dataContext = newContext
-          this.updatedContext = true
-
-          this.counter++
-      }
   }
 }
 </script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-136674265-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-136674265-1');
+</script>
+
 
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
 }
 </style>

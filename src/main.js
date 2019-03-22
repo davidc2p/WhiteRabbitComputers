@@ -16,13 +16,12 @@ global.jQuery = jQuery
 global.$ = jQuery
 
 import './assets/css/styles.css'
+import store from './store'
 
 Vue.config.productionTip = false
 
 // Merge the locales.
 Validator.localize({ pt: messages })
-
-//VeeValidate.Validator.addLocale(messages)
 
 const config = {
     validity: true,
@@ -32,22 +31,14 @@ const config = {
 Vue.use(VeeValidate, config)
 Vue.use(BootstrapVue)
 
-//Validator.localize('pt')
 
 new Vue({
     router,
+
     data: {
-        updatedContext: false,
-        dataContext: {
-            authenticate: false,
-            companyid: '',
-            lang: '',
-            access_token: '',
-            webpath: '',
-            name: '',
-            avatar: ''
-        },
         counter: 0
     },
+    store,
+
     render: h => h(App)
 }).$mount('#app')

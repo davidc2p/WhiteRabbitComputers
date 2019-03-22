@@ -73,7 +73,7 @@
 
   <!-- dados pessoais -->
   <div class="row panel panel-default">
-    <div class="panel-heading col-10">
+    <div class="panel-heading col-10 offset-1">
       <h3 class="panel-title">Dados da entrega</h3>
     </div>
   </div>
@@ -124,7 +124,7 @@
 
   <!-- dados de facturação -->
   <div class="row panel panel-default">
-    <div class="panel-heading col-10">
+    <div class="panel-heading col-10 offset-1">
       <h3 class="panel-title">Dados da faturação</h3>
     </div>
   </div>
@@ -166,14 +166,12 @@ import Wave from './Wave.vue'
 
 export default {
     name: 'ResumoEncomenda',
-    props: ['context', 'keybody'],
     components: {
         Wave
     },
     data: function() {
         return {
 
-            ctx: this.context,
             orderinfodetails: [],
 
             orderinfo: {
@@ -263,12 +261,6 @@ export default {
         this.orderinfoid = this.$route.params.orderinfoid
         this.getOrderInfo(this.orderinfoid)
         this.getOrderInfoDetails(this.orderinfoid)
-    },
-    watch: {
-
-        context: function() {
-            this.ctx = this.context
-        }
     }
 }
 </script>

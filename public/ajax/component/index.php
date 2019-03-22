@@ -50,10 +50,10 @@ switch($request_method)
         'image'	                => array('filter'=>FILTER_SANITIZE_STRING)
     );
     if(empty($_POST)) {
-      $data = json_decode(file_get_contents("php://input"), TRUE);
-      $input = filter_var_array($data, $defs);
+        $data = json_decode(file_get_contents("php://input"), TRUE);
+        $input = filter_var_array($data, $defs);
     } else {
-      $input = filter_input_array(INPUT_POST, $defs);	
+        $input = filter_input_array(INPUT_POST, $defs);	
     }
   break;
 

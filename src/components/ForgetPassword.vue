@@ -54,7 +54,6 @@
 
 export default {
     name: 'ForgetPassword',
-    props: ['context', 'keybody'],
     components: {
         Message,
         Wave
@@ -62,8 +61,6 @@ export default {
     data: function() {
         return {
 
-            ctx: this.context,
-            
             email: '',
 
             message: {
@@ -144,32 +141,11 @@ export default {
                 })
           }
         }
-        // ,
-        // validateToken: function() {
-        //     if (typeof(this.ctx.access_token) !== undefined && typeof(this.ctx.email) !== undefined) {
-        //         serviceProfile.validateToken(this.ctx.access_token, this.ctx.email)
-        //             .then(response => {
-        //                 const authorized = serviceAuth.checkServiceAuth(response.data.message)
-        //                 this.getUser(this.ctx.email, authorized)
-        //             }).catch(error => {
-        //                 if (error.response) {
-        //                     alert(error.response);
-        //                 }
-        //             })
-        //     }
-        // }
     },
     mounted: function() {
 
-        this.ctx = serviceProfile.getContext()
+        this.$store.dispatch("validate")
         
-    },
-    watch: {
-
-        context: function() {
-            this.ctx = this.context
-            this.validateToken()
-        }
     }
 } 
 </script>
