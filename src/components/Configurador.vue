@@ -81,7 +81,7 @@
   </div>
 
   <div class="row">
-    <div class="offset-1 col-2 configurador">Placa gráfica</div>
+    <div class="offset-1 col-2 configurador">Disco</div>
     <div class="col-7 configurador">
       <slick id="diskSelector" ref="slick_disk" :options="slickOptions" @afterChange="handleAfterChange_disk" style="z-index: 10;">
         <div v-for="d in disk"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
