@@ -22,13 +22,13 @@ switch($request_method)
   case 'GET':
     // Retrieve External api param
     $defs = array(
-      'method' 	    	  => array('filter'=>FILTER_SANITIZE_STRING),
-      'access_token' 	  => array('filter'=>FILTER_SANITIZE_STRING),
+        'method' 	    	=> array('filter'=>FILTER_SANITIZE_STRING),
+        'access_token' 	    => array('filter'=>FILTER_SANITIZE_STRING),
 	    'lang' 	    	    => array('filter'=>FILTER_SANITIZE_STRING),
 	    'dev' 	    	    => array('filter'=>FILTER_SANITIZE_NUMBER_INT),      
-      'email'     	    => FILTER_VALIDATE_EMAIL,
-      'password'		    => array('filter'=>FILTER_SANITIZE_STRING, 'flags' => FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_LOW),
-      'uid' 	    	    => array('filter'=>FILTER_SANITIZE_STRING)
+        'email'     	    => FILTER_VALIDATE_EMAIL,
+        'password'		    => array('filter'=>FILTER_SANITIZE_STRING),
+        'uid' 	    	    => array('filter'=>FILTER_SANITIZE_STRING)
     );
     $input = filter_input_array(INPUT_GET, $defs);
   break;
@@ -43,11 +43,11 @@ switch($request_method)
   case 'PUT':
     // Update Timesheet
     $defs = array(
-      'method'       	  => array('filter'=>FILTER_SANITIZE_STRING),
+      'method'       	    => array('filter'=>FILTER_SANITIZE_STRING),
       'access_token' 	 	=> array('filter'=>FILTER_SANITIZE_STRING),
       'lang' 	    	    => array('filter'=>FILTER_SANITIZE_STRING),
       'dev' 	    	    => array('filter'=>FILTER_SANITIZE_NUMBER_INT),    
-      'email'     	    => FILTER_VALIDATE_EMAIL,
+      'email'     	        => FILTER_VALIDATE_EMAIL,
       'password'		    => array('filter'=>FILTER_SANITIZE_STRING, 'flags' => FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_LOW),
       'uid' 	    	    => array('filter'=>FILTER_SANITIZE_STRING)
     );
@@ -192,9 +192,85 @@ switch($request_method)
         print json_encode($ret);
       break;
 
+      case 'prelogin':
+        //email
+        if (isset($input['email'])) {
+          $user->email = $input['email'];	
+          $ret = $user->setNewSecret();
+
+          $strong  = true;
+          $salt = openssl_random_pseudo_bytes(256, $strong);
+          $iv = openssl_random_pseudo_bytes(16, $strong);
+          
+          $key = $ret['secret']; 
+          $iterations = 999; //same as js encrypting 
+          $cypherkey = hash_pbkdf2("sha512", $key, $salt, $iterations, 64);
+          $enc = openssl_encrypt('Gracadiogo', 'aes-256-cbc', hex2bin($cypherkey), true, $iv);
+          $dec = openssl_decrypt($enc, 'aes-256-cbc', hex2bin($cypherkey), true, $iv);
+
+          $ret['salt'] = bin2hex($salt);
+          $ret['iv'] = bin2hex($iv);
+
+        } else {
+          // Error registered
+          $ret["success"] = 1;
+          $ret["message"] = "An error has occurred while fetching user data.";
+        }
+
+        header('Content-Type: application/json');
+        print json_encode($ret);
+      break;
+
       case 'login':
         $user->email = $input['email'];	
-        $user->password = $input['password'];	
+        $ret = $user->getUser($user->email);
+
+        $key = $ret[0]['secret'];
+// $str = "12345678";
+
+        $jsondata = json_decode($_GET['password'], true);
+        try {
+            $ciphertext = hex2bin($jsondata["ciphertext"]);
+            $salt = hex2bin($jsondata["salt"]);
+            $iv  = hex2bin($jsondata["iv"]);          
+        } catch(Exception $e) { return null; }
+
+        $iterations = 999; //same as js encrypting 
+        $cypherkey = hash_pbkdf2("sha512", $key, $salt, $iterations, 64);
+
+        $a = strlen($iv);
+        $b = strlen($cypherkey);
+// $enc = openssl_encrypt($str, 'aes-256-cbc', hex2bin($cypherkey), true, $iv);
+// $dec = openssl_decrypt($enc, 'aes-256-cbc', hex2bin($cypherkey), true, $iv);
+// echo(bin2hex($enc).PHP_EOL);
+// var_dump($dec);
+
+        //$ciphertext = base64_decode($jsondata["ciphertext"]);
+        
+        // $ciphertext = $jsondata["ciphertext"];
+        //$ciphertext = $jsondata["ciphertext2"];
+        
+
+        
+
+        // $enc = openssl_encrypt($str, 'aes-256-cbc', hex2bin($cypherkey), true, $iv);
+        // $dec = openssl_decrypt($enc, 'aes-256-cbc', hex2bin($cypherkey), true, $iv);
+        //$key = hash_pbkdf2("sha512", $ret[0]['secret'], $salt, $iterations, 64);
+
+        $decrypted= openssl_decrypt($ciphertext, 'aes-256-cbc', hex2bin($cypherkey), OPENSSL_RAW_DATA, $iv);
+
+
+// hex2bin($ret[0]['secret'])
+        // $keyAndIV = evpKDF($input['password'], $input['salt']);
+        // $decrypted = openssl_decrypt($input['password'], 'AES-128-CBC', $keyAndIV["key"], OPENSSL_ZERO_PADDING, $keyAndIV["iv"]);
+        /*
+        $decryptPassword = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, 
+            $keyAndIV["key"], 
+            hex2bin($cipherTextHex), 
+            MCRYPT_MODE_CBC, 
+            $keyAndIV["iv"]);
+        */
+        $user->password = hash('sha256', $decrypted);
         
         $user->login();
 
@@ -308,11 +384,30 @@ switch($request_method)
       break;
 
       case 'confirm':
-        if (isset($input['password']) && $input['password']!="" &&
+        if (isset($data['password']) && $data['password']!="" &&
             isset($input['uid']) && $input['uid']!=""
             ) {
             $user->token = $input['uid'];
-            $user->password = $input['password'];
+            $user->email = $input['email'];
+
+            $ret = $user->getUser($user->email);
+
+            $key = $ret[0]['secret'];
+
+            $jsondata = json_decode($data['password'], true);
+            try {
+                $salt = hex2bin($jsondata["salt"]);
+                $iv  = hex2bin($jsondata["iv"]);          
+            } catch(Exception $e) { return null; }
+
+            $iterations = 999; //same as js encrypting 
+            $cypherkey = hash_pbkdf2("sha512", $key, $salt, $iterations, 64);
+
+            $ciphertext = base64_decode($jsondata["ciphertext"]);
+            $decrypted= openssl_decrypt($ciphertext, 'aes-256-cbc', hex2bin($cypherkey), OPENSSL_RAW_DATA, $iv);
+
+
+            $user->password = hash('sha256', $decrypted);
             $user->confirmregistration();
 
           } else {

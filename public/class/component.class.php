@@ -157,13 +157,13 @@ class Component
 			}
 			else {
 				$this->error["success"] = 1;
-				$this->error["message"] = 'Ocorreu um erro na consulta de componentos.';
+				$this->error["message"] = 'Ocorreu um erro na consulta de componentes.';
 				$ret = $this->error;
 			}
 		}
 		catch (PDOException $e) {
 			$this->error["success"] = 1;
-			$this->error["message"] = 'Ocorreu um erro na consulta de componentos.';
+			$this->error["message"] = 'Ocorreu um erro na consulta de componentes.';
 			$ret = $this->error;
 		}
 		
@@ -239,7 +239,7 @@ class Component
 			$this->error['success'] = 1;
 			$this->error['message'] = $ex->getMessage();
 		}
-    }
+  }
 
 	public function deleteComponent()
   {

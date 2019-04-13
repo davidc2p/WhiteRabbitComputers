@@ -234,7 +234,7 @@
             },
             getOrderInfoDetails: function(OrderInfoID) {
                 
-                Api.get('orderinfo/index.php?method=getOrderInfoDetails&orderinfoid='+OrderInfoID)
+                Api.get('orderinfo/index.php?method=getOrderInfoDetails&access_token='+this.$store.state.access_token+'&orderinfoid='+OrderInfoID)
                     .then(response => {
 
                         if (response.data.success !== undefined) {

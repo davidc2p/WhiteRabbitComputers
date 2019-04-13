@@ -178,7 +178,7 @@ export default {
 
             titles: {
                 head: 'Os desktops mais baratos do mercado',
-                desc: 'Montamos o seu computador a sua medida'
+                desc: 'Dados do perfil'
             },
 
             count: 1,

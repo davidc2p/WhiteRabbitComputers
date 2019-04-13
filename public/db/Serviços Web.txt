@@ -1,0 +1,114 @@
+Criação de sites
+
+Criação de sites estáticos
+A criação de sites estáticos é a solução mais indicada, para as empresas que pretendam ter uma presença na internet sem necessidade de actualizar o seu conteúdo com frequência.
+
+Criação de sites dinâmicos
+Por sua vez, a criação de sites com gestor de conteúdos associado (habitualmente conhecidos por sites dinâmicos), são os mais indicados para quem pretenda ter autonomia para gerir os seus próprios conteúdos e imagens através da nossa plataforma de gestão de conteúdos (backoffice ou CMS).
+
+
+ Gestão de páginas
+Decida e tenha total autonomia para criar e editar as páginas do seu site através deste módulo de páginas. E o melhor é que o n.º de páginas é ilimitado!
+
+ Gestão de imagens
+Seria demasiado arriscado e aborrecido criar um site sem qualquer imagem, por isso este é um módulo obrigatório para gestão dos conteúdos do seu site.
+
+ Gestão de ficheiros
+São imensas as vezes que os clientes tem necessidade de complementar os conteúdos do seu site com ficheiros Excel ou PDF. Use este módulo para esse fim!
+
+ Gestão de utilizadores
+Podendo ser usado como área reservada, este módulo permite criar grupos de utilizadores e gerir utilizadores por grupo de forma rápida e sem complicações.
+
+ Gestão de notícias
+Mantenha o seu site actualizado (é óptimo para visitantes e motores de busca tipo Google) e utilize o nosso módulo de notícias para inserir as últimas novidades.
+
+ Gestão de banners
+A área de banner tem enorme impacto qualquer que seja o website! Desta forma, tire proveito da mesma e utilize-a para comunicar com os visitantes.
+
+ Gestão de publicidade
+Pretende colocar publicidade no seu website e monitorizar cliques e impressões? Temos a solução: Flash Screen, Leaderboard ou Mrec ... a escolha é sua!
+
+ Suporte multilingue
+Preocupe-se apenas com as traduções! O nosso CMS tem suporte multilingue e permite por isso que o seu site tenha o n.º de idiomas que pretender.
+
+
+
+Web design responsivo
+
+O que é o web design responsivo (responsive web design)?
+Web design responsivo, como o nome já diz, é uma forma de construir um website de modo a que este “responda”, ou melhor, que se adapte ao dispositivo onde está a ser consultado, podendo ser um desktop, um laptop, um tablet ou até um smartphone.
+
+Cada vez mais pessoas estão a utilizar dispositivos móveis para aceder à Internet, sendo que 2013 foi considerado por muitos o ano do "Web Design Responsivo", criando uma nova exigência na indústria do desenvolvimento web.
+
+
+Os sites que usam web design responsivo, utilizam as chamadas grelhas fluidas, onde todos os elementos do site são dimensionados proporcionalmente em percentagem em detrimento do pixel, que é uma unidade de medida fixa.
+
+Na Global Pixel, desenvolvemos websites com design responsivo, que se adaptam aos diferentes dispositivos, promovendo uma usabilidade adequada à dimensão e formato dos mesmos. Contacte-nos ou de preferir peça uma proposta para o seu projecto móvel.
+
+Coloque-nos à prova!
+
+Alojamento de sites
+
+Alojamento de sites em servidores web
+O processo de criação de sites levanta sempre duas questões importantes: o registo de domínio e o alojamento do site (hosting) num servidor web adequado.
+O alojamento do site consiste em colocar fisicamente o mesmo num dos nossos servidores (computadores ligados via internet 24h por dia, 7 dias por semana), por um determinado período de tempo. Isto vai permitir publicar e disponibilizar o seu site em qualquer parte do mundo e vai permitir também enviar e receber emails.
+
+Alojamento de sites
+Antes de escolher o seu parceiro de alojamento, faça estas perguntas a sí próprio:
+Que tipo de alojamento necessito para o meu projecto?
+- Um alojamento partilhado?
+- Um alojamento virtual?
+- Um alojamento dedicado?
+Qual o espaço em disco e tráfego mensal que vou necessitar?
+Quantas caixas de correio vou criar para a minha empresa?
+Existe uma protecção anti-spam e anti-vírus que me garante uma eficaz filtragem dos emails recebidos?
+Que tipo de linguagens e bases de dados vou utilizar?
+Vou ter acesso a um painel de administração onde posso, por exemplo, gerir caixas de correio?
+A solução de alojamento utiliza hardware redundante?
+Existe política de backups diária?
+Existe monitorização e suporte 24x7x365 dias?
+Qual a performance que me é oferecida?
+Na Global Pixel, o alojamento de sites é feito em ambiente controlado, em servidores que apresentem garantias de infra-estrutura de telecomunicações para acesso ao servidor, suportado por linhas dedicadas de banda larga, baseadas em conexões de fibra óptica e com ligações redundantes a 99,9% do tempo.
+
+
+
+Registo de domínios
+O domínio será o nome ou o endereço do seu website e, só por si, não lhe permite colocar um site online e/ou criar caixas de correio. Para colocar o seu site online e/ou criar caixas de correio será sempre necessário que subscreva um dos nossos planos de alojamento de sites.
+
+Registo de domínios
+Algumas dicas na hora de registar um domínio
+Registe um domínio com nome curto e fácil de memorizar
+Registe um domínio com um nome que não levante dúvidas, quer na pronúncia quer na escrita
+Registe um domínio com nome único
+Registe um domínio com nome que, se possível, lembre o que faz
+Sem complicações e sem perder tempo, indique-nos o domínio que pretende registar. Não só tratamos do seu caso de forma pessoal, como registamos e acompanhamos todo o processo de escolha do domínio. Fale connosco!
+
+1 Ano	2 Anos	3 Anos	5 Anos	Transferência (1 Ano)
+.pt	13,00€	--	37,50€	60,00€	Grátis *
+.com.pt	13,00€	--	37,50€	60,00€	Grátis *
+.org.pt	14,50€	--	42,00€	67,50€	Grátis *
+.com, .net	13,00€	25,50€	37,50€	60,00€	13,00€
+.org	13,00€	25,50€	37,50€	60,00€	13,00€
+.info	13,00€	25,50€	37,50€	60,00€	13,00€
+.eu	13,00€	25,50€	37,50€	60,00€	13,00€
+.me	23,00€	46,00€	69,00€	115,00€	23,00€
+.tv	33,00€	66,00€	--	165,00€	33,00€
+.co.uk	14,50€	--	42,00€	67,50€	14,50€
+.co	28,00€	56,00€	84,00€	140,00€	28,00€
+.es	13,00€	25,50€	37,50€	60,00€	13,00€
+.xxx	79,00€	156,00€	234,00€	385,00€	--
+* As transferências dos domínios .pt, .com.pt e .org.pt não envolvem quaisquer custos e não alteram a validade dos mesmos aquando da transferência.
+
+Notas:
+A todos os valores apresentados acresce IVA à taxa legal em vigor;
+O valor pago pela transferência de um domínio .com, .net, .org, .info e .eu irá traduzir-se em mais anos de registo a adicionar à actual data de expiração;
+Período máximo para registo de domínios
+Domínio	Período
+.pt, .com.pt., .org.pt	5 anos
+.com, .net, .org, .info, .co.uk	10 anos
+.eu	10 anos
+.me	10 anos
+.tv	10 anos
+.co	5 anos
+.es	5 anos
+.xxx	10 anos

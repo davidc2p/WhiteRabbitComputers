@@ -215,4 +215,5 @@ export default class ClassResource {
         }
         return netPrice
     }
+
 }

@@ -63,7 +63,7 @@ class User
 	Dealing with Users 
 	-----------------------------------*/
 
-  /*
+    /*
 	* login
 	*
 	* Log the user with supplied credencials
@@ -76,15 +76,13 @@ class User
 	{
 		// get a valid login for this user
 		try {
-			//Already SHA1ed...
-			$hashPassword = SHA1($this->password);
-
+			
 			//connect as appropriate as above
 			$query=$this->con->prepare("SELECT email, name, phonenumber, taxnumber, uid, admin, status, deliveryname, deliverystreet, deliveryzipcode, deliverycity, invoicename, invoicestreet, invoicezipcode, invoicecity, creationdate
 										FROM user  
 										WHERE email=:param and pass=:param2");
 			$query->bindParam(':param', $this->email);
-			$query->bindParam(':param2', $hashPassword );
+			$query->bindParam(':param2', $this->password );
 			$query->execute();
 
 			$result = $query -> fetch(PDO::FETCH_ASSOC);
@@ -142,19 +140,19 @@ class User
 	*
 	* @email (string) Email of the user 
 	* @phonenumber (string) Phone Number
-  * @taxnumber (string) NIF
-  * @uid (string) 20 caracteres alfa
-  * @pass (string) Non hashed password
-  * @admin (int) 0: Site user; 1: admin
-  * @status (int) 0: inactive; 1: active
-  * @deliveryname (string) Delivery customer name
-  * @deliverystreet (string) Delivery street
-  * @deliveryzipcode (string) Delivery zip code
-  * @deliverycity (string) Delivery city
-  * @invoicename (string) Invoice customer name
-  * @invoicestreet (string) Invoice street
-  * @invoicezipcode (string) Invoice zip code
-  * @invoicecity (string) Invoice city
+    * @taxnumber (string) NIF
+    * @uid (string) 20 caracteres alfa
+    * @pass (string) Non hashed password
+    * @admin (int) 0: Site user; 1: admin
+    * @status (int) 0: inactive; 1: active
+    * @deliveryname (string) Delivery customer name
+    * @deliverystreet (string) Delivery street
+    * @deliveryzipcode (string) Delivery zip code
+    * @deliverycity (string) Delivery city
+    * @invoicename (string) Invoice customer name
+    * @invoicestreet (string) Invoice street
+    * @invoicezipcode (string) Invoice zip code
+    * @invoicecity (string) Invoice city
 	* @return (array()) error
 	*/
 	public function register()
@@ -185,26 +183,27 @@ class User
 
 				// inserting new user
 				$query = $this->con->prepare("
-              INSERT INTO user(email, name, phonenumber, taxnumber, uid, pass, admin, status, deliveryname, deliverystreet, deliveryzipcode, deliverycity, invoicename, invoicestreet, invoicezipcode, invoicecity, creationdate) 
-              VALUES (:email, :name, :phonenumber, :taxnumber, :uid, :pass, :admin, :status, :deliveryname, :deliverystreet, :deliveryzipcode, :deliverycity, :invoicename, :invoicestreet, :invoicezipcode, :invoicecity, CURRENT_TIMESTAMP)
-        ");
+                INSERT INTO user(email, name, phonenumber, taxnumber, uid, pass, admin, status, deliveryname, deliverystreet, deliveryzipcode, deliverycity, invoicename, invoicestreet, invoicezipcode, invoicecity, creationdate) 
+                VALUES (:email, :name, :phonenumber, :taxnumber, :uid, :pass, :admin, :status, :deliveryname, :deliverystreet, :deliveryzipcode, :deliverycity, :invoicename, :invoicestreet, :invoicezipcode, :invoicecity, CURRENT_TIMESTAMP)
+                ");
+
 				$result = $query->execute(array(
 					"email" 		        => $this->email,
-					"name" 		  	      => $this->name,
-					"phonenumber" 	    => $this->phonenumber,
-					"taxnumber" 	      => $this->taxnumber,
-					"uid" 	            => $this->token,
-					"pass" 		          => '',
+					"name" 		  	        => $this->name,
+					"phonenumber" 	        => $this->phonenumber,
+					"taxnumber" 	        => $this->taxnumber,
+					"uid" 	                => $this->token,
+					"pass" 		            => '',
 					"admin" 		        => $this->admin,
 					"status" 		        => $this->status,
-					"deliveryname" 		  => $this->deliveryname,
+					"deliveryname" 		    => $this->deliveryname,
 					"deliverystreet" 		=> $this->deliverystreet,
-					"deliveryzipcode" 	=> $this->deliveryzipcode,
-					"deliverycity" 		  => $this->deliverycity,
-					"invoicename" 		  => $this->invoicename,
+					"deliveryzipcode" 	    => $this->deliveryzipcode,
+					"deliverycity" 		    => $this->deliverycity,
+					"invoicename" 		    => $this->invoicename,
 					"invoicestreet" 		=> $this->invoicestreet,
 					"invoicezipcode" 		=> $this->invoicezipcode,
-					"invoicecity" 		  => $this->invoicecity
+					"invoicecity" 		    => $this->invoicecity
 				));
 
 				if (!$result) {
@@ -213,19 +212,19 @@ class User
 					$this->con->rollBack();
 				} else {
         
-          //authorization
-          $this->client_id 		= $this->email;
-          $this->client_secret 	= 'thisismysecret';
-          $this->redirect_uri		= 'http://127.0.0.1:8080/my-oauth2-walkthrough/error.php';
-          $this->grant_types		= 'refresh_token password client_credentials';
-          $this->scope			= null;
-          $this->user_id		= null;
-          $ret = $this->registeroauth();
+                    //authorization
+                    $this->client_id 		= $this->email;
+                    $this->client_secret 	= 'thisismysecret';
+                    $this->redirect_uri		= 'http://127.0.0.1:8080/my-oauth2-walkthrough/error.php';
+                    $this->grant_types		= 'refresh_token password client_credentials';
+                    $this->scope			= null;
+                    $this->user_id		= null;
+                    $ret = $this->registeroauth();
 
-          $this->error['success'] = 0;
-          $this->error['message'] = 'Criação com sucesso do utilizador';
+                    $this->error['success'] = 0;
+                    $this->error['message'] = 'Criação com sucesso do utilizador';
 
-          $this->con->commit();
+                    $this->con->commit();
 				}
 			}
 		}
@@ -242,12 +241,12 @@ class User
 			 // inserting authorization
 			 $query = $this->con->prepare("INSERT INTO oauth_clients(client_id, client_secret, redirect_uri, grant_types, scope, user_id) VALUES(:client_id, :client_secret, :redirect_uri, :grant_types, :scope, :user_id)");
 			 $result = $query->execute(array(
-				 "client_id" 		  => $this->client_id,
-				 "client_secret" 	=> $this->client_secret,
-				 "redirect_uri" 	=> $this->redirect_uri,
-				 "grant_types" 		=> $this->grant_types,
+				 "client_id" 		    => $this->client_id,
+				 "client_secret" 	    => $this->client_secret,
+				 "redirect_uri" 	    => $this->redirect_uri,
+				 "grant_types" 		    => $this->grant_types,
 				 "scope" 			    => $this->scope,
-				 "user_id" 			  => $this->user_id
+				 "user_id" 			    => $this->user_id
 			 ));
 
 			 if (!$result) {
@@ -266,7 +265,7 @@ class User
  	}
 
 
-  /*
+    /*
 	* forgotpassword
 	*
 	* Update the old password with a new password
@@ -276,7 +275,7 @@ class User
 	* @return (array()) error
 	*/
 	public function forgotpassword()
-  {
+    {
 		try {
 			// Check if exists
 			$query=$this->con->prepare("SELECT * FROM user WHERE email=:email");
@@ -316,9 +315,9 @@ class User
 			$this->error['success'] = 1;
 			$this->error['message'] = $ex->getMessage();
 		}
-  }
+    }
 
-  /*
+    /*
 	* confirmregistration
 	*
 	* Update status from 0 to 1 from token value and register the hashed password
@@ -360,7 +359,7 @@ class User
 					// updating the user
 					$query = $this->con->prepare("UPDATE user SET status = 1, pass = :pass WHERE uid = :token");
 					$result = $query->execute(array(
-						"pass" 			=> SHA1($this->password),
+						"pass" 			=> $this->password,
 						"token" 		=> $this->token
 					));
 
@@ -387,6 +386,65 @@ class User
 	}
 
   /*
+	* setNewSecret
+	*
+	* update the secret key with a new hashed value
+	*
+	* @email (string) Email of the user account
+	* @return (array()) error
+	*/
+	public function setNewSecret()
+	{
+		$ret = array();
+
+		try{
+			// Check if exists
+			$query=$this->con->prepare("SELECT * FROM user WHERE email=:email");
+			$query->bindParam(':email', $this->email);
+			$query->execute();
+			
+			$result = $query -> fetch(PDO::FETCH_ASSOC);
+			
+			// check for empty result
+			if (empty($result)) {
+				// user not found - nothing to confirm
+				$this->error['success'] = 1;
+				$this->error['message'] = 'Não existe utilizador registado com este email.';
+				$ret = $this->error;
+				
+			} else {
+				
+				// updating the user
+                $this->token = $this->generic->generatecodeupperAZ(20);
+                $query = $this->con->prepare("UPDATE user SET secret = :token WHERE email = :email");
+                $result = $query->execute(array(
+                    "token" 		=> $this->token,
+                    "email" 		=> $this->email
+                ));
+
+                if (!$result) {
+                    $this->error['success'] = 1;
+                    $this->error['message'] = 'Aconteceu um erro na tentativa de login do utilizador.';  
+                    $ret = $this->error;
+
+                } else {
+                    $this->error['success'] = 0;
+                    $this->error['message'] = 'Secret gerado com sucesso.';
+                    $this->error['secret'] = $this->token;
+                    $ret = $this->error;
+                }
+				}
+		}
+		catch(PDOException $ex) {
+			$this->error['success'] = 1;
+			$this->error['message'] = $ex->getMessage();
+			$ret = $this->error;
+		}
+
+		return $ret;
+	}
+
+    /*
 	* passwordregistration
 	*
 	* Update the hashed password from token value
@@ -492,7 +550,7 @@ class User
 		
 		try {
 			//fetching user most basic data
-			$query=$this->con->prepare("SELECT email, name, phonenumber, taxnumber, uid, admin, status, deliveryname, deliverystreet, deliveryzipcode, deliverycity, invoicename, invoicestreet, invoicezipcode, invoicecity, creationdate
+			$query=$this->con->prepare("SELECT email, name, phonenumber, taxnumber, uid, admin, status, deliveryname, deliverystreet, deliveryzipcode, deliverycity, invoicename, invoicestreet, invoicezipcode, invoicecity, creationdate, secret
 										FROM user 
 										WHERE email = :email");
 			$query->bindParam(':email', $email);

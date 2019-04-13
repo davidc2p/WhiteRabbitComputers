@@ -15,7 +15,7 @@
   </div>
 
   <div class="row panel">
-    <div class="panel-heading col-10 text-left">
+    <div class="panel-heading col-10 offset-1 text-left">
       <h3 class="panel-title">Confirmação da conta</h3>
     </div>
   </div>
@@ -51,7 +51,7 @@
     </div>
 
     <div class="form-group row justify-content-center">
-      <div class="col-12 text-right">
+      <div class="col-10 offset-1 text-right">
         <button type="button" name="confirm" class="btn btn-warning mt-auto" v-on:click="confirm">Confirm</button>
       </div>
     </div>
@@ -70,6 +70,7 @@
     import ClassResource from '../services/ClassResource.js'
 
     const classResourceService = new ClassResource()
+    var CryptoJS = require("../../node_modules/crypto-js")
 
 export default {
     name: 'Encomendar',
@@ -102,37 +103,86 @@ export default {
     },
     methods: {
         confirm: function() {
-          this.$validator.validateAll()
-          if (!this.errors.any()) {
-            //const pass = serviceProfile.SHA1(this.password)
-            const pass = this.password
-            Api.put('login/index.php', {
-                'access_token': this.$store.state.access_token,
-                'method': 'confirm',
-                'dev': 1,
-                'password': pass,
-                'uid': this.token
-            }).then(response => {
-                    this.dataResult = response.data
-                    this.updatedResult = true
-                    if (typeof(this.dataResult.success) !== 'undefined') {
-                        if (this.dataResult.success == '1') {
-                            this.message.info = ''
-                            this.message.error = this.dataResult.message
-                        } else {
-                            this.message.info = this.dataResult.message
-                            this.message.error = ''
+            this.$validator.validateAll()
+            if (!this.errors.any()) {
+            
+
+            Api.get('login/index.php?method=prelogin&email=' + this.email)
+                .then(response => {
+
+                if (typeof(response.data.success) !== 'undefined') {
+                    if (response.data.success == '1') {
+                        this.message.type = 0
+                        this.message.email = ''
+                        this.message.info = ''
+                        this.message.error = 'Ocorreu um erro na autenticação deste utilizador.'
+
+                        const pageElement = document.getElementById("message")
+                        classResourceService.scrollToElement(pageElement)
+
+                        this.count ++
+                    } else {
+
+                         // Encrypt 3 second method with iv server generated
+                        let salt3 = CryptoJS.enc.Hex.parse(response.data.salt)
+                        let iv3 =  CryptoJS.enc.Hex.parse(response.data.iv)
+
+                        let key3 = CryptoJS.PBKDF2(response.data.secret, salt3, { 'hasher': CryptoJS.algo.SHA512, 'keySize': 64 / 8, 'iterations': 999 })
+
+                        let encrypted3 = CryptoJS.AES.encrypt(this.password, key3, { 'iv': iv3 })
+                        let decrypt2 = CryptoJS.AES.decrypt(encrypted3, key3, { 'iv': iv3 })
+
+                        const data2 = {
+                            ciphertext: CryptoJS.enc.Base64.stringify(encrypted3.ciphertext),
+                            salt: CryptoJS.enc.Hex.stringify(salt3),
+                            iv: CryptoJS.enc.Hex.stringify(iv3)
                         }
+
+                        Api.put('login/index.php', {
+                            'email': this.email,
+                            'method': 'confirm',
+                            'dev': 1,
+                            'password': JSON.stringify(data2),
+                            'uid': this.token
+                        }).then(response => {
+                                this.dataResult = response.data
+                                this.updatedResult = true
+                                if (typeof(this.dataResult.success) !== 'undefined') {
+                                    if (this.dataResult.success == '1') {
+                                        this.message.info = ''
+                                        this.message.error = this.dataResult.message
+                                    } else {
+                                        this.message.info = this.dataResult.message
+                                        this.message.error = ''
+                                    }
+                                    const pageElement = document.getElementById("message")
+                                    classResourceService.scrollToElement(pageElement)
+
+                                    this.count ++
+                                }
+                              }).catch(error => {
+                                  if (error.response) {
+                                      alert(error.response)
+                                  }
+                              })
+                        }
+                    } else {
+                        this.message.type = 0
+                        this.message.email = ''
+                        this.message.info = ''
+                        this.message.error = 'Ocorreu um erro na autenticação deste utilizador.'
+
                         const pageElement = document.getElementById("message")
                         classResourceService.scrollToElement(pageElement)
 
                         this.count ++
                     }
-                  }).catch(error => {
-                      if (error.response) {
-                          alert(error.response)
-                      }
-                  })
+                }).catch(error => {
+                        if (error.response) {
+                            alert(error.response)
+                        }
+                    })
+
             }
         },
         getUserFromToken: function(token) {

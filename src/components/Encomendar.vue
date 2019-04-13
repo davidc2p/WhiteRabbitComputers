@@ -7,7 +7,7 @@
       <div class="col">&nbsp;</div>
   </div>
 
-  <Message id="message" v-bind:msg="message":key="count" />
+  <Message id="message" v-bind:msg="message" :key="count" />
 
   <!-- linha sem nada -->
   <div class="row">
@@ -196,9 +196,6 @@
     //Components
     import Message from './Message.vue'
     import Wave from './Wave.vue'
-
-    //services
-    import serviceProfile from '../services/ServiceProfileResource.js'
 
     //Classes
     import ClassResource from '../services/ClassResource.js'

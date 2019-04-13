@@ -44,6 +44,13 @@ export default new Vuex.Store({
         },
         [VALIDATE](state) {
             serviceProfile.getContext(state.access_token, state.email)
+
+            state.email =  localStorage.getItem('email');
+            state.authenticate = !!localStorage.getItem('access_token');
+            state.admin =  localStorage.getItem('admin');
+            state.access_token =  localStorage.getItem('access_token');
+            state.name = localStorage.getItem('name');
+            state.uid = localStorage.getItem('uid');
         },
         [LOGOUT](state) {
             state.authenticate = false;

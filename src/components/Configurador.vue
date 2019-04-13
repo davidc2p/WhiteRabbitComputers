@@ -36,8 +36,14 @@
       <div class="col offset-1"><h3>ou</h3></div>
   </div>
 
-    <div class="row">
+  <div class="row">
       <div class="col offset-1"><h3>Escolher por peças:</h3></div>
+  </div>
+  
+  <div class="row">
+    <div class="col-10 offset-1 alert alert-warning" role="alert">
+      A seleção de uma configuração por peças deverá previamente ser validada pela nossa equipa técnica.
+    </div>
   </div>
 
   <div class="row">
@@ -515,7 +521,8 @@ export default {
                                     }
                                 }
                             }
-                        break;                    }
+                        break;                    
+                    }
                 }
 
             } 
@@ -624,6 +631,10 @@ export default {
 */
     },
     mounted: function() {
+
+        document.title = 'Venda de computadores desktop - Escolhe a sua configuração'
+        document.description = 'Montamos o seu computador a sua medida. Escolhe a sua configuração ou crie uma nova conforme as suas necessidades.'
+
 
         this.$store.dispatch("validate")
 

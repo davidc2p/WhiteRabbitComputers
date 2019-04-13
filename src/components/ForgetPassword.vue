@@ -15,8 +15,8 @@
   </div>
 
   <div class="row panel">
-    <div class="panel-heading col-10 text-left">
-      <h3 class="panel-title">Login</h3>
+    <div class="panel-heading col-10 offset-1 text-left">
+      <h3 class="panel-title">Retrieve password</h3>
     </div>
   </div>
 
@@ -29,7 +29,7 @@
   </div>
 
   <div class="form-group row justify-content-center">
-    <div class="col-12 text-right">
+    <div class="col-10 offset-1 text-right">
       <button type="button" name="retrieve" class="btn btn-warning mt-auto" v-on:click="retrieve">Recuperar</button>
     </div>
   </div>

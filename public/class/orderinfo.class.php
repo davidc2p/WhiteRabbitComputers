@@ -269,8 +269,8 @@ class OrderInfo
 					"computercost"	      => $this->computercost,
 					"computerprice"       => $this->computerprice,
 					"computerqtd"         => $this->computerqtd,
-          "computervatprice"    => $this->computervatprice,
-          "computertotalprice"  => $this->computertotalprice,
+          			"computervatprice"    => $this->computervatprice,
+          			"computertotalprice"  => $this->computertotalprice,
 					"deliveryname"        => $this->deliveryname,
 					"deliverystreet"	    => $this->deliverystreet,
 					"deliveryzipcode"	    => $this->deliveryzipcode,
@@ -283,48 +283,48 @@ class OrderInfo
 
 				if (!$result) {
 
-          $this->con->rollBack();
+          			$this->con->rollBack();
 
 					$this->error['success'] = 1;
 					$this->error['message'] = 'Erro na criação da encomenda'; 
 				} else {
 
-          $this->orderinfoid = $this->con->lastInsertId();
+					$this->orderinfoid = $this->con->lastInsertId();
 
-          if ($this->computerid > 0) {
-            //Insert orderinfodetail
-            $query = $this->con->prepare("INSERT INTO orderinfodetails (orderinfoid, computerid, componentid, type, description, cost, qtd, link, image) 
-                            SELECT :orderinfoid, cc.computerid, cc.componentid, c.type, c.description, c.cost, cc.qtd, c.link, c.image
-                            FROM component c
-                            INNER JOIN computercomponents cc
-                            ON cc.componentid = c.id
-                            WHERE cc.computerid = :computerid");
-            $result = $query->execute(array(
-              "orderinfoid" 		=> $this->orderinfoid,
-              "computerid"  	  => $this->computerid
-            ));
+					if ($this->computerid > 0) {
+						//Insert orderinfodetail
+						$query = $this->con->prepare("INSERT INTO orderinfodetails (orderinfoid, computerid, componentid, type, description, cost, qtd, link, image) 
+										SELECT :orderinfoid, cc.computerid, cc.componentid, c.type, c.description, c.cost, cc.qtd, c.link, c.image
+										FROM component c
+										INNER JOIN computercomponents cc
+										ON cc.componentid = c.id
+										WHERE cc.computerid = :computerid");
+						$result = $query->execute(array(
+						"orderinfoid" 		=> $this->orderinfoid,
+						"computerid"  	  => $this->computerid
+						));
 
-            if (!$result) {
+						if (!$result) {
 
-              $this->con->rollBack();
+						$this->con->rollBack();
 
-              $this->error['success'] = 1;
-              $this->error['message'] = 'Erro na criação da encomenda'; 
-            } else {
+						$this->error['success'] = 1;
+						$this->error['message'] = 'Erro na criação da encomenda'; 
+						} else {
 
-              $this->con->commit();
+						$this->con->commit();
 
-              $this->error['success'] = 0;
-              $this->error['message'] = 'A sua encomenda foi criada com sucesso'; 
-              $this->error['orderinfoid'] = $this->orderinfoid; 
-            }
-          } else {
-            $this->con->commit();
+						$this->error['success'] = 0;
+						$this->error['message'] = 'A sua encomenda foi criada com sucesso'; 
+						$this->error['orderinfoid'] = $this->orderinfoid; 
+						}
+					} else {
+						$this->con->commit();
 
-            $this->error['success'] = 0;
-            $this->error['message'] = 'A sua encomenda foi criada com sucesso'; 
-            $this->error['orderinfoid'] = $this->orderinfoid; 
-          }
+						$this->error['success'] = 0;
+						$this->error['message'] = 'A sua encomenda foi criada com sucesso'; 
+						$this->error['orderinfoid'] = $this->orderinfoid; 
+					}
 				}
 			}
       else {

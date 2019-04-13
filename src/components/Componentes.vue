@@ -1,17 +1,17 @@
 <template>
 <div>
 
-  <!-- linha sem nada -->
-  <div id="componentes" class="row">
-      <div class="col">&nbsp;</div>
-  </div>
+    <!-- linha sem nada -->
+    <div id="componentes" class="row">
+        <div class="col">&nbsp;</div>
+    </div>
 
-  <Message id="Message" v-bind:msg="message" :key="count" />
+    <Message id="Message" v-bind:msg="message" :key="count" />
 
-  <!-- linha sem nada -->
-  <div class="row">
-      <div class="col">&nbsp;</div>
-  </div>
+    <!-- linha sem nada -->
+    <div class="row">
+        <div class="col">&nbsp;</div>
+    </div>
 
     <div class="row">
         <div class="col-xs-12 col-sm-8 offset-sm-2">

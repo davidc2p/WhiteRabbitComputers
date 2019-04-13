@@ -11,6 +11,7 @@
         <a class="nav-link" href="#">Serviços Web</a>
         <slot v-if="isAuthenticate">
             <router-link class="nav-link" to="/User">{{ name }}</router-link>
+            <router-link v-if="isAdmin" class="nav-link" to="/Computers">Montagem</router-link>
             <router-link v-if="isAdmin" class="nav-link" to="/Componentes">Catalogo</router-link>
             <router-link v-if="isAdmin" class="nav-link" to="/OrderInfoStatus">Encomendas</router-link>
             <a href="#" class="nav-link" v-on:click="logout">Logout</a>

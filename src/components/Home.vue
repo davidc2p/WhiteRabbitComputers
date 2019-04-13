@@ -22,7 +22,9 @@
                         <li>Cpu: AMD</li>
                         <li>Gráfica:</li>
                     </ul>
-                    <input type="button" class="btn btn-warning mt-auto" value="Mais detalhes" v-on:click="showDetalhes(1)">
+                    <p class="price mt-auto">{{setPrice(this.computador1.price)}}</p>  
+                    <p class="price" v-if="computador1.netprice!=computador1.price"><span>{{setPrice(this.computador1.netprice)}}</span></p>
+                    <input type="button" class="btn btn-warning" value="Mais detalhes" v-on:click="showDetalhes(1)">
                 </div>
             </div>
         </div>
@@ -39,7 +41,9 @@
                         <li>Cpu: Intel core I5</li>
                         <li>Gráfica: Asus GTX 4GB DDR5</li>
                     </ul>
-                    <input type="button" class="btn btn-warning mt-auto" value="Mais detalhes" v-on:click="showDetalhes(2)">
+                    <p class="price mt-auto">{{setPrice(this.computador2.price)}}</p>  
+                    <p class="price" v-if="computador2.netprice!=computador2.price"><span>{{setPrice(this.computador2.netprice)}}</span></p>
+                    <input type="button" class="btn btn-warning" value="Mais detalhes" v-on:click="showDetalhes(2)">
                 </div>
             </div>
         </div>
@@ -56,7 +60,37 @@
                         <li>Cpu: Intel I7</li>
                         <li>Gráfica: Asus 6GB DDR5</li>
                     </ul>
-                    <input type="button" class="btn btn-warning mt-auto" value="Mais detalhes" v-on:click="showDetalhes(3)">
+                    <p class="price mt-auto">{{setPrice(this.computador3.price)}}</p>  
+                    <p class="price" v-if="computador3.netprice!=computador3.price"><span>{{setPrice(this.computador3.netprice)}}</span></p>
+                    <input type="button" class="btn btn-warning" value="Mais detalhes" v-on:click="showDetalhes(3)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- linha sem nada -->
+    <div class="row">
+        <div class="col">&nbsp;</div>
+    </div>
+
+    <div class="row">
+        <div class="col"><h4>Outras configurações</h4></div>
+    </div>
+    <div v-if="computador4">
+        <div class="row">
+            <div class="col-xs-12 col-md-10 offset-md-1">
+                <div class="row card-container">    
+                    <div class="card-hor col-xs-12 col-md-4">
+                        <img id="compimage4" class="compimage" :src="'/img/component/' + this.computador4.image" width="178" height="204" alt="Primeiro preço">
+                    </div>
+                    <div class="card-hor-body d-flex flex-row col-xs-12 col-md-8">
+                        <div class="p-3">
+                            <h5 class="card-title"><span>{{this.computador4.description}}</span></h5>
+                            <p class="card-text">{{this.computador4.longdesc}}</p>
+                            <p class="price mt-auto">{{setPrice(this.computador4.price)}}  <span v-if="computador4.netprice!=computador4.price">{{setPrice(this.computador4.netprice)}}</span></p>
+                            <input type="button" class="btn btn-warning mt-auto" value="Mais detalhes" v-on:click="showDetalhes(4)">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -116,13 +150,18 @@
         </div>
     </div>
 
+    <!-- linha sem nada -->
     <div class="row">
-        <div class="col">
-        
-
-
-        </div>
+        <div class="col">&nbsp;</div>
     </div>
+
+    <!-- linha sem nada -->
+    <div class="row">
+        <div class="col-xs-12">Todos os preços são com o IVA incluído.</div>
+        <div class="col-xs-12">As entregas são gratuitas em Portugal continental.</div>
+        <div class="col-xs-12">Montagem sem lacres e livre com garantia por peças.</div>
+    </div>
+
 
     <!-- linha sem nada -->
     <div class="row">
@@ -156,6 +195,7 @@ export default {
             computador1: [],
             computador2: [],
             computador3: [],
+            computador4: [],
             compdetails: [],
             detailtitle: '',
             cardtitle: '',
@@ -163,11 +203,14 @@ export default {
 
             titles: {
                 head: 'Os desktops mais baratos do mercado',
-                desc: 'Montamos o seu computador a sua medida'
+                desc: 'Escolhe uma configuração existente ou escolhe os seus componentes' 
             },
         }
     },
     methods: {
+        setPrice: function(number) {
+            return (Number(number).toFixed(2) + ' Euros' )
+        },
         setActive: function(number) {
             return (number == 1) ? 'active ' : ''
         },
@@ -210,13 +253,28 @@ export default {
                 })
         },
 
+        getAllComputers: function(id) {
+            Api.get('computer/index.php?method=getAllComputers')
+                .then(response => {
+                    for (let i=0; i<response.data.length; i++) {
+                        if (response.data[i].id == 4) {
+                        this.computador4 = response.data[i]
+                        }
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        alert(error.response)
+                    }
+                })
+        },
+
         getComputerDetails: function(id) {
             Api.get('getcomputerdetails.php?computerid=' + id)
                 .then(response => {
                     this.compdetails = response.data
                     this.detailtitle = 'Detalhe do ' + this.compdetails[0].computerdescription
                     this.cardtitle = 'Especificações tecnicas do ' + this.compdetails[0].computerdescription
-                    this.detailprice = 'Preço de venda ' + this.compdetails[0].price + ' €'
+                    this.detailprice = 'Preço de venda ' + this.setPrice(this.compdetails[0].price) 
 
                     //wait for the dom to refresh in order to proceed
                     this.$nextTick(function() {
@@ -239,8 +297,8 @@ export default {
     },
     mounted: function() {
 
-        document.title = 'Montamos os PC mais baratos do mercado'
-        document.description = ''
+        document.title = 'Venda de computadores desktop - os preços mais baratos do mercado'
+        document.description = 'Montamos o seu computador a sua medida. Procuramos os melhores componentes aos melhores preços. Escolhe uma configuração ou crie a sua!'
 
         // this.ctx = serviceProfile.getContext()
         // //update Context in main app
@@ -249,9 +307,11 @@ export default {
         this.getComputer(1)
         this.getComputer(2)
         this.getComputer(3)
+        this.getAllComputers()
 
-        this.$store.dispatch("validate");
-        //console.log(process.env.VUE_APP_BASE_URI)
+        this.$store.dispatch("validate")
+        console.log(process.env.VUE_APP_BASE_URI)
+        console.log(process.env.VUE_APP_SECRET_CODE)
     },
     watch: {
         keybody: function() {},

@@ -10,6 +10,7 @@ import User from '../components/User.vue'
 import Contact from '../components/Contact.vue'
 import Configurador from '../components/Configurador.vue'
 import Componentes from '../components/Componentes.vue'
+import Computers from '../components/Computers.vue'
 import OrderInfoStatus from '../components/OrderInfoStatus.vue'
 
 Vue.use(Router)
@@ -27,6 +28,7 @@ export default new Router({
         { path: '/Contact', component: Contact, name: 'Contact' },
         { path: '/Configurador', component: Configurador, name: 'Configurador' },
         { path: '/Componentes', component: Componentes, name: 'Componentes' },
+        { path: '/Computers', component: Computers, name: 'Computers' },
         { path: '/OrderInfoStatus', component: OrderInfoStatus, name: 'OrderInfoStatus' }
     ]
 })
