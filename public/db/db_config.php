@@ -25,8 +25,8 @@ if ($_SERVER['HTTP_HOST'] == 'localhost' || substr($_SERVER['HTTP_HOST'], 0, 9) 
 	define('DB_DATABASE', "2207508_wrc");								// database name
 	define('DB_SERVER', "pdb10.freehostingeu.com"); 					// db server
 	define('APPPATH', "/home/www/whiterabbitcomputer.com/");
-	define('WEBPATH', "http://www.whiterabbitcomputers.com/");
-	define('APIPATH', "http://www.whiterabbitcomputers.com/");
+	define('WEBPATH', "https://www.whiterabbitcomputers.com/");
+	define('APIPATH', "https://www.whiterabbitcomputers.com/");
 	define('TIMEZONE', "Europe/Lisbon");
 	}
 ?>

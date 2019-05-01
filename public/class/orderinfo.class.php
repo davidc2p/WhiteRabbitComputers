@@ -140,6 +140,102 @@ class OrderInfo
 		return $ret;		
 	}
 
+
+  public function getAllOrderInfoByEmail($email)
+	{
+		$ret = array();
+		
+		try {
+			//fetching all orderinfo by status
+      if ($email) {
+        $query=$this->con->prepare("SELECT *
+                                  FROM orderinfo 
+                                  where email = :email");  
+        $query->bindParam(':email', $email);
+      } else {
+        $query=$this->con->prepare("SELECT *
+                                  FROM orderinfo");
+      }
+      
+			$query->execute();
+		
+			$ms = $query->fetch(PDO::FETCH_ASSOC);
+			if ($ms) {
+				while ($ms) {
+					array_push($ret, $ms);
+					$ms = $query->fetch(PDO::FETCH_ASSOC);
+				}
+			}
+			else {
+				$this->error["success"] = 1;
+				$this->error["message"] = 'Esta nota de encomenda não existe!';
+				$ret = $this->error;
+			}
+		}
+		catch (PDOException $e) {
+			$this->error["success"] = 1;
+			$this->error["message"] = 'Ocorreu um erro na pesquisa das informação da nota de encomenda!';
+			$ret = $this->error;
+		}
+		
+		return $ret;		
+	}
+
+	
+	public function getOrderInfoByEmailWithPagination($email, $pagenumber, $itemsperpage)
+	{
+		$ret = array();
+		$offset = ($pagenumber - 1) * $itemsperpage;
+		$itemsperpage = intval($itemsperpage);
+		try {
+			//fetching all components
+      if ($email) {
+        $query=$this->con->prepare("SELECT oi.*, oicount.totalitems 
+                      FROM orderinfo oi
+                      INNER JOIN (SELECT email, count(*) as totalitems FROM orderinfo where status < 7 GROUP BY email) oicount
+                      ON oicount.email = oi.email
+                      WHERE oi.email = :email
+                      AND oi.status < 7
+                      ORDER BY oi.status, oi.creationdate desc
+                      limit :offset, :itemsperpage");
+        $query->bindParam(':email', $email);
+        $query->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $query->bindParam(':itemsperpage', $itemsperpage, PDO::PARAM_INT);
+      } else {
+        $query=$this->con->prepare("SELECT oi.*, oicount.totalitems 
+                      FROM orderinfo oi
+                      INNER JOIN (SELECT count(*) as totalitems FROM orderinfo) oicount
+                      ON 1=1
+                      WHERE oi.status < 7
+                      ORDER BY oi.status, oi.creationdate desc
+                      limit :offset, :itemsperpage");
+        $query->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $query->bindParam(':itemsperpage', $itemsperpage, PDO::PARAM_INT);
+      }
+			$query->execute();
+				
+			$ms = $query->fetch(PDO::FETCH_ASSOC);
+			if ($ms) {
+				while ($ms) {
+					array_push($ret, $ms);
+					$ms = $query->fetch(PDO::FETCH_ASSOC);
+				}
+			}
+			else {
+				$this->error["success"] = 0;
+				$this->error["message"] = 'Não devolveu nenhuma encomenda.';
+				$ret = $this->error;
+			}
+		}
+		catch (PDOException $e) {
+			$this->error["success"] = 1;
+			$this->error["message"] = 'Ocorreu um erro na consulta de encomendas.';
+			$ret = $this->error;
+		}
+		
+		return $ret;		
+	}
+
 	public function getOrderInfoWithPagination($pagenumber, $itemsperpage)
 	{
 		$ret = array();

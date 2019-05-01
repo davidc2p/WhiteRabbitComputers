@@ -10,7 +10,8 @@
                     <span aria-hidden="true">&times;</span>
                     <span class="sr-only">Close</span>
                     </button>
-                    <h3 class="modal-title">Encomendar componentes</h3>
+                    <h3 class="modal-title" v-if="origin=='OrderInfoStatus'">Encomendar componentes. Encomenda nº. {{ orderid  }} </h3>
+                    <h3 class="modal-title" v-if="origin!='OrderInfoStatus'">Nota de encomenda nº. {{ orderid }}</h3>
                 </div>
                 
                 <!-- Modal Body -->
@@ -19,22 +20,22 @@
                     <Message id="Message" v-bind:msg="message" :key="count" />
                     </div>
                     <div class="row">
-                        <div class="col-xs-12">
+                        <div class="col-12">
                             <table v-if="dataComponentes" class="table table-striped">
                                 <thead>
                                 <tr>
                                 <th>Nome</th>
                                 <th>Tipo</th>
-                                <th>Custo</th>
-                                <th>&nbsp;</th>
+                                <th v-if="origin=='OrderInfoStatus'">Custo</th>
+                                <th v-if="origin=='OrderInfoStatus'">&nbsp;</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="t in dataComponentes">
+                                <tr v-for="(t, index) in dataComponentes" :key="index">
                                     <td>{{ t.description }}</td>
                                     <td>{{ t.type }}</td>
-                                    <td>{{ Number(t.cost).toFixed(2) }}</td>
-                                    <td>
+                                    <td v-if="origin=='OrderInfoStatus'">{{ Number(t.cost).toFixed(2) }}</td>
+                                    <td v-if="origin=='OrderInfoStatus'">
                                         <div>
                                             <div class="imgSidebySide">
                                                 <a :href="t.link" target="_blank">
@@ -77,7 +78,7 @@
 
 export default {
     name: 'ModalSupplyOrderInfo',
-    props: ['componentes'],
+    props: ['componentes', 'origin', 'orderid'],
     components: {
         Message
     },
@@ -107,7 +108,23 @@ export default {
         }
     },
     mounted: function() {
-      this.dataComponentes = this.componentes
-    }
+        this.$store.dispatch("validate")
+
+        if (this.isAuthenticate && this.isAdmin ) {
+
+            this.dataComponentes = this.componentes
+    
+        } else {
+            this.$router.push({name: 'Login'})
+        }
+    },
+    computed: {
+        isAuthenticate() { 
+            return this.$store.getters.authenticate;
+        },
+        isAdmin() {
+            return this.$store.getters.admin;
+        }
+    } 
 }
 </script>

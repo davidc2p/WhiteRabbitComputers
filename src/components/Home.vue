@@ -1,6 +1,11 @@
 <template>
 <div id="Home">
-    <Wave id="Wave" :titles="titles" />
+
+    <div class="row">
+        <div class="col"><Wave id="Wave" :titles="titles" /></div>
+    </div>
+
+    
 
     <!-- linha sem nada -->
     <div class="row">
@@ -76,23 +81,25 @@
     <div class="row">
         <div class="col"><h4>Outras configurações</h4></div>
     </div>
-    <div v-if="computador4">
-        <div class="row">
-            <div class="col-xs-12 col-md-10 offset-md-1">
+    <div v-if="computadores">
+        <div v-for="(c, index) in computadores" :key="index" class="row" style="margin-top: 10px">
+            <div class="col-12 col-md-10 offset-md-1">
                 <div class="row card-container">    
-                    <div class="card-hor col-xs-12 col-md-4">
-                        <img id="compimage4" class="compimage" :src="'/img/component/' + this.computador4.image" width="178" height="204" alt="Primeiro preço">
+                    <div class="card-hor col-12 col-md-4">
+                        <img class="compimage" :src="'/img/component/' + c.image" width="178" height="204" alt="Primeiro preço">
                     </div>
-                    <div class="card-hor-body d-flex flex-row col-xs-12 col-md-8">
+                    <div class="card-hor-body d-flex flex-row col-12 col-md-8">
                         <div class="p-3">
-                            <h5 class="card-title"><span>{{this.computador4.description}}</span></h5>
-                            <p class="card-text">{{this.computador4.longdesc}}</p>
-                            <p class="price mt-auto">{{setPrice(this.computador4.price)}}  <span v-if="computador4.netprice!=computador4.price">{{setPrice(this.computador4.netprice)}}</span></p>
-                            <input type="button" class="btn btn-warning mt-auto" value="Mais detalhes" v-on:click="showDetalhes(4)">
+                            <h5 class="card-title"><span>{{c.description}}</span></h5>
+                            <p class="card-text">{{c.longdesc}}</p>
+                            <p class="price mt-auto">{{setPrice(c.price)}}  <span v-if="c.netprice!=c.price">{{setPrice(c.netprice)}}</span></p>
+                            <input type="button" class="btn btn-warning mt-auto" value="Mais detalhes" v-on:click="showDetalhes(c.id)">
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="col-12">&nbsp;</div>
         </div>
     </div>
 
@@ -103,14 +110,14 @@
 
     <!-- Informação detalhada -->
     <div id="divDetalhes" class="row" v-if="compdetails" style="display: none;">
-        <div class="col">
+        <div class="col col-sm-10 offset-sm-1 col-md-8 offset-md-2">
             <div class="card text-center" style="background-color: gray;">
                 <div class="card-header">{{ detailtitle }}</div>
                 <div class="card-body">
                     <h5 class="card-title"> {{ cardtitle }} </h5>
                     <p class="card-text">
                         <ul>
-                            <li v-for="c in compdetails">{{ c.description }}</li>
+                            <li v-for="(c, index) in compdetails" :key="index">{{ c.description }}</li>
                         </ul>
                     </p>
 
@@ -130,7 +137,8 @@
 
                         <!-- Slides with custom text -->
                         <b-carousel-slide 
-                            v-for="c in compdetails" 
+                            v-for="(c, index) in compdetails"
+                            :key="index" 
                             :caption="c.type"
                             :text="c.description ">
                             <img
@@ -157,16 +165,25 @@
 
     <!-- linha sem nada -->
     <div class="row">
-        <div class="col-xs-12">Todos os preços são com o IVA incluído.</div>
-        <div class="col-xs-12">As entregas são gratuitas em Portugal continental.</div>
-        <div class="col-xs-12">Montagem sem lacres e livre com garantia por peças.</div>
+        <div class="col-12">
+            Todos os preços são com o IVA incluído.
+        </div>
+    </div>        
+    <div class="row">
+        <div class="col-12">As entregas são gratuitas em Portugal continental.</div>
+    </div>        
+    <div class="row">
+        <div class="col-12">Montagem sem lacres e livre com garantia por peças.</div>
     </div>
-
+    <div class="row">
+        <div class="col-12">As configurações apresentadas neste website não incluem ecrã e não incluem sistema operativo.</div>
+    </div>
 
     <!-- linha sem nada -->
     <div class="row">
         <div class="col">&nbsp;</div>
     </div>
+
 </div>
 </template>
 
@@ -174,7 +191,7 @@
 <script>
 import {Api} from '../services/Api.js'
 
-import Wave from '../components/Wave.vue'
+import Wave from './Wave.vue'
 
 import ClassResource from '../services/ClassResource.js'
 
@@ -195,7 +212,7 @@ export default {
             computador1: [],
             computador2: [],
             computador3: [],
-            computador4: [],
+            computadores: [],
             compdetails: [],
             detailtitle: '',
             cardtitle: '',
@@ -206,6 +223,18 @@ export default {
                 desc: 'Escolhe uma configuração existente ou escolhe os seus componentes' 
             },
         }
+    },
+    head: {
+        title: {
+            inner: 'Venda de computadores desktop - os preços mais baratos do mercado',
+            separator: ' ',
+            complement: ''
+        },
+        // Meta tags
+        meta: [
+            { name: 'application-name', content: 'WhiteRabbit Computers' },
+            { name: 'description', content: 'Montamos o seu computador desktop a sua medida. Procuramos os melhores componentes aos melhores preços. Computadores de mesa económicos de alto desenpenho ou para jogar, venha escolher uma configuração existente ou crie a sua!', id: 'desc' }
+        ]
     },
     methods: {
         setPrice: function(number) {
@@ -257,8 +286,8 @@ export default {
             Api.get('computer/index.php?method=getAllComputers')
                 .then(response => {
                     for (let i=0; i<response.data.length; i++) {
-                        if (response.data[i].id == 4) {
-                        this.computador4 = response.data[i]
+                        if (response.data[i].id >= 4) {
+                        this.computadores.push(response.data[i])
                         }
                     }
                 }).catch(error => {
@@ -296,9 +325,6 @@ export default {
         }
     },
     mounted: function() {
-
-        document.title = 'Venda de computadores desktop - os preços mais baratos do mercado'
-        document.description = 'Montamos o seu computador a sua medida. Procuramos os melhores componentes aos melhores preços. Escolhe uma configuração ou crie a sua!'
 
         // this.ctx = serviceProfile.getContext()
         // //update Context in main app

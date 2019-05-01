@@ -21,12 +21,12 @@ switch($request_method)
   case 'GET':
     // Get OrderInfo data
     $defs = array(
-        'method' 	    	    => array('filter'=>FILTER_SANITIZE_STRING),
+        'method' 	    	      => array('filter'=>FILTER_SANITIZE_STRING),
         'access_token' 	    	=> array('filter'=>FILTER_SANITIZE_STRING),
-	    'lang' 	    	        => array('filter'=>FILTER_SANITIZE_STRING),
-	    'dev' 	    	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
+	      'lang' 	    	        => array('filter'=>FILTER_SANITIZE_STRING),
+	      'dev' 	    	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
         'orderinfoid'	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
-        'pagenumber'	    	=> array('filter'=>FILTER_SANITIZE_NUMBER_INT),
+        'pagenumber'	    	  => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
         'itemsperpage'	    	=> array('filter'=>FILTER_SANITIZE_NUMBER_INT),
         'status'    	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT)
     );
@@ -37,30 +37,30 @@ switch($request_method)
   case 'POST':
     // Post OrderInfo data
     $defs = array(
-        'method' 	    	    => array('filter'=>FILTER_SANITIZE_STRING), 
+        'method' 	    	      => array('filter'=>FILTER_SANITIZE_STRING), 
         'access_token' 	    	=> array('filter'=>FILTER_SANITIZE_STRING),
-	    'lang' 	    	        => array('filter'=>FILTER_SANITIZE_STRING),
-	    'dev' 	    	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
+	      'lang' 	    	        => array('filter'=>FILTER_SANITIZE_STRING),
+	      'dev' 	    	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
         'orderinfoid'	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
         'computerid'  	    	=> array('filter'=>FILTER_SANITIZE_NUMBER_INT),
         'computerdesc'  	    => array('filter'=>FILTER_SANITIZE_STRING),
         'computercost'  	    => array('filter'=>FILTER_SANITIZE_NUMBER_FLOAT, 'flags' => FILTER_FLAG_ALLOW_FRACTION),
         'computerprice'  	    => array('filter'=>FILTER_SANITIZE_NUMBER_FLOAT, 'flags' => FILTER_FLAG_ALLOW_FRACTION),
-        'computerqtd'  	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
+        'computerqtd'  	      => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
         'computervatprice'  	=> array('filter'=>FILTER_SANITIZE_NUMBER_FLOAT, 'flags' => FILTER_FLAG_ALLOW_FRACTION),
-        'computertotalprice'    => array('filter'=>FILTER_SANITIZE_NUMBER_FLOAT, 'flags' => FILTER_FLAG_ALLOW_FRACTION),
-        'email'  	    	    => array('filter'=>FILTER_VALIDATE_EMAIL),
-        'taxnumber'  	    	=> array('filter'=>FILTER_SANITIZE_STRING),
+        'computertotalprice'  => array('filter'=>FILTER_SANITIZE_NUMBER_FLOAT, 'flags' => FILTER_FLAG_ALLOW_FRACTION),
+        'email'  	    	      => array('filter'=>FILTER_VALIDATE_EMAIL),
+        'taxnumber'  	      	=> array('filter'=>FILTER_SANITIZE_STRING),
         'phonenumber'  	    	=> array('filter'=>FILTER_SANITIZE_STRING),
         'deliveryname'  	    => array('filter'=>FILTER_SANITIZE_STRING),
-        'deliverystreet'  	    => array('filter'=>FILTER_SANITIZE_STRING),
-        'deliveryzipcode'  	    => array('filter'=>FILTER_SANITIZE_STRING),
+        'deliverystreet'  	  => array('filter'=>FILTER_SANITIZE_STRING),
+        'deliveryzipcode'  	  => array('filter'=>FILTER_SANITIZE_STRING),
         'deliverycity'  	    => array('filter'=>FILTER_SANITIZE_STRING),
-        'invoicename'  	        => array('filter'=>FILTER_SANITIZE_STRING),
+        'invoicename'  	      => array('filter'=>FILTER_SANITIZE_STRING),
         'invoicestreet'  	    => array('filter'=>FILTER_SANITIZE_STRING),
-        'invoicezipcode'  	    => array('filter'=>FILTER_SANITIZE_STRING),
-        'invoicecity'  	        => array('filter'=>FILTER_SANITIZE_STRING),
-        'status'  	            => array('filter'=>FILTER_SANITIZE_NUMBER_INT)
+        'invoicezipcode'  	  => array('filter'=>FILTER_SANITIZE_STRING),
+        'invoicecity'  	      => array('filter'=>FILTER_SANITIZE_STRING),
+        'status'  	          => array('filter'=>FILTER_SANITIZE_NUMBER_INT)
     );
 
     if(empty($_POST)) {
@@ -196,6 +196,35 @@ switch($request_method)
 
                 header('Content-Type: application/json');
                 print json_encode($ret);  
+
+            } else {
+                // Invalid Credencials
+                $orderinfo->error['success'] = 1;
+                $orderinfo->error['message'] = 'Invalid Credencials';
+
+                header('Content-Type: application/json');
+                print json_encode($orderinfo->error);
+            }   
+          
+
+        break;
+
+        case 'getAllOrderInfoByEmail':
+          
+            if (isset($profile[0]['email']) && $profile[0]['email']!="") {
+              if (isset($input['pagenumber']) && isset($input['itemsperpage'])) {
+                  //Read all with pagination
+                  $ret = $orderinfo->getOrderInfoByEmailWithPagination($profile[0]['email'], $input['pagenumber'], $input['itemsperpage']);
+                  header('Content-Type: application/json');
+                  print json_encode($ret);
+              } else {
+                  //Read all without pagination
+                  $ret = $orderinfo->getAllOrderInfoByEmail($profile[0]['email']);  
+
+                  header('Content-Type: application/json');
+                  print json_encode($ret);  
+              }
+
 
             } else {
                 // Invalid Credencials

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.png">
-    <title>whiterabbitcomputers</title>
+    <title></title>
 </head>
 
 <body>
@@ -16,9 +16,8 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
 
-
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-136674265-1"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-136674265-2"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -27,7 +26,31 @@
         }
         gtag('js', new Date());
 
-        gtag('config', 'UA-136674265-1');
+        gtag('config', 'UA-136674265-2');
+    </script>
+
+
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function() {
+            window.cookieconsent.initialise({
+                "palette": {
+                    "popup": {
+                        "background": "#000"
+                    },
+                    "button": {
+                        "background": "#f1d600"
+                    }
+                },
+                "content": {
+                    "message": "Este site utiliza cookies",
+                    "dismiss": "Percebi!",
+                    "link": "Mais informação",
+                    "href": "<%= BASE_URL %>PrivacyPolicy"
+                }
+            })
+        });
     </script>
 
 </body>

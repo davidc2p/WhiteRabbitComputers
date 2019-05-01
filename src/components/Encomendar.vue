@@ -33,8 +33,8 @@
         <tbody>
             <tr>
               <td>{{ description }}<br/><br/>
-                <slot v-for="c in compdetails">
-                  {{ c.description }} <br/>
+                <slot v-for="(c, index) in compdetails">
+                  <span :key="index">{{ c.description }} <br/></span>
                 </slot>
               </td>
               <td class="text-right"><div style="overflow:hidden"><input type="text" class="inputnumber form-control" v-model="qtd" maxlength="2" /></div></td>
@@ -182,7 +182,7 @@
     </div>
 
     <div class="form-group row justify-content-center">
-      <div class="col-12 text-right">
+      <div class="col-12 col-sm-10 text-right">
         <button type="button" name="login" class="btn btn-warning mt-auto" v-on:click="login">Login</button>
       </div>
     </div>
@@ -210,6 +210,18 @@ export default {
         required: false // User can accept a userData object on params, or not. It's totally optional.
       },
     },
+    head: {
+        title: {
+            inner: 'Venda de computadores desktop - Encomendar o seu computador',
+            separator: ' ',
+            complement: ''
+        },
+        // Meta tags
+        meta: [
+            { name: 'application-name', content: 'WhiteRabbit Computers' },
+            { name: 'description', content: 'Depois da selecção do seu computador, deverá digitar os seus dados pessoais para permitir a faturação e o envio para a morada correcta. ', id: 'desc' }
+        ]
+    }, 
     components: {
         Message,
         Wave
@@ -433,7 +445,7 @@ export default {
                   
                 }).catch(error => {
                     if (error.response) {
-                        alert(error.response)
+						alert(error.response)  
                     }
                 })
           }

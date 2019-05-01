@@ -20,35 +20,44 @@
     </div>
   </div>
 
-  <form @submit.prevent="login({ email, password })">
-  <div class="form-group row justify-content-center" :class="{'has-error': errors.has('email') }">
-    <label for="email" class="col-10 col-sm-2 col-form-label text-sm-right">Email</label>
-    <div class="col-10 col-sm-8">
-      <input v-validate="'required|email'" class="form-control"  :class="{'is-error': errors.has('email') }" name="email" type="text" data-vv-delay="1000" placeholder="email@example.com" v-model="email" v-on:change="getUser(email)">
-      <p class="invalid-feedback" v-if="errors.has('email')">{{ errors.first('email') }}</p>
-    </div>
-  </div>
+    <div class="row">
+        <div class="col-12 offset-sm-1 col-sm-3 d-none d-sm-block">
+            <img src="/img/secrecy-icon.png" class="float-right" alt="login" />
+        </div>
+        <div class="col-12 col-sm-7">
 
-  <div class="form-group row justify-content-center" :class="{'has-error': errors.has('password') }">
-    <label for="password" class="col-10 col-sm-2 col-form-label text-sm-right">Password</label>
-    <div class="col-10 col-sm-8">
-      <input v-validate="'required'" class="form-control"  :class="{'is-error': errors.has('password') }" name="password" type="password" data-vv-delay="1000" v-model="password">
-      <p class="invalid-feedback" v-if="errors.has('password')">{{ errors.first('password') }}</p>
-    </div>
-  </div>
+            <form @submit.prevent="login({ email, password })">
+            <div class="form-group row justify-content-center" :class="{'has-error': errors.has('email') }">
+                <label for="email" class="col-12 col-md-3 col-form-label text-md-right">Email</label>
+                <div class="col-12 col-md-7">
+                <input v-validate="'required|email'" class="form-control"  :class="{'is-error': errors.has('email') }" name="email" type="text" data-vv-delay="1000" placeholder="email@example.com" v-model="email" v-on:change="getUser(email)">
+                <p class="invalid-feedback" v-if="errors.has('email')">{{ errors.first('email') }}</p>
+                </div>
+            </div>
 
-  <div class="form-group row justify-content-center">
-    <div class="col-12 offset-sm-2 col-sm-10 text-left">
-      <router-link class="nav-link" to="/ForgetPassword">Esqueceu da palavra chave</router-link>
-    </div>
-  </div>
+            <div class="form-group row justify-content-center" :class="{'has-error': errors.has('password') }">
+                <label for="password" class="col-12 col-md-3 col-form-label text-md-right">Password</label>
+                <div class="col-12 col-md-7">
+                <input v-validate="'required'" class="form-control"  :class="{'is-error': errors.has('password') }" name="password" type="password" data-vv-delay="1000" v-model="password">
+                <p class="invalid-feedback" v-if="errors.has('password')">{{ errors.first('password') }}</p>
+                </div>
+            </div>
 
-  <div class="form-group row justify-content-center">
-    <div class="col-10 offset-1 text-right">
-      <button type="button" name="login" class="btn btn-warning mt-auto" v-on:click="login">Login</button>
+            <div class="form-group row justify-content-center">
+                <div class="col-12 offset-md-3 col-md-9 text-left">
+                <router-link class="nav-link" to="/ForgetPassword">Esqueceu da palavra chave</router-link>
+                </div>
+            </div>
+
+            <div class="form-group row justify-content-center">
+                <div class="col-10 offset-1 text-right">
+                <button type="button" name="login" class="btn btn-warning mt-auto" v-on:click="login">Login</button>
+                </div>
+            </div>
+            </form>
+
+        </div>
     </div>
-  </div>
-  </form>
 
  </div>
 </template>
@@ -72,7 +81,18 @@ export default {
         Message,
         Wave
     },
-    
+    head: {
+        title: {
+            inner: 'Venda de computadores desktop - Efectue o login na sua conta',
+            separator: ' ',
+            complement: ''
+        },
+        // Meta tags
+        meta: [
+            { name: 'application-name', content: 'WhiteRabbit Computers' },
+            { name: 'description', content: 'A partir da sua conta, poderá efectuar o rastreio das suas encomendas.', id: 'desc' }
+        ]
+    },    
     data: function() {
         return {
 

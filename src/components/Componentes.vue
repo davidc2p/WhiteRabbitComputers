@@ -14,16 +14,16 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-12 col-sm-8 offset-sm-2">
+        <div class="col-12 col-sm-8 offset-sm-2">
             <div class="btn-group mr-2" role="group" aria-label="First group">
-                <button class="btn btn-dark" :class="{'active': componente.type=='All'}" v-on:click="getComponents('All',1)">Todos</button>
-                <button class="btn btn-dark" :class="{'active': componente.type=='Cpu'}" v-on:click="getComponents('Cpu',1)">CPU</button>
-                <button class="btn btn-dark" :class="{'active': componente.type=='PG'}" v-on:click="getComponents('PG',1)">PG</button>
-                <button class="btn btn-dark" :class="{'active': componente.type=='Mb'}" v-on:click="getComponents('Mb',1)">MB</button>
-                <button class="btn btn-dark" :class="{'active': componente.type=='Caixa'}" v-on:click="getComponents('Caixa',1)">Caixa</button>
-                <button class="btn btn-dark" :class="{'active': componente.type=='Disco'}" v-on:click="getComponents('Disco',1)">Disco</button>
-                <button class="btn btn-dark" :class="{'active': componente.type=='Power'}" v-on:click="getComponents('Power',1)">Alim</button>
-                <button class="btn btn-dark" :class="{'active': componente.type=='Fan'}" v-on:click="getComponents('Fan',1)">Fan</button>
+                <button :class="[{'active': componente.type=='All'},'btn', 'btn-dark']" v-on:click="getComponents('All',1)">Todos</button>
+                <button :class="[{'active': componente.type=='Cpu'},'btn', 'btn-dark']" v-on:click="getComponents('Cpu',1)">CPU</button>
+                <button :class="[{'active': componente.type=='PG'},'btn', 'btn-dark']" v-on:click="getComponents('PG',1)">PG</button>
+                <button :class="[{'active': componente.type=='Mb'},'btn', 'btn-dark']" v-on:click="getComponents('Mb',1)">MB</button>
+                <button :class="[{'active': componente.type=='Caixa'},'btn', 'btn-dark']" v-on:click="getComponents('Caixa',1)">Caixa</button>
+                <button :class="[{'active': componente.type=='Disco'},'btn', 'btn-dark']" v-on:click="getComponents('Disco',1)">Disco</button>
+                <button :class="[{'active': componente.type=='Power'},'btn', 'btn-dark']" v-on:click="getComponents('Power',1)">Alim</button>
+                <button :class="[{'active': componente.type=='Fan'},'btn', 'btn-dark']" v-on:click="getComponents('Fan',1)">Fan</button>
             </div>
             <div class="btn-group mr-2" role="group" aria-label="Second group">
                 <button class="btn btn-primary" v-on:click="insertComponentes">+Novo</button>
@@ -36,7 +36,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-12 col-sm-8 offset-sm-2">
+        <div class="col-12 col-sm-8 offset-sm-2">
             <div id="componenttable" :style="{ 'min-height': this.tableheight + 'px', 'overflow': 'hidden' }">
             <table v-if="dataComponentes" id="componenttablex" class="table table-striped">
                 <thead>
@@ -49,7 +49,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="t in dataComponentes">
+                <tr v-for="(t, index) in dataComponentes" :key="index">
                     <td>{{ t.description }}</td>
                     <td v-if="componente.type == 'All'">{{ t.type }}</td>
                     <td>{{ Number(t.cost).toFixed(2) }}</td>
@@ -79,7 +79,7 @@
 
             <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
-                <li class="page-item" v-for="p in dataPaginator" :data-id="p.id" :class="setActive(p.active)"><a class="page-link" style="cursor: pointer;" v-on:click="getComponents(componente.type, p.id)">{{p.symbol}}</a></li>
+                <li class="page-item" v-for="(p, index) in dataPaginator" :key="index" :data-id="p.id" :class="setActive(p.active)"><a class="page-link" style="cursor: pointer;" v-on:click="getComponents(componente.type, p.id)">{{p.symbol}}</a></li>
             </ul>
             </nav>
         </div>
@@ -102,11 +102,23 @@
     const classResourceService = new ClassResource()
 
 export default {
-    name: 'User',
+    name: 'Componentes',
     components: {
         Message,
         ModalUpdateComponentes
     },
+    head: {
+        title: {
+            inner: 'Venda de computadores desktop - Gestão dos componentes',
+            separator: ' ',
+            complement: ''
+        },
+        // Meta tags
+        meta: [
+            { name: 'application-name', content: 'WhiteRabbit Computers' },
+            { name: 'description', content: 'Permite efectuar a gestão dos componentes a partir de uma conta de administração.', id: 'desc' }
+        ]
+    }, 
     data: function() {
         return {
             //componentes

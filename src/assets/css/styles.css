@@ -1,377 +1,440 @@
-        @import url(http://fonts.googleapis.com/css?family=Raleway:100,300);
-        body {
-            font-family: 'Raleway', sans-serif;
-            font-weight: 100;
-            color: rgba(255, 255, 255, 0.5);
-            height: 100vh;
-            width: 100vw;
-            margin: 0;
-            padding: 0;
-        }
-        
-        h1 {
-            font-size: 50px;
-            font-weight: 400;
-            color: #E5C41A;
-        }
-        
-        h3 {
-            font-size: 30px;
-            font-weight: 100;
-            color: #E5C41A;
-        }
-        
-        h5 {
-            font-size: 14px;
-            font-weight: 100;
-            color: #E5C41A;
-        }
-        
-        a,
-        label {
-            color: #E5C41A;
-        }
-        
-        ul {
-            text-align: left;
-        }
-        
-        td,
-        th {
-            color: #E5C41A;
-            text-align: left;
-        }
-        
-        a:hover {
-            text-decoration: none;
-        }
-        
-        .yellow {
-            color: #E5C41A;
-            text-align: left;
-        }
-        
-        .inputnumber {
-            width: 100%;
-            text-align: right;
-            background: lightgray;
-            /* background: transparent !important; */
-        }
-        
-        .invalid-feedback {
-            color: white;
-        }
-        /* Banner configuration */
-        
-        #waves {
-            border: 1px solid black;
-            height: 230px;
-            background-color: #222;
-            background-image: -moz-linear-gradient(top, #f1dc17 0%, #b86726 50%, #ee5610 100%);
-            background-image: -webkit-linear-gradient(top, #f1dc17 0%, #b86726 50%, #ee5610 100%);
-            background-image: linear-gradient(to bottom, #f1dc17 0%, #b86726 50%, #ee5610 100%);
-        }
-        
-        .full-width-div {
-            position: relative;
-        }
-        
-        .compimage {
-            margin-left: auto;
-            margin-right: auto;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-        
-        #title {
-            position: absolute;
-            color: #FFFFFF;
-            top: 10px;
-            left: 10px;
-            font-size: 30px;
-            font-weight: 400;
-            z-index: 100;
-            margin: 0;
-            padding: 0;
-        }
-        
-        #title2 {
-            position: absolute;
-            color: #FFFFFF;
-            top: 50px;
-            left: 10px;
-            font-size: 20px;
-            font-weight: 100;
-            z-index: 100;
-            margin: 0;
-            padding: 0;
-        }
-        
-        div.middle_icon {
-            position: absolute;
-            top: 10px;
-            right: 30px;
-            width: 178px;
-            height: 204px;
-            background: url(../tooplate_server_icon.png) no-repeat;
-        }
-        /* carousel */
-        
-        .carousel-inner {
-            background-color: #EBCF19;
-        }
-        
-        .carousel-caption {
-            position: relative;
-            left: auto;
-            right: auto;
-            color: black;
-        }
-        
-        .carousel-caption>h3 {
-            font-weight: 600;
-        }
-        
-        .carousel-caption>p {
-            font-weight: 400;
-        }
-        
-        .container {
-            background: #333333;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .container-fluid {
-            background: #333333;
-            margin-top: 0px;
-            margin-bottom: 0px;
-        }
-        
-        .imgSidebySide {
-            float: left;
-            padding-left: 10px;
-        }
-        
-        .card-container {
-            border: 1px solid #EBCF19;
-            border-radius: 2px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-        }
-        
-        .card-body {
-            background: #111111;
-        }
-        
-        .card {
-            background-color: #EBCF19;
-        }
-        
-        .card-hor {
-            display: block;
-            margin: auto;
-            background-color: #EBCF19;
-        }
-        
-        .card-hor-body {
-            background: #111111;
-        }
-        
-        .card-title {
-            font-size: 24px;
-            font-weight: 400;
-        }
-        
-        .card-footer {
-            color: #EBCF19;
-            font-size: 24px;
-            font-weight: 400;
-        }
-        
-        .price {
-            font-family: 'Open Sans', sans-serif;
-            text-align: center;
-            font-size: 24px;
-            font-weight: 600;
-            color: #2e86de;
-        }
-        
-        .price span {
-            color: #999;
-            font-size: 18px;
-            font-weight: 400;
-            text-decoration: line-through;
-            margin-left: 7px;
-            display: inline-block;
-        }
-        
-        .inline {
-            display: flex;
-            flex-direction: row;
-            padding: 10px;
-        }
-        
-        .nav {
-            font-size: 18px;
-            font-weight: 200;
-        }
-        
-        hr {
-            background-color: lightgrey;
-            width: 60%;
-            margin-right: 10px;
-        }
-        
-        .header {
-            background-color: black;
-        }
-        
-        .footer {
-            min-height: 50px;
-            vertical-align: middle;
-            font-size: 10px;
-            background-color: black;
-        }
-        
-        footer {
-            color: white;
-        }
-        
-        footer a {
-            color: #bfffff;
-        }
-        
-        footer a:hover {
-            color: white;
-        }
-        
-        .footer-bottom {
-            background: #3d6277;
-            padding: 2em;
-        }
-        
-        .footer-top {
-            background: #2d4958;
-        }
-        
-        .footer-middle {
-            background: #3d6277;
-            padding-top: 2em;
-            color: white;
-        }
-        
-        .footer-small {
-            color: white;
-            font-size: 12px;
-        }
-        /* Configurador  */
-        
-        .verticalcenter {
-            margin: 20px auto 20px;
-            display: block;
-        }
-        
-        .configurador {
-            padding-top: 10px;
-            color: black;
-            background-color: lightgray;
-        }
-        
-        .configurador a {
-            color: black;
-            background-color: lightgray;
-        }
-        
-        .configuradorprice {
-            height: 80px;
-            padding-top: 20px;
-            padding-bottom: 20px;
-        }
-        /* Modal components */
-        
-        .modal-mask {
-            position: fixed;
-            z-index: 9998;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, .5);
-            display: table;
-            transition: opacity .3s ease;
-        }
-        
-        .modal-wrapper {
-            display: table-cell;
-            vertical-align: middle;
-        }
-        
-        .modal-container {
-            width: 400px;
-            margin: 0px auto;
-            padding: 20px 30px;
-            background-color: white;
-            border-radius: 2px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-            transition: all .3s ease;
-            font-family: Helvetica, Arial, sans-serif;
-        }
-        
-        .modal-header {
-            justify-content: space-between;
-            display: flex;
-        }
-        
-        .modal-header h3 {
-            text-align: center;
-            margin-top: 0;
-            color: #EBCF19;
-        }
-        
-        .modal-body {
-            margin: 20px 0;
-        }
-        
-        .modal-body-error {
-            margin: 20px 0;
-            color: red;
-        }
-        
-        .modal-default-button {
-            float: right;
-        }
-        /*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
-        
-        .modal-enter {
-            opacity: 0;
-        }
-        
-        .modal-leave-active {
-            opacity: 0;
-        }
-        
-        .modal-enter .modal-container,
-        .modal-leave-active .modal-container {
-            -webkit-transform: scale(1.1);
-            transform: scale(1.1);
-        }
-        /* pagination */
-        
-        .page-item.active .page-link {
-            color: black;
-            background-color: #EBCF19;
-            border-color: #EBCF19;
-        }
-        
-        .page-item .page-link {
-            color: black;
-            background-color: #212529;
-            border-color: #EBCF19;
-        }
+@import url(https://fonts.googleapis.com/css?family=Raleway:100,300);
+body {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 100;
+    color: rgba(255, 255, 255, 0.5);
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 50px;
+    font-weight: 400;
+    color: #E5C41A;
+}
+
+h3 {
+    font-size: 30px;
+    font-weight: 100;
+    color: #E5C41A;
+}
+
+h5 {
+    font-size: 14px;
+    font-weight: 100;
+    color: #E5C41A;
+}
+
+@media screen and (max-width: 640px) {
+    h1 {
+        font-size: 20px;
+    }
+    h3 {
+        font-size: 18px;
+    }
+    h5 {
+        font-size: 12px;
+    }
+    #title {
+        font-size: 15px;
+    }
+    #title2 {
+        font-size: 10px;
+    }
+}
+
+a,
+label {
+    color: #E5C41A;
+}
+
+ul {
+    text-align: left;
+}
+
+td,
+th {
+    color: #E5C41A;
+    text-align: left;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.yellow {
+    color: #E5C41A;
+    text-align: left;
+}
+
+.inputnumber {
+    width: 100%;
+    text-align: right;
+    background: lightgray;
+    /* background: transparent !important; */
+}
+
+.invalid-feedback {
+    color: white;
+}
+
+.heavy {
+    font-size: 20px;
+    font-weight: 600;
+    color: #E5C41A;
+}
+
+.heavyblack {
+    font-size: 20px;
+    font-weight: 600;
+    color: black;
+}
+
+
+/* Banner configuration */
+
+#waves {
+    border: 1px solid black;
+    height: 230px;
+    background-color: #222;
+    background-image: -moz-linear-gradient(top, #f1dc17 0%, #b86726 50%, #ee5610 100%);
+    background-image: -webkit-linear-gradient(top, #f1dc17 0%, #b86726 50%, #ee5610 100%);
+    background-image: linear-gradient(to bottom, #f1dc17 0%, #b86726 50%, #ee5610 100%);
+}
+
+#wavesdev {
+    border: 1px solid black;
+    height: 230px;
+    background-color: #222;
+    background-image: -moz-linear-gradient(top, #2FA2D1 0%, #2e0897 50%, #567cb4 100%);
+    background-image: -webkit-linear-gradient(top, #2FA2D1 0%, #2e0897 50%, #567cb4 100%);
+    background-image: linear-gradient(to bottom, #2FA2D1 0%, #2e0897 50%, #567cb4 100%);
+}
+
+.full-width-div {
+    position: relative;
+}
+
+.compimage {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#title {
+    position: absolute;
+    color: #FFFFFF;
+    top: 10px;
+    left: 10px;
+    font-size: 30px;
+    font-weight: 400;
+    z-index: 100;
+    margin: 0;
+    padding: 0;
+}
+
+#title2 {
+    position: absolute;
+    color: #FFFFFF;
+    top: 50px;
+    left: 10px;
+    font-size: 20px;
+    font-weight: 100;
+    z-index: 100;
+    margin: 0;
+    padding: 0;
+}
+
+div.middle_icon {
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    width: 178px;
+    height: 204px;
+    background: url(../tooplate_server_icon.png) no-repeat;
+}
+
+div.middle_icon_dev {
+    position: absolute;
+    top: 5px;
+    right: 30px;
+    width: 433px;
+    height: 219px;
+    background: url(../webdev_icon2.png) no-repeat;
+}
+
+
+/* carousel */
+
+.carousel-inner {
+    background-color: #EBCF19;
+}
+
+.carousel-caption {
+    position: relative;
+    left: auto;
+    right: auto;
+    color: black;
+}
+
+.carousel-caption>h3 {
+    font-weight: 600;
+}
+
+.carousel-caption>p {
+    font-weight: 400;
+}
+
+.container {
+    background: #333333;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.container-fluid {
+    background: #333333;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.imgSidebySide {
+    float: left;
+    padding-left: 10px;
+}
+
+.card-container {
+    border: 1px solid #EBCF19;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+}
+
+.card-body {
+    background: #111111;
+}
+
+.card {
+    background-color: #EBCF19;
+}
+
+.card-hor {
+    display: block;
+    margin: auto;
+    background-color: #EBCF19;
+}
+
+.card-hor-body {
+    background: #111111;
+}
+
+.card-title {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.card-footer {
+    color: #EBCF19;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.price {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: #2e86de;
+}
+
+.price span {
+    color: #999;
+    font-size: 18px;
+    font-weight: 400;
+    text-decoration: line-through;
+    margin-left: 7px;
+    display: inline-block;
+}
+
+.inline {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+
+.nav {
+    font-size: 18px;
+    font-weight: 200;
+}
+
+hr {
+    background-color: lightgrey;
+    width: 60%;
+    margin-right: 10px;
+}
+
+.header {
+    background-color: black;
+}
+
+.footer {
+    min-height: 50px;
+    vertical-align: middle;
+    font-size: 10px;
+    background-color: black;
+}
+
+footer {
+    color: white;
+}
+
+footer a {
+    color: #bfffff;
+}
+
+footer a:hover {
+    color: white;
+}
+
+.footer-bottom {
+    background: #3d6277;
+    padding: 2em;
+}
+
+.footer-top {
+    background: #2d4958;
+}
+
+.footer-middle {
+    background: #3d6277;
+    padding-top: 2em;
+    color: white;
+}
+
+.footer-small {
+    color: white;
+    font-size: 12px;
+}
+
+
+/* Configurador  */
+
+.verticalcenter {
+    margin: 20px auto 20px;
+    display: block;
+}
+
+.configurador {
+    padding-top: 10px;
+    color: black;
+    background-color: lightgray;
+}
+
+.configurador a {
+    color: black;
+    background-color: lightgray;
+}
+
+.configuradorprice h2 {
+    font-size: 22px;
+    text-align: center;
+    height: 80px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+
+/* Modal components */
+
+.modal-mask {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    display: table;
+    transition: opacity .3s ease;
+}
+
+.modal-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.modal-container {
+    width: 400px;
+    margin: 0px auto;
+    padding: 20px 30px;
+    background-color: white;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+    transition: all .3s ease;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.modal-header {
+    justify-content: space-between;
+    display: flex;
+}
+
+.modal-header h3 {
+    text-align: center;
+    margin-top: 0;
+    color: #EBCF19;
+}
+
+.modal-body {
+    color: #000000;
+    margin: 20px 0;
+}
+
+.modal-body-error {
+    margin: 20px 0;
+    color: red;
+}
+
+.modal-default-button {
+    float: right;
+}
+
+
+/*
+* The following styles are auto-applied to elements with
+* transition="modal" when their visibility is toggled
+* by Vue.js.
+*
+* You can easily play with the modal transition by editing
+* these styles.
+*/
+
+.modal-enter {
+    opacity: 0;
+}
+
+.modal-leave-active {
+    opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+
+/* pagination */
+
+.page-item.active .page-link {
+    color: black;
+    background-color: #EBCF19;
+    border-color: #EBCF19;
+}
+
+.page-item .page-link {
+    color: black;
+    background-color: #212529;
+    border-color: #EBCF19;
+}

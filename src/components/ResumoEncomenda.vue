@@ -44,8 +44,8 @@
         <tbody>
             <tr>
               <td>{{ orderinfo.computerdesc }}<br/><br/>
-                <slot v-for="c in orderinfodetails">
-                  {{ c.description }} <br/>
+                <slot v-for="(c, index) in orderinfodetails">
+                  <span :key="index">{{ c.description }} <br/></span>
                 </slot>
               </td>
               <td class="text-right yellow"><div style="overflow:hidden">{{ orderinfo.computerqtd }}</div></td>

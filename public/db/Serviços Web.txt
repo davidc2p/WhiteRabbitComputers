@@ -1,10 +1,31 @@
-Criação de sites
+Desenvolvimento Web
+
+Desenvolvemos soluções de internet para as mais diversas necessidades. Utilizamos ferramentas modernas de desenvolvimento. Estas ferramentas permitem uma apresentação adaptável da sua página, independentemente do dispositivo onde for vizualisada (responsive web design). Estas tecnologias permitem ainda reduzir os tempos de desenvolvimento, assim como os custos associados ao desenvolvimento.
 
 Criação de sites estáticos
-A criação de sites estáticos é a solução mais indicada, para as empresas que pretendam ter uma presença na internet sem necessidade de actualizar o seu conteúdo com frequência.
+A criação de sites estáticos é a solução indicada para empresas que pretendam ter uma presença na internet sem necessidade de actualizar o seu conteúdo com frequência.
+Os 
 
 Criação de sites dinâmicos
-Por sua vez, a criação de sites com gestor de conteúdos associado (habitualmente conhecidos por sites dinâmicos), são os mais indicados para quem pretenda ter autonomia para gerir os seus próprios conteúdos e imagens através da nossa plataforma de gestão de conteúdos (backoffice ou CMS).
+A criação de sites dinâmicos, são indicados para quem pretenda ter autonomia para gerir os seus próprios conteúdos e imagens através de soluções com backoffice.
+
+
+E-commerce
+
+
+
+Alojamento de sites
+
+Alojamento de sites em servidores web
+O processo de criação de sites levanta sempre duas questões importantes: o registo de domínio e o alojamento do site (hosting) num servidor web adequado.
+O alojamento do site consiste em colocar fisicamente o mesmo num dos nossos servidores (computadores ligados via internet 24h por dia, 7 dias por semana), por um determinado período de tempo. Isto vai permitir publicar e disponibilizar o seu site em qualquer parte do mundo e vai permitir também enviar e receber emails.
+
+
+Registo de domínios
+Para a sua empresa, associação, marca ou hobby estar presente na internet, o primeiro passo é o registo de um nome de domínio.
+O domínio será o nome ou o endereço do seu website. Só por si, não lhe permite colocar um site online e/ou criar caixas de correio. 
+Para colocar o seu site online e/ou criar caixas de correio será sempre necessário que subscreva um dos nossos planos de alojamento de sites.
+
 
 
  Gestão de páginas

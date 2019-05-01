@@ -11,7 +11,11 @@ import Contact from '../components/Contact.vue'
 import Configurador from '../components/Configurador.vue'
 import Componentes from '../components/Componentes.vue'
 import Computers from '../components/Computers.vue'
+import Orders from '../components/Orders.vue'
 import OrderInfoStatus from '../components/OrderInfoStatus.vue'
+import PrivacyPolicy from '../components/Privacy.vue'
+import Cookies from '../components/Cookies.vue'
+import WebServices from '../components/WebServices.vue'
 
 Vue.use(Router)
 
@@ -29,6 +33,10 @@ export default new Router({
         { path: '/Configurador', component: Configurador, name: 'Configurador' },
         { path: '/Componentes', component: Componentes, name: 'Componentes' },
         { path: '/Computers', component: Computers, name: 'Computers' },
-        { path: '/OrderInfoStatus', component: OrderInfoStatus, name: 'OrderInfoStatus' }
+        { path: '/Orders', component: Orders, name: 'Orders' },
+        { path: '/OrderInfoStatus', component: OrderInfoStatus, name: 'OrderInfoStatus' },
+        { path: '/PrivacyPolicy', component: PrivacyPolicy, name: 'PrivacyPolicy' },
+        { path: '/Cookies', component: Cookies, name: 'Cookies' },
+        { path: '/WebServices', component: WebServices, name: 'WebServices' }
     ]
 })

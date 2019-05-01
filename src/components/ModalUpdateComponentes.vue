@@ -60,8 +60,31 @@
                     <div class="form-group row justify-content-center">
                         <label for="image" class="col-10 col-sm-2 col-form-label text-sm-right">Imagem</label>
                         <div class="col-10 col-sm-8">
-                            <input type="text" v-model="image" placeholder="Imagem do componente" data-vv-as="Imagem do componente" v-validate="'required'" name="image" class="form-control" :class="{ 'is-invalid': errors.has('image') }" />
+                            <input type="text" v-model="imagename" placeholder="Imagem do componente" data-vv-as="Imagem do componente" v-validate="'required'" name="image" class="form-control" :class="{ 'is-invalid': errors.has('image') }" />
                             <p v-if="errors.has('image')" class="invalid-feedback">{{ errors.first('image') }}</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group row justify-content-center">
+                        <div class="col-12 col-sm-8">
+                    
+                            <picture-input                              
+                                ref="pictureInput"
+                                @change="onChanged"
+                                @remove="onRemoved"
+                                :width="500"
+                                :removable="true"
+                                removeButtonClass="btn btn-warning"
+                                :height="500"
+                                accept="image/jpeg, image/png, image/gif"
+                                :prefill="savedImage(this.imagename)"
+                                buttonClass="btn btn-warning"
+                                :customStrings="{
+                                upload: '<h1>Upload it!</h1>',
+                                drag: 'Drag and drop your image here'}">
+
+                            </picture-input>
+
                         </div>
                     </div>
 
@@ -96,6 +119,8 @@
 
 <script>
     import {Api} from '../services/Api.js'
+    import FormDataPost from '../services/upload.js'
+    import PictureInput from 'vue-picture-input'    
 
     //Components
     import Message from './Message.vue'
@@ -108,7 +133,8 @@
 export default {
     props: ['componente', 'action', 'ModalCounter'],
     components: {
-        Message
+        Message,
+        PictureInput
     },
     data: function() {
         return {
@@ -119,6 +145,7 @@ export default {
             link: '',
             cost: 0,
             image: '',
+            imagename: '',
             type: '',
 
             datacomponente: [],
@@ -133,6 +160,42 @@ export default {
         }
     },
     methods: {
+        savedImage: function(image) {
+            if (image && image != '') {
+                return '/img/component/' + image
+            }
+            else {
+                return ''
+            }
+        },
+        onChanged() {
+            console.log("New picture loaded");
+            
+            if (this.$refs.pictureInput.file) {
+                this.image = this.$refs.pictureInput.file
+                this.imagename = this.image.name
+            } else {
+                console.log("Old browser. No support for Filereader API")
+            }
+        },
+        onRemoved() {
+            this.image = ''
+            this.imagename = ''
+        },
+        attemptUpload() {
+            if (this.image){
+            FormDataPost(this.image, this.image.name)
+                .then(response=>{
+                    if (response.data.success){
+                        this.image = ''
+                        console.log("Image uploaded successfully ✨")
+                    }
+                })
+                .catch(err=>{
+                    console.error(err)
+                });
+            }
+        },        
         updateComponente: function() {
              Api.put('component/index.php',
                 {
@@ -141,7 +204,7 @@ export default {
                     'link': this.link,
                     'description': this.description,
                     'cost': this.cost,
-                    'image': this.image,
+                    'image': this.imagename,
                     'type': this.type
                 }).then(response => {
                                             
@@ -176,7 +239,7 @@ export default {
                     'link': this.link,
                     'description': this.description,
                     'cost': this.cost,
-                    'image': this.image,
+                    'image': this.imagename,
                     'type': this.type
                 }).then(response => {
                                             
@@ -213,20 +276,36 @@ export default {
             this.description = this.componente.description
             this.link = this.componente.link
             this.cost = this.componente.cost
-            this.image = this.componente.image
+            this.imagename = this.componente.image
             this.type = this.componente.type
           }
         }
     },
     mounted: function() {
-      if (this.action == 'update') {
-        this.id = this.componente.id
-        this.description = this.componente.description
-        this.link = this.componente.link
-        this.cost = this.componente.cost
-        this.image = this.componente.image
-        this.type = this.componente.type
-      }  
-    }
+        this.$store.dispatch("validate")
+
+        if (this.isAuthenticate && this.isAdmin ) {
+
+            if (this.action == 'update') {
+                this.id = this.componente.id
+                this.description = this.componente.description
+                this.link = this.componente.link
+                this.cost = this.componente.cost
+                this.imagename = this.componente.image
+                this.type = this.componente.type
+            } 
+    
+        } else {
+            this.$router.push({name: 'Login'})
+        }
+    },
+    computed: {
+        isAuthenticate() { 
+            return this.$store.getters.authenticate;
+        },
+        isAdmin() {
+            return this.$store.getters.admin;
+        }
+    } 
 }
 </script>

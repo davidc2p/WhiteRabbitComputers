@@ -14,41 +14,44 @@
         <div class="col">&nbsp;</div>
     </div>
     <form @submit.prevent="send()">
-    <div class="form-group row justify-content-center" :class="{'has-error': errors.has('contactEmail') }">
-        <label for="contactEmail" class="col-10 col-sm-2 col-form-label text-sm-right">Email</label>
-        <div class="col-10 col-sm-8">
-        <input v-validate="'required|email'" :readonly="isAuthenticate" class="form-control"  :class="{'is-error': errors.has('contactEmail') }" name="contactEmail" type="text" data-vv-delay="1000" placeholder="email@example.com" v-model="contactEmail">
-        <p class="invalid-feedback" v-if="errors.has('contactEmail')">{{ errors.first('contactEmail') }}</p>
+        
+        <div :class="[{'has-error': errors.has('contactEmail') }, 'form-group', 'row',  'justify-content-center']">
+            <label for="contactEmail" class="col-10 col-sm-2 col-form-label text-sm-right">Email</label>
+            <div class="col-10 col-sm-8">
+            <input v-validate="'required|email'" :readonly="isAuthenticate" class="form-control"  :class="{'is-error': errors.has('contactEmail') }" name="contactEmail" type="text" data-vv-delay="1000" placeholder="email@example.com" v-model="contactEmail">
+            <p class="invalid-feedback" v-if="errors.has('contactEmail')">{{ errors.first('contactEmail') }}</p>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group row justify-content-center">
-      <label for="contactName" class="col-10 col-sm-2 col-form-label text-sm-right">Nome</label>
-      <div class="col-10 col-sm-8">
-        <input type="text" v-model="contactName" placeholder="Nome" v-validate="'required'" name="contactName" data-vv-as="Nome do contacto" class="form-control" :class="{ 'is-invalid': errors.has('contactName') }" />
-        <p v-if="errors.has('contactName')" class="invalid-feedback">{{ errors.first('contactName') }}</p>
-      </div>
-    </div>
-    <div class="form-group row justify-content-center">
-      <label for="contactSubject" class="col-10 col-sm-2 col-form-label text-sm-right">Assunto</label>
-      <div class="col-10 col-sm-8">
-        <input type="text" v-model="contactSubject" placeholder="Assunto" v-validate="'required'" name="contactSubject" data-vv-as="Assunto do contacto" class="form-control" :class="{ 'is-invalid': errors.has('contactSubject') }" />
-        <p v-if="errors.has('contactSubject')" class="invalid-feedback">{{ errors.first('contactSubject') }}</p>
-      </div>
-    </div>
-    <div class="form-group row justify-content-center">
-      <label for="contactMessage" class="col-10 col-sm-2 col-form-label text-sm-right">Texto</label>
-      <div class="col-10 col-sm-8">
-        <textarea v-model="contactMessage" placeholder="Texto" data-vv-as="Texto do contacto" v-validate="'required'" name="contactMessage" class="form-control" :class="{ 'is-invalid': errors.has('contactMessage') }" />
-        <p v-if="errors.has('contactMessage')" class="invalid-feedback">{{ errors.first('contactMessage') }}</p>
-      </div>
-    </div>
+        <div class="form-group row justify-content-center">
+            <label for="contactName" class="col-10 col-sm-2 col-form-label text-sm-right">Nome</label>
+            <div class="col-10 col-sm-8">
+                <input type="text" v-model="contactName" placeholder="Nome" v-validate="'required'" name="contactName" data-vv-as="Nome do contacto" class="form-control" :class="{ 'is-invalid': errors.has('contactName') }" />
+                <p v-if="errors.has('contactName')" class="invalid-feedback">{{ errors.first('contactName') }}</p>
+            </div>
+        </div>
 
-    <div class="form-group row justify-content-center">
-      <div class="col-12 text-right">
-        <button type="button" name="send" class="btn btn-warning" v-on:click="send">Enviar</button>
-      </div>
-    </div>
+        <div class="form-group row justify-content-center">
+            <label for="contactSubject" class="col-10 col-sm-2 col-form-label text-sm-right">Assunto</label>
+            <div class="col-10 col-sm-8">
+                <input type="text" v-model="contactSubject" placeholder="Assunto" v-validate="'required'" name="contactSubject" data-vv-as="Assunto do contacto" class="form-control" :class="{ 'is-invalid': errors.has('contactSubject') }" />
+                <p v-if="errors.has('contactSubject')" class="invalid-feedback">{{ errors.first('contactSubject') }}</p>
+            </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+            <label for="contactMessage" class="col-10 col-sm-2 col-form-label text-sm-right">Texto</label>
+            <div class="col-10 col-sm-8">
+                <textarea v-model="contactMessage" placeholder="Texto" data-vv-as="Texto do contacto" v-validate="'required'" name="contactMessage" class="form-control" :class="{ 'is-invalid': errors.has('contactMessage') }" />
+                <p v-if="errors.has('contactMessage')" class="invalid-feedback">{{ errors.first('contactMessage') }}</p>
+            </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+            <div class="col-12 col-sm-10 text-right">
+                <button type="button" name="send" class="btn btn-warning" v-on:click="send">Enviar</button>
+            </div>
+        </div>
     </form>
 
  </div>
@@ -72,6 +75,18 @@ export default {
         Message,
         Wave
     },
+    head: {
+        title: {
+            inner: 'Venda de computadores desktop - Formulário de contacto',
+            separator: ' ',
+            complement: ''
+        },
+        // Meta tags
+        meta: [
+            { name: 'application-name', content: 'WhiteRabbit Computers' },
+            { name: 'description', content: 'Poderá utilizar este formulário de contacto sempre que necessite colocar uma dúvida. Tentaremos ser o mesmo breve possível ao responder.', id: 'desc' }
+        ]
+    },    
     data: function() {
         return {
 
@@ -88,7 +103,7 @@ export default {
 
             titles: {
                 head: 'Os desktops mais baratos do mercado',
-                desc: 'Montamos o seu computador a sua medida'
+                desc: 'Formulário de contacto'
             },
 
             count: 1,

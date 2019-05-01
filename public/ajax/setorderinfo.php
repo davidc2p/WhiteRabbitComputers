@@ -132,7 +132,7 @@ if (isset($input))
 
             <div>
             <!--[if mso]>
-            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://www.whiterabbitcomputers.com/AccountConfirmation/'.$user->token.'" style="height:40px;v-text-anchor:middle;width:300px;" arcsize="10%" stroke="f" fillcolor="#E5C41A">
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.whiterabbitcomputers.com/AccountConfirmation/'.$user->token.'" style="height:40px;v-text-anchor:middle;width:300px;" arcsize="10%" stroke="f" fillcolor="#E5C41A">
                 <w:anchorlock/>
                 <center style="color: black;font-family:sans-serif;font-size:16px;font-weight:bold;">
                     Finalizar o registo
@@ -142,7 +142,7 @@ if (isset($input))
             <![if !mso]>
             <table cellspacing="0" cellpadding="0"> <tr> 
             <td align="center" width="300" height="40" bgcolor="#E5C41A" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; color: #ffffff; display: block;">
-                <a href="http://www.whiterabbitcomputers.com/AccountConfirmation/'.$user->token.'" style="font-size:16px; font-weight: bold; font-family:sans-serif; text-decoration: none; line-height:40px; width:100%; display:inline-block">
+                <a href="https://www.whiterabbitcomputers.com/AccountConfirmation/'.$user->token.'" style="font-size:16px; font-weight: bold; font-family:sans-serif; text-decoration: none; line-height:40px; width:100%; display:inline-block">
                 <span style="color: black;">
                     Finalizar o registo
                 </span>
@@ -302,7 +302,7 @@ if (isset($input))
 
     $mail->MsgHTML($CompleteMessage);
     //Replace the plain text body with one created manually
-    $mail->AltBody = 'Link: '.'http://www.whiterabbitcomputers.com/registerconfirmation.php?code='.$user->token;
+    $mail->AltBody = 'Link: '.'https://www.whiterabbitcomputers.com/registerconfirmation.php?code='.$user->token;
 
     //send the message, check for errors
     if (!$mail->send()) {

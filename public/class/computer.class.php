@@ -364,44 +364,42 @@ class Computer
 
 	public function setComputerDetails()
   	{
-		try{
-			if (
-				isset($this->computerid) && $this->computerid!="" &&
-				isset($this->componentid) && $this->componentid!="" 
-				) {
-				//fetching last order info
-				$query=$this->con->prepare("SELECT computerid, MAX(IFNULL(ordering, 0) as ordering
-									FROM computercomponents 
-									where computerid = :computerid
-									GROUP BY computerid");
-				$query->bindParam(':computerid', $this->computerid);
-				$query->execute();
-			
-				$ms = $query->fetch(PDO::FETCH_ASSOC);
+			try{
+				if (
+					isset($this->computerid) && $this->computerid!="" &&
+					isset($this->componentid) && $this->componentid!="" 
+					) {
+					//fetching last order info
+					$query=$this->con->prepare("SELECT MAX(IFNULL(ordering, 0)) as ordering
+										FROM computercomponents 
+										where computerid = :computerid");
+					$query->bindParam(':computerid', $this->computerid);
+					$query->execute();
+				
+					$ms = $query->fetch(PDO::FETCH_ASSOC);
 
+					//inserting computers for components
+					$query = $this->con->prepare("INSERT INTO computercomponents (computerid, componentid, qtd, ordering) 
+													VALUES (:computerid, :componentid, 1, :ordering)");
+					$result = $query->execute(array(
+						"computerid" 			=> $this->computerid,
+						"componentid" 		=> $this->componentid,
+						"ordering" 				=> $ms['ordering'] + 1
+					));
 
-				//inserting tax data
-				$query = $this->con->prepare("INSERT INTO computercomponents (computerid, componentid, qtd, ordering) 
-											  VALUES (:computerid, :componentid, 1, :ordering)");
-				$result = $query->execute(array(
-					"computerid" 			=> $this->computerid,
-					"componentid" 			=> $this->componentid,
-					"ordering" 				=> $ms['ordering'] + 1
-				));
-
-				if (!$result) {
-					$this->error['success'] = 1;
-					$this->error['message'] = 'Ocorreu um erro na criação da configuração.';  
-				} else {
-					$this->error['success'] = 0;
-					$this->error['message'] = 'Configuração criada com sucesso.'; 
+					if (!$result) {
+						$this->error['success'] = 1;
+						$this->error['message'] = 'Ocorreu um erro na criação da configuração.';  
+					} else {
+						$this->error['success'] = 0;
+						$this->error['message'] = 'Configuração criada com sucesso.'; 
+					}
 				}
 			}
-		}
-		catch(PDOException $ex) {
-			$this->error['success'] = 1;
-			$this->error['message'] = $ex->getMessage();
-		}
+			catch(PDOException $ex) {
+				$this->error['success'] = 1;
+				$this->error['message'] = $ex->getMessage();
+			}
   	}
 }
 

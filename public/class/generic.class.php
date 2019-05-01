@@ -507,8 +507,8 @@ class Generic
 				<table class="atable">
 					<tr>
 						<td width="80%">
-							<a href="http://www.whiterabbitcomputers.com">
-								<span><img src="http://www.whiterabbitcomputers.com/img/whiterabbit-logo-64.png" /></span>
+							<a href="https://www.whiterabbitcomputers.com">
+								<span><img src="https://www.whiterabbitcomputers.com/img/whiterabbit-logo-64.png" /></span>
 								<span><h1>WhiteRabbit Computers</h1></span>
 							</a>
 						</td>
@@ -556,12 +556,12 @@ class Generic
 							<!-- Social buttons -->
 							<div class="fake_img">
 								<a target="_blank" href="https://www.facebook.com/whiterabbitservice/">
-									<img src="http://www.whiterabbitcomputers.com/img/icon/withborder/facebook-variation.png" alt="facebook">
+									<img src="https://www.whiterabbitcomputers.com/img/icon/withborder/facebook-variation.png" alt="facebook">
 								</a>
 							</div>
 							<div class="fake_img">
 								<a target="_blank" href="https://twitter.com/whiterabbitime">
-									<img src="http://www.whiterabbitcomputers.com/img/icon/withborder/twitter-variation.png" alt="twitter">
+									<img src="https://www.whiterabbitcomputers.com/img/icon/withborder/twitter-variation.png" alt="twitter">
 								</a>
 							</div>
 							<!-- Social buttons -->
@@ -573,7 +573,7 @@ class Generic
 					<tr>
 						<td style="text-align: center">
 							© 2019 Copyright:
-							<a href="http://www.whiterabbitcomputers.com">whiterabbitcomputers.com</a>
+							<a href="https://www.whiterabbitcomputers.com">whiterabbitcomputers.com</a>
 						</td>
 					</tr>
 					<!-- Copyright -->
@@ -607,8 +607,8 @@ class Generic
          <table width="600" cellspacing="0" cellpadding="0" style="font-family:\'Lucida Grande\';color:#666" bgcolor="#FFF">
             <tr>
                <td height="77" bgcolor="#F6F6F6" style="padding:10px">
-				  <a href="http://www.whiterabbitservice.com" style="text-decoration: none;"> 	
-				  <img src="http://www.whiterabbitservice.com/assets/images/whiterabbit-logo-160.png" style="vertical-align: middle;" /><font color="#CCCCCC" size="2"><strong>  WhiteRabbit</strong></font>
+				  <a href="https://www.whiterabbitservice.com" style="text-decoration: none;"> 	
+				  <img src="https://www.whiterabbitservice.com/assets/images/whiterabbit-logo-160.png" style="vertical-align: middle;" /><font color="#CCCCCC" size="2"><strong>  WhiteRabbit</strong></font>
 				  </a>
                </td>
 			   <td bgcolor="#F6F6F6" style="padding:10px" align="right">
@@ -622,7 +622,7 @@ class Generic
             </tr>
             <tr>
                <td colspan="2" align="center" style="border-top:1px #cccccc solid">
-				  <br/><a href="http://www.whiterabbitservice.com">WhiteRabbit - 2017 &copy;</a>	
+				  <br/><a href="https://www.whiterabbitservice.com">WhiteRabbit - 2017 &copy;</a>	
                </td>
             </tr>
          </table><br/>

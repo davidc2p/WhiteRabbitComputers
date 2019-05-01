@@ -5,7 +5,11 @@ import messages from 'vee-validate/dist/locale/pt_PT'
 
 import './plugins/axios'
 import App from './App.vue'
+
+import VueHead from 'vue-head'
+Vue.use(VueHead)
 import router from './router/index'
+
 import jQuery from 'jquery'
 
 //import bootstrap from 'bootstrap'
@@ -16,7 +20,12 @@ global.jQuery = jQuery
 global.$ = jQuery
 
 import './assets/css/styles.css'
+
+//Vuex store
 import store from './store'
+
+//Filters
+import currencyFilter from './shared/currency-filter';
 
 Vue.config.productionTip = false
 
@@ -30,6 +39,8 @@ const config = {
 
 Vue.use(VeeValidate, config)
 Vue.use(BootstrapVue)
+Vue.filter('currency', currencyFilter)
+
 
 
 new Vue({

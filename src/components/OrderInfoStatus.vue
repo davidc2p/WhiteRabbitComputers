@@ -14,7 +14,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-12 col-sm-3">
+        <div class="col-12 col-md-3">
             <div class="btn-group-vertical">
                 <button class="btn btn-dark" :class="{'active': status=='All'}" v-on:click="getOrderInfo('All',1)">Todas</button>
                 <button class="btn btn-dark" :class="{'active': status=='0'}" v-on:click="getOrderInfo('0',1)">Recebidas</button>
@@ -27,7 +27,7 @@
                 <button class="btn btn-dark" :class="{'active': status=='7'}" v-on:click="getOrderInfo('7',1)">Cancelados</button>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-8">
+        <div class="col-12 col-md-8">
             <div class="row">
                 <div class="col">
                     <div id="orderinfotable" :style="{ 'min-height': this.tableheight + 'px', 'overflow-x': 'auto', 'overflow-y': 'auto' }">
@@ -44,7 +44,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="t in dataOrderInfo">
+                        <tr v-for="(t, index) in dataOrderInfo" :key="index">
                             <td>{{ t.id }}</td>
                             <td>{{ creationDate(t.creationdate) }}</td>
                             <td>{{ t.deliveryname }}</td>
@@ -76,7 +76,7 @@
 
                     <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item" v-for="p in dataPaginator" :data-id="p.id" :class="setActive(p.active)"><a class="page-link" style="cursor: pointer;" v-on:click="getOrderInfo(status, p.id)">{{p.symbol}}</a></li>
+                        <li v-for="(p, index) in dataPaginator" :key="index" :data-id="p.id" :class="[setActive(p.active), 'page-item']"><a class="page-link" style="cursor: pointer;" v-on:click="getOrderInfo(status, p.id)">{{p.symbol}}</a></li>
                     </ul>
                     </nav>
                 </div>
@@ -84,7 +84,7 @@
         </div>
     </div>
 
-    <Modal-Supply-Order-Info v-if="showModalSupplyOrderInfo" :componentes="componentes" @close="showModalSupplyOrderInfo = false"></Modal-Supply-Order-Info>
+    <Modal-Supply-Order-Info v-if="showModalSupplyOrderInfo" :componentes="componentes" :origin="origin" :orderid="orderInfoId" @close="showModalSupplyOrderInfo = false"></Modal-Supply-Order-Info>
 </div>
 </template>
 
@@ -113,11 +113,14 @@
                 //componentes de uma encomenda
                 componentes: [],
 
+
                 //encomendas
                 dataOrderInfo: [],
                 orderInfoId: 0,
                 status: 'All',
                 statusCorrente: 0,
+
+                origin: 'OrderInfoStatus',
                 
                 message: {
                     info: '',
@@ -146,7 +149,9 @@
                 return isActive ? 'active' : ''
             },
             getOrderInfo: function(status, pagenumber, updatemsg=true) {
-                
+
+                this.ValidadeCredencials()
+
                 this.pagenumber = pagenumber || 1
                 this.status = status
 
@@ -234,6 +239,8 @@
             },
             getOrderInfoDetails: function(OrderInfoID) {
                 
+                this.ValidadeCredencials()
+
                 Api.get('orderinfo/index.php?method=getOrderInfoDetails&access_token='+this.$store.state.access_token+'&orderinfoid='+OrderInfoID)
                     .then(response => {
 
@@ -253,7 +260,7 @@
                             this.count++
                         } else {
                             this.componentes = response.data
-
+                            this.orderInfoId = OrderInfoID
                             this.showModalSupplyOrderInfo = true
                         }
 
@@ -264,6 +271,8 @@
                     })
             },
             updOrderInfoStatus: function(OrderInfoID, status)  {
+                
+                this.ValidadeCredencials()
 
                 this.orderInfoId = OrderInfoID
 
@@ -308,23 +317,25 @@
                             alert(error.response)
                         }
                     })        
+            },
+            ValidadeCredencials: function() {
+                this.$store.dispatch("validate")
+
+                if (!this.isAuthenticate || !this.isAdmin == 1) {
+                    this.$router.push({name: 'Login'})
+                }
             }
 
         },
         mounted: function() {
+            
+            this.ValidadeCredencials()
 
-            this.$store.dispatch("validate")
+            this.pagenumber = 1
+            this.status = 'All'
 
-            if (this.isAuthenticate && this.isAdmin == 1) {
-
-                this.pagenumber = 1
-                this.status = 'All'
-
-                this.getOrderInfo(this.status, 1)
+            this.getOrderInfo(this.status, 1)
         
-            } else {
-                this.$router.push({name: 'Login'})
-            }
         },
         computed: {
             creationDate() {

@@ -37,7 +37,7 @@
   <div class="form-group row justify-content-center">
     <label for="password" class="col-10 col-sm-2 col-form-label text-sm-right">Password</label>
     <div class="col-10 col-sm-8">
-      <input v-validate="'required|min:6'" class="form-control" :class="{ 'is-invalid': errors.has('password') }" data-vv-as="Password" name="password" type="password" data-vv-delay="1000" v-model="password" ref="password">
+      <input v-validate="'required|min:6'" :class="[{ 'is-invalid': errors.has('password') }, 'form-control']" data-vv-as="Password" name="password" type="password" data-vv-delay="1000" v-model="password" ref="password">
       <p class="invalid-feedback" v-if="errors.has('password')">{{ errors.first('password') }}</p>
     </div>
   </div>
@@ -45,7 +45,7 @@
     <div class="form-group row justify-content-center">
       <label for="rpassword" class="col-10 col-sm-2 col-form-label text-sm-right">Confirmação da Password</label>
       <div class="col-10 col-sm-8">
-        <input v-validate="'required|confirmed:password'" class="form-control"  :class="{'is-invalid': errors.has('rpassword') }" data-vv-as="Confirmação da password" name="rpassword" type="password" data-vv-delay="1000" v-model="rpassword">
+        <input v-validate="'required|confirmed:password'" :class="[{'is-invalid': errors.has('rpassword') }, 'form-control']" data-vv-as="Confirmação da password" name="rpassword" type="password" data-vv-delay="1000" v-model="rpassword">
         <p class="invalid-feedback" v-if="errors.has('rpassword')">{{ errors.first('rpassword') }}</p>
       </div>
     </div>
@@ -78,6 +78,18 @@ export default {
         Message,
         Wave
     },
+    head: {
+        title: {
+            inner: 'Venda de computadores desktop - Efectue a confimação da sua conta',
+            separator: ' ',
+            complement: ''
+        },
+        // Meta tags
+        meta: [
+            { name: 'application-name', content: 'WhiteRabbit Computers' },
+            { name: 'description', content: 'Escolha uma password e confirma-a para permitir o login na sua conta.', id: 'desc' }
+        ]
+    },     
     data: function() {
         return {
         

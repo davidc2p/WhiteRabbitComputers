@@ -14,7 +14,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-12 col-sm-10 offset-sm-1">
+        <div class="col-12 col-sm-10 offset-sm-1">
             <button class="btn btn-primary float-right" v-on:click="insertComputers">+Novo</button>
         </div>
     </div>
@@ -25,7 +25,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-12 col-sm-10 offset-sm-1">
+        <div class="col-12 col-sm-10 offset-sm-1">
             <div id="computertable" :style="{ 'min-height': this.tableheight + 'px', 'overflow': 'hidden' }">
             <table v-if="dataComputers" id="computertablex" class="table table-striped">
                 <thead>
@@ -36,7 +36,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="t in dataComputers">
+                <tr v-for="(t, index) in dataComputers" :key="index">
                     <td>{{ t.description }}</td>
                     <td>{{ Number(t.price).toFixed(2) }}</td>
                     <td style="width:170px">
@@ -56,7 +56,7 @@
 
             <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
-                <li class="page-item" v-for="p in dataPaginator" :data-id="p.id" :class="setActive(p.active)"><a class="page-link" style="cursor: pointer;" v-on:click="getComputers(p.id)">{{p.symbol}}</a></li>
+                <li v-for="(p, index) in dataPaginator" :key="index" :data-id="p.id" :class="[setActive(p.active), 'page-item']"><a class="page-link" style="cursor: pointer;" v-on:click="getComputers(p.id)">{{p.symbol}}</a></li>
             </ul>
             </nav>
         </div>
@@ -84,6 +84,18 @@ export default {
         Message,
         ModalUpdateComputers
     },
+    head: {
+        title: {
+            inner: 'Venda de computadores desktop - Configuração de computadores',
+            separator: ' ',
+            complement: ''
+        },
+        // Meta tags
+        meta: [
+            { name: 'application-name', content: 'WhiteRabbit Computers' },
+            { name: 'description', content: 'Descreva a configuração pretendida seleccionando os componentes desejados.', id: 'desc' }
+        ]
+    }, 
     data: function() {
         return {
             //componentes

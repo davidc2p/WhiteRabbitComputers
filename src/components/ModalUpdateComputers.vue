@@ -3,7 +3,7 @@
     <transition name="modal">
     <div class="modal-mask">
         <div class="modal-wrapper">
-            <div class="modal-container" style="width: 80%; min-width:500px; height:90%;">
+            <div class="modal-container" :style="{ 'width': this.windowWidth + 'px' }">
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <button type="button" class="btn btn-link" data-dismiss="modal" @click="$emit('close')">
@@ -15,15 +15,15 @@
                 </div>
                 
                 <!-- Modal Body -->
-                <div class="modal-body" style="margin: 10px 0; max-height: 500px; overflow-y: auto;">
+                <div class="modal-body" :style="{ 'margin': '10px 0', 'overflow-y': 'auto', 'width': this.windowWidth + 'px', 'height': this.windowHeight + 'px' }">
                     <div class="form-group">
-                    <Message id="Message" v-bind:msg="message" :key="count" />
+                        <Message id="Message" v-bind:msg="message" :key="count" />
                     </div>
 
                     <!-- Descrição do computador -->
                     <div class="form-group row justify-content-center">
-                        <label for="description" class="col-xs-12 col-sm-3 col-form-label text-sm-right">Descrição</label>
-                        <div class="col-xs-12 col-sm-9">
+                        <label for="description" class="col-12 col-sm-3 col-form-label text-sm-right">Descrição</label>
+                        <div class="col-12 col-sm-8">
                             <input type="text" v-model="description" placeholder="Descrição do computador" data-vv-as="Descrição do computador" v-validate="'required'" name="description" class="form-control" :class="{ 'is-invalid': errors.has('description') }" />
                             <p v-if="errors.has('description')" class="invalid-feedback">{{ errors.first('description') }}</p>
                         </div>
@@ -31,8 +31,8 @@
 
                     <!-- Descrição longa do computador -->
                     <div class="form-group row justify-content-center">
-                        <label for="longdesc" class="col-xs-12 col-sm-3 col-form-label text-sm-right">Descrição longa</label>
-                        <div class="col-xs-12 col-sm-9">
+                        <label for="longdesc" class="col-12 col-sm-3 col-form-label text-sm-right">Descrição longa</label>
+                        <div class="col-12 col-sm-8">
                             <input type="text" v-model="longdesc" placeholder="Descrição longa do computador" data-vv-as="Descrição longa do computador" v-validate="'required'" name="longdesc" class="form-control" :class="{ 'is-invalid': errors.has('longdesc') }" />
                             <p v-if="errors.has('longdesc')" class="invalid-feedback">{{ errors.first('longdesc') }}</p>
                         </div>
@@ -40,8 +40,8 @@
 
                     <!-- Preço de venda -->
                     <div class="form-group row justify-content-center">
-                        <label for="price" class="col-xs-12 col-sm-3 col-form-label text-sm-right">Preço venda</label>
-                        <div class="col-xs-12 col-sm-9">
+                        <label for="price" class="col-12 col-sm-3 col-form-label text-sm-right">Preço venda</label>
+                        <div class="col-12 col-sm-8">
                             <input type="text" v-model="price" placeholder="Preço de venda" data-vv-as="price" v-validate="'required'" name="price" class="form-control" :class="{ 'is-invalid': errors.has('price') }" />
                             <p v-if="errors.has('price')" class="invalid-feedback">{{ errors.first('price') }}</p>
                         </div>
@@ -49,8 +49,8 @@
 
                     <!-- Preço de venda sem desconto -->
                     <div class="form-group row justify-content-center">
-                        <label for="netprice" class="col-xs-12 col-sm-3 col-form-label text-sm-right">Preço venda s/desconto</label>
-                        <div class="col-xs-12 col-sm-9">
+                        <label for="netprice" class="col-12 col-sm-3 col-form-label text-sm-right">Preço venda s/desconto</label>
+                        <div class="col-12 col-sm-8">
                             <input type="text" v-model="netprice" placeholder="Preço de venda s/desconto" data-vv-as="netprice" v-validate="'required'" name="netprice" class="form-control" :class="{ 'is-invalid': errors.has('netprice') }" />
                             <p v-if="errors.has('netprice')" class="invalid-feedback">{{ errors.first('netprice') }}</p>
                         </div>
@@ -58,96 +58,120 @@
 
                     <!-- imagem do componente -->
                     <div class="form-group row justify-content-center">
-                        <label for="image" class="col-xs-12 col-sm-3 col-form-label text-sm-right">Imagem</label>
-                        <div class="col-xs-12 col-sm-9">
-                            <input type="text" v-model="image" placeholder="Imagem do componente" data-vv-as="Imagem do componente" v-validate="'required'" name="image" class="form-control" :class="{ 'is-invalid': errors.has('image') }" />
+                        <label for="image" class="col-12 col-sm-3 col-form-label text-sm-right">Imagem</label>
+                        <div class="col-12 col-sm-8">
+                            <input type="text" v-model="imagename" placeholder="Imagem do componente" data-vv-as="Imagem do componente" v-validate="'required'" name="image" class="form-control" :class="{ 'is-invalid': errors.has('image') }" />
                             <p v-if="errors.has('image')" class="invalid-feedback">{{ errors.first('image') }}</p>
                         </div>
                     </div>
+                    
+                    <div class="form-group row justify-content-center">
+                        <div class="col-12 col-sm-8">
+                    
+                            <picture-input                              
+                                ref="pictureInput"
+                                @change="onChanged"
+                                @remove="onRemoved"
+                                :width="500"
+                                :removable="true"
+                                removeButtonClass="btn btn-warning"
+                                :height="500"
+                                accept="image/jpeg, image/png, image/gif"
+                                :prefill="savedImage(this.imagename)"
+                                buttonClass="btn btn-warning"
+                                :customStrings="{
+                                upload: '<h1>Upload it!</h1>',
+                                drag: 'Drag and drop your image here'}">
 
-                    <div class="row">
+                            </picture-input>
+
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
                         <div class="col offset-1"><h3>Peças:</h3></div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group row">
                         <div class="offset-1 col-2 configurador">Caixa</div>
                         <div class="col-7 configurador">
                         <slick id="caseSelector" ref="slick_case" :options="slickOptions" @afterChange="handleAfterChange_case" style="z-index: 10;">
-                            <div v-for="d in computercase"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
+                            <div v-for="(d, index) in computercase" :key="index"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
                         </slick>        
                         </div>
                         <div class="col-1 configurador">&nbsp;</div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group row">
                         <div class="offset-1 col-2 configurador">Processador</div>
                         <div class="col-7 configurador">
                         <slick id="processorSelector" ref="slick_proc" :options="slickOptions" @afterChange="handleAfterChange_proc" style="z-index: 10;">
-                            <div v-for="d in processors"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
+                            <div v-for="(d, index) in processors" :key="index"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
                         </slick>        
                         </div>
                         <div class="col-1 configurador">&nbsp;</div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group row">
                         <div class="offset-1 col-2 configurador">RAM</div>
                         <div class="col-7 configurador">
                         <slick id="ramSelector" ref="slick_ram" :options="slickOptions" @afterChange="handleAfterChange_ram" style="z-index: 10;">
-                            <div v-for="d in ram"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
+                            <div v-for="(d, index) in ram" :key="index"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
                         </slick>        
                         </div>
                         <div class="col-1 configurador">&nbsp;</div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group row">
                         <div class="offset-1 col-2 configurador">Placa gráfica</div>
                         <div class="col-7 configurador">
                         <slick id="gpuSelector" ref="slick_gpu" :options="slickOptions" @afterChange="handleAfterChange_gpu" style="z-index: 10;">
-                            <div v-for="d in graphic"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
+                            <div v-for="(d, index) in graphic" :key="index"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
                         </slick>        
                         </div>
                         <div class="col-1 configurador">&nbsp;</div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group row">
                         <div class="offset-1 col-2 configurador">Disco</div>
                         <div class="col-7 configurador">
                         <slick id="diskSelector" ref="slick_disk" :options="slickOptions" @afterChange="handleAfterChange_disk" style="z-index: 10;">
-                            <div v-for="d in disk"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
+                            <div v-for="(d, index) in disk" :key="index"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
                         </slick>        
                         </div>
                         <div class="col-1 configurador">&nbsp;</div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group row">
                         <div class="offset-1 col-2 configurador">Cooler</div>
                         <div class="col-7 configurador">
                         <slick id="fanSelector" ref="slick_fan" :options="slickOptions" @afterChange="handleAfterChange_fan" style="z-index: 10;">
-                            <div v-for="d in fan"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
+                            <div v-for="(d, index) in fan" :key="index"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
                         </slick>        
                         </div>
                         <div class="col-1 configurador">&nbsp;</div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group row">
                         <div class="offset-1 col-2 configurador">Alimentação</div>
                         <div class="col-7 configurador">
                         <slick id="powerSelector" ref="slick_power" :options="slickOptions" @afterChange="handleAfterChange_power" style="z-index: 10;">
-                            <div v-for="d in power"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
+                            <div v-for="(d, index) in power" :key="index"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
                         </slick>        
                         </div>
                         <div class="col-1 configurador">&nbsp;</div>
                     </div>
 
                     <!-- linha sem nada -->
-                    <div id="configuration" class="row">
+                    <div id="configuration" class="form-group row">
                         <div class="col">&nbsp;</div>
                     </div>
 
-                    <div class="row ">
+                    <div class="form-group row ">
 
-                        <div class="col-xs-12 offset-sm-1 col-sm-5 configurador configuradorprice"><h2>Price: {{ printedValue(total) }} €</h2></div>
-                        <div class="col-xs-12 col-sm-5 configurador configuradorprice"><h2>Cost: {{ printedValue(cost) }} €</h2></div>
+                        <div class="offset-xs-1 col-10 offset-sm-1 col-sm-5 configurador configuradorprice"><h2>Price: {{ printedValue(total) }} €</h2></div>
+                        <div class="offset-xs-1 col-10 col-sm-5 configurador configuradorprice"><h2>Cost: {{ printedValue(cost) }} €</h2></div>
 
                     </div>
                 
@@ -174,6 +198,8 @@
 <script>
     import Slick from 'vue-slick'
     import {Api} from '../services/Api.js'
+    import FormDataPost from '../services/upload.js'
+    import PictureInput from 'vue-picture-input'
 
     //Components
     import Message from './Message.vue'
@@ -190,7 +216,8 @@ export default {
     props: ['computer', 'action', 'ModalCounter'],
     components: {
         Message,
-        Slick
+        Slick,
+        PictureInput
     },
     data: function() {
         return {
@@ -202,6 +229,7 @@ export default {
             price: 0,
             netprice: 0,
             image: '',
+            imagename: '',
 
             datacomputer: [],
 
@@ -209,24 +237,35 @@ export default {
 
             computercase: [],
             computercaseIndex: 0,
+            computercaseUpdated: false,
 
             processors: [],
             processorsIndex: 0,
+            processorsUpdated: false,
 
             ram: [],
             ramIndex: 0,
+            ramUpdated: false,
 
             graphic: [],
             graphicIndex: 0,
+            graphicUpdated: false,
 
             disk: [],
             diskIndex: 0,
+            diskUpdated: false,
 
             fan: [],
             fanIndex: 0,
+            fanUpdated: false,
 
             power: [],
             powerIndex: 0,
+            powerUpdated: false,
+
+            //size
+            windowHeight: window.height-100,
+            windowWidth: window.width-50,
 
             //slick
             slickOptions: {
@@ -247,45 +286,84 @@ export default {
         printedValue: function(value) {
             return Number(value).toFixed(2)     
         },
+        savedImage: function(image) {
+            if (image && image != '') {
+                return '/img/component/' + image
+            }
+            else {
+                return ''
+            }
+        },
+        onChanged() {
+            console.log("New picture loaded");
+            
+            if (this.$refs.pictureInput.file) {
+                this.image = this.$refs.pictureInput.file
+                this.imagename = this.image.name
+            } else {
+                console.log("Old browser. No support for Filereader API")
+            }
+        },
+        onRemoved() {
+            this.image = ''
+            this.imagename = ''
+        },
+        attemptUpload() {
+            if (this.image){
+            FormDataPost(this.image, this.image.name)
+                .then(response=>{
+                    if (response.data.success){
+                        this.image = ''
+                        console.log("Image uploaded successfully ✨")
+                    }
+                })
+                .catch(err=>{
+                    console.error(err)
+                });
+            }
+        },
         updateComputer: function() {
-             Api.put('computer/index.php',
-                {
-                    'access_token': this.$store.state.access_token,
-                    'method': 'updComputer',
-                    'id': this.id,
-                    'description': this.description,
-                    'longdesc': this.longdesc,
-                    'price': this.price,
-                    'netprice': this.netprice,
-                    'image': this.image
-                }).then(response => {
-                                            
-                    this.message.info = ''
-                    this.message.error = ''
-                    if (typeof response.data.success != 'undefined') {
-                        switch (response.data.success) {
-                            case 0:
-                                this.message.info = response.data.message
+            Api.put('computer/index.php',
+            {
+                'access_token': this.$store.state.access_token,
+                'method': 'updComputer',
+                'id': this.id,
+                'description': this.description,
+                'longdesc': this.longdesc,
+                'price': this.price,
+                'netprice': this.netprice,
+                'image': this.imagename
+            }).then(response => {
+                                        
+                this.message.info = ''
+                this.message.error = ''
+                if (typeof response.data.success != 'undefined') {
 
-                                this.updConfiguration(this.id)
+                    this.attemptUpload()
 
-                                break
-                            case 1:
-                                this.message.error = response.data.message
-                                break
-                        }
+                    switch (response.data.success) {
+                        case 0:
+                            this.message.info = response.data.message
 
-                    } else {
-                        this.message.error = 'Aconteceu um erro na comunicação com os serviços!'
+                            this.updConfiguration(this.id)
+
+                            break
+                        case 1:
+                            this.message.error = response.data.message
+                            break
                     }
 
-                    this.count++                      
+                } else {
+                    this.message.error = 'Aconteceu um erro na comunicação com os serviços!'
+                }
 
-                }).catch(error => {
-                    if (error.response) {
-                        alert(error.response)
-                    }
-                })         
+                this.count++                      
+
+            }).catch(error => {
+                if (error.response) {
+                    alert(error.response)
+                }
+            })         
         },
         insertComputer: function() {
             //inserir cada elemento da configuração
@@ -306,13 +384,16 @@ export default {
                     'longdesc': this.longdesc,
                     'price': this.price,
                     'netprice': this.netprice,
-                    'image': this.image,
+                    'image': this.imagename,
                     'configuration': this.dataconfiguration
                 }).then(response => {
                     
                     this.message.info = ''
                     this.message.error = ''
                     if (typeof response.data.success != 'undefined') {
+
+                        this.attemptUpload()
+
                         switch (response.data.success) {
                             case 0:
                                 this.message.info = response.data.message
@@ -420,6 +501,7 @@ export default {
                                   this.computercase.push(response.data[i])
                                 }
                                 this.reInit_case()
+                                this.computercaseUpdated = true
                         
                             break
 
@@ -429,6 +511,7 @@ export default {
                                   this.processors.push(response.data[i])
                                 }
                                 this.reInit_proc()
+                                this.processorsUpdated = true
                         
                             break
 
@@ -438,6 +521,7 @@ export default {
                                   this.graphic.push(response.data[i])
                                 }
                                 this.reInit_gpu()
+                                this.graphicUpdated = true                                
                                 
                             break
 
@@ -447,6 +531,7 @@ export default {
                                   this.disk.push(response.data[i])
                                 }
                                 this.reInit_disk()
+                                this.diskUpdated = true
                                 
                             break
 
@@ -456,6 +541,7 @@ export default {
                                   this.ram.push(response.data[i])
                                 }
                                 this.reInit_ram()
+                                this.ramUpdated = true                                
                                 
                             break
 
@@ -465,6 +551,7 @@ export default {
                                   this.fan.push(response.data[i])
                                 }
                                 this.reInit_fan()
+                                this.fanUpdated = true
                                 
                             break
 
@@ -474,6 +561,7 @@ export default {
                                   this.power.push(response.data[i])
                                 }
                                 this.reInit_power()
+                                this.powerUpdated = true
                                 
                             break
 
@@ -499,6 +587,8 @@ export default {
                 .then(response => {
                     
                     this.dataconfiguration = response.data
+
+
                     for (let i=0; i < this.dataconfiguration.length; i++) {
                         switch (this.dataconfiguration[i].type) {
                             case 'Caixa':
@@ -679,29 +769,61 @@ export default {
             this.longdesc = this.computer.longdesc
             this.price = this.computer.price
             this.netprice = this.computer.netprice
-            this.image = this.computer.image
+            this.imagename = this.computer.image
           }
+        },
+        windowWidth(newWidth, oldWidth) {
+            console.log(`it changed to ${newWidth} from ${oldWidth}`)
+        },
+        windowHeight(newHeight, oldHeight) {
+            console.log(`it changed to ${newHeight} from ${oldHeight}`)
+        },
+        isLoadable(newValue, oldvalue) {
+            if (newValue) {
+                this.getComputerDetails(this.id)
+            }
         }
     },
     mounted: function() {
-        if (this.action == 'update') {
-            this.id = this.computer.id
-            this.description = this.computer.description
-            this.longdesc = this.computer.longdesc
-            this.price = this.computer.price
-            this.netprice = this.computer.netprice
-            this.image = this.computer.image
+        
+        this.$store.dispatch("validate")
+
+        if (this.isAuthenticate && this.isAdmin ) {
+
+            if (this.action == 'update') {
+                this.id = this.computer.id
+                this.description = this.computer.description
+                this.longdesc = this.computer.longdesc
+                this.price = this.computer.price
+                this.netprice = this.computer.netprice
+                this.imagename = this.computer.image
+            }
+
+            this.getComponents('Caixa')
+            this.getComponents('Cpu')
+            this.getComponents('PG')
+            this.getComponents('Disco')
+            this.getComponents('RAM')
+            this.getComponents('Fan')
+            this.getComponents('Power')
+
+            
+
+            this.$nextTick(() => {
+
+                this.windowHeight = window.innerHeight - 200
+                this.windowWidth = window.innerWidth - 50
+
+
+                window.addEventListener('resize', () => {
+                    this.windowHeight = window.innerHeight - 200
+                    this.windowWidth = window.innerWidth - 50
+                });
+            })
+        
+        } else {
+            this.$router.push({name: 'Login'})
         }
-
-        this.getComponents('Caixa')
-        this.getComponents('Cpu')
-        this.getComponents('PG')
-        this.getComponents('Disco')
-        this.getComponents('RAM')
-        this.getComponents('Fan')
-        this.getComponents('Power')
-
-        this.getComputerDetails(this.id)
     },
     computed: {
         cost: function() {
@@ -723,6 +845,19 @@ export default {
             
             return classResourceService.calculateNetPrice(this.cost).toFixed(2)
             //return classResourceService.calculateNetPrice(total).toFixed(2) + " €"
+        },
+        isAuthenticate() { 
+            return this.$store.getters.authenticate;
+        },
+        isAdmin() {
+            return this.$store.getters.admin;
+        },
+        isLoadable: function() {
+            if (this.computercaseUpdated && this.processorsUpdated && this.ramUpdated && this.graphicUpdated && this.diskUpdated && this.fanUpdated && this.powerUpdated) {
+                return true
+            } else {
+                return false
+            }
         }
     }
 }

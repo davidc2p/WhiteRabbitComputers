@@ -9,132 +9,141 @@
 
   <Message id="Message" v-bind:msg="message" :key="count" />
 
-  <!-- linha sem nada -->
-  <div id="configuration" class="row">
-      <div class="col">&nbsp;</div>
-  </div>
-  
-  <div class="row">
-      <div class="col offset-1"><h3>Escolher uma configuração:</h3></div>
-  </div>
-  
-  <div class="row">
-      <div class="offset-1 col-2 configurador">Configuração</div>
-      <div class="col-7 configurador">
-        <slick id="confSelector" ref="slick_conf" :options="slickOptions" @afterChange="handleAfterChange_conf" @beforeChange="handleBeforeChange_conf" style="z-index: 10;">
-           <div v-for="c in computer"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + c.image" :alt="c.description">{{ c.description }}</a></div>       
-        </slick>
-      </div>
-      <div class="col-1 configurador">&nbsp;</div>
-  </div>
-
-  <div class="row">
-      <div class="col">&nbsp;</div>
-  </div>
-
-  <div class="row">
-      <div class="col offset-1"><h3>ou</h3></div>
-  </div>
-
-  <div class="row">
-      <div class="col offset-1"><h3>Escolher por peças:</h3></div>
-  </div>
-  
-  <div class="row">
-    <div class="col-10 offset-1 alert alert-warning" role="alert">
-      A seleção de uma configuração por peças deverá previamente ser validada pela nossa equipa técnica.
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="offset-1 col-2 configurador">Caixa</div>
-    <div class="col-7 configurador">
-      <slick id="caseSelector" ref="slick_case" :options="slickOptions" @afterChange="handleAfterChange_case" style="z-index: 10;">
-        <div v-for="d in computercase"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
-      </slick>        
-    </div>
-    <div class="col-1 configurador">&nbsp;</div>
-  </div>
-
-  <div class="row">
-    <div class="offset-1 col-2 configurador">Processador</div>
-    <div class="col-7 configurador">
-      <slick id="processorSelector" ref="slick_proc" :options="slickOptions" @afterChange="handleAfterChange_proc" style="z-index: 10;">
-        <div v-for="d in processors"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
-      </slick>        
-    </div>
-    <div class="col-1 configurador">&nbsp;</div>
-  </div>
-
-  <div class="row">
-    <div class="offset-1 col-2 configurador">RAM</div>
-    <div class="col-7 configurador">
-      <slick id="ramSelector" ref="slick_ram" :options="slickOptions" @afterChange="handleAfterChange_ram" style="z-index: 10;">
-        <div v-for="d in ram"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
-      </slick>        
-    </div>
-    <div class="col-1 configurador">&nbsp;</div>
-  </div>
-
-  <div class="row">
-    <div class="offset-1 col-2 configurador">Placa gráfica</div>
-    <div class="col-7 configurador">
-      <slick id="gpuSelector" ref="slick_gpu" :options="slickOptions" @afterChange="handleAfterChange_gpu" style="z-index: 10;">
-        <div v-for="d in graphic"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
-      </slick>        
-    </div>
-    <div class="col-1 configurador">&nbsp;</div>
-  </div>
-
-  <div class="row">
-    <div class="offset-1 col-2 configurador">Disco</div>
-    <div class="col-7 configurador">
-      <slick id="diskSelector" ref="slick_disk" :options="slickOptions" @afterChange="handleAfterChange_disk" style="z-index: 10;">
-        <div v-for="d in disk"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
-      </slick>        
-    </div>
-    <div class="col-1 configurador">&nbsp;</div>
-  </div>
-
-  <div class="row">
-    <div class="offset-1 col-2 configurador">Cooler</div>
-    <div class="col-7 configurador">
-      <slick id="fanSelector" ref="slick_fan" :options="slickOptions" @afterChange="handleAfterChange_fan" style="z-index: 10;">
-        <div v-for="d in fan"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
-      </slick>        
-    </div>
-    <div class="col-1 configurador">&nbsp;</div>
-  </div>
-
-  <div class="row">
-    <div class="offset-1 col-2 configurador">Alimentação</div>
-    <div class="col-7 configurador">
-      <slick id="powerSelector" ref="slick_power" :options="slickOptions" @afterChange="handleAfterChange_power" style="z-index: 10;">
-        <div v-for="d in power"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
-      </slick>        
-    </div>
-    <div class="col-1 configurador">&nbsp;</div>
-  </div>
     <!-- linha sem nada -->
     <div id="configuration" class="row">
         <div class="col">&nbsp;</div>
-    </div>
-
-    <div class="row ">
-
-        <div class="col-10 offset-1 configurador configuradorprice"><h2>Total {{ total }}</h2></div>
-
     </div>
     
-    <!-- linha sem nada -->
-    <div id="configuration" class="row">
-        <div class="col">&nbsp;</div>
+    <div class="row">
+        <div class="col-12 offset-lg-1 col-lg-7">
+
+            <div class="row">
+                <div class="col offset-1"><h3>Escolher uma configuração:</h3></div>
+            </div>
+            
+            <div class="row">
+                <div class="offset-1 col-2 configurador">Configuração</div>
+                <div class="col-7 configurador">
+                    <slick id="confSelector" ref="slick_conf" :options="slickOptions" @afterChange="handleAfterChange_conf" @beforeChange="handleBeforeChange_conf" style="z-index: 10;">
+                    <div v-for="(c, index) in computer" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + c.image" :alt="c.description">{{ c.description }}</a></div>       
+                    </slick>
+                </div>
+                <div class="col-1 configurador">&nbsp;</div>
+            </div>
+
+            <div class="row">
+                <div class="col">&nbsp;</div>
+            </div>
+
+            <div class="row">
+                <div class="col offset-1"><h3>ou</h3></div>
+            </div>
+
+            <div class="row">
+                <div class="col offset-1"><h3>Escolher por peças:</h3></div>
+            </div>
+            
+            <div class="row">
+                <div class="col-10 offset-1 alert alert-warning" role="alert">
+                A seleção de uma configuração por peças deverá previamente ser validada pela nossa equipa técnica.
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="offset-1 col-2 configurador">Caixa</div>
+                <div class="col-7 configurador">
+                <slick id="caseSelector" ref="slick_case" :options="slickOptions" @afterChange="handleAfterChange_case" style="z-index: 10;">
+                    <div v-for="(d, index) in computercase" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
+                </slick>        
+                </div>
+                <div class="col-1 configurador">&nbsp;</div>
+            </div>
+
+            <div class="row">
+                <div class="offset-1 col-2 configurador">Processador</div>
+                <div class="col-7 configurador">
+                <slick id="processorSelector" ref="slick_proc" :options="slickOptions" @afterChange="handleAfterChange_proc" style="z-index: 10;">
+                    <div v-for="(d, index) in processors" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
+                </slick>        
+                </div>
+                <div class="col-1 configurador">&nbsp;</div>
+            </div>
+
+            <div class="row">
+                <div class="offset-1 col-2 configurador">RAM</div>
+                <div class="col-7 configurador">
+                <slick id="ramSelector" ref="slick_ram" :options="slickOptions" @afterChange="handleAfterChange_ram" style="z-index: 10;">
+                    <div v-for="(d, index) in ram" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
+                </slick>        
+                </div>
+                <div class="col-1 configurador">&nbsp;</div>
+            </div>
+
+            <div class="row">
+                <div class="offset-1 col-2 configurador">Placa gráfica</div>
+                <div class="col-7 configurador">
+                <slick id="gpuSelector" ref="slick_gpu" :options="slickOptions" @afterChange="handleAfterChange_gpu" style="z-index: 10;">
+                    <div v-for="(d, index) in graphic" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
+                </slick>        
+                </div>
+                <div class="col-1 configurador">&nbsp;</div>
+            </div>
+
+            <div class="row">
+                <div class="offset-1 col-2 configurador">Disco</div>
+                <div class="col-7 configurador">
+                <slick id="diskSelector" ref="slick_disk" :options="slickOptions" @afterChange="handleAfterChange_disk" style="z-index: 10;">
+                    <div v-for="(d, index) in disk" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
+                </slick>        
+                </div>
+                <div class="col-1 configurador">&nbsp;</div>
+            </div>
+
+            <div class="row">
+                <div class="offset-1 col-2 configurador">Cooler</div>
+                <div class="col-7 configurador">
+                <slick id="fanSelector" ref="slick_fan" :options="slickOptions" @afterChange="handleAfterChange_fan" style="z-index: 10;">
+                    <div v-for="(d, index) in fan" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
+                </slick>        
+                </div>
+                <div class="col-1 configurador">&nbsp;</div>
+            </div>
+
+            <div class="row">
+                <div class="offset-1 col-2 configurador">Alimentação</div>
+                <div class="col-7 configurador">
+                <slick id="powerSelector" ref="slick_power" :options="slickOptions" @afterChange="handleAfterChange_power" style="z-index: 10;">
+                    <div v-for="(d, index) in power" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
+                </slick>        
+                </div>
+                <div class="col-1 configurador">&nbsp;</div>
+            </div>
+
+            <!-- linha sem nada -->
+            <div class="d-lg-none" v-if="total > 0">
+                <div id="configuration" class="row">
+                    <div class="col">&nbsp;</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-10 offset-1 configurador configuradorprice"><h2>Total {{ total | currency('€') }}</h2></div>
+                </div>
+            </div>
+            <!-- linha sem nada -->
+            <div id="configuration" class="row">
+                <div class="col">&nbsp;</div>
+            </div>
+        </div>
+        <div class="d-none d-lg-block col-lg-3" v-if="total > 0">
+            <div class="col"><h3>&nbsp;</h3></div>
+            <div class="col configurador configuradorprice"><h2>Total {{ total | currency('€') }}</h2></div>
+        </div>
     </div>
 
-    <div class="row justify-content-end">
-        <div class="col-2 offset-1">
+    <div class="row">
+        <div class="col-11 offset-lg-1 col-lg-7">
         <!-- path:'/Encomendar/1', -->
-            <button class="btn btn-warning" tag="button" v-on:click="routing">Encomendar</button>
+            <button class="btn btn-warning float-right" tag="button" v-on:click="routing">Encomendar</button>
             <!--  <router-link class="btn btn-warning mt-auto" tag="button" :to="{ name: 'Encomendar', params: { computerId: 0, computerData: { age: 37, name: 'Patrick'} } }">Encomendar</router-link> -->
         </div>
     </div>
@@ -167,6 +176,18 @@ export default {
         Message,
         Wave,
         Slick
+    },
+    head: {
+        title: {
+            inner: 'Venda de computadores desktop - Escolhe a sua configuração',
+            separator: ' ',
+            complement: ''
+        },
+        // Meta tags
+        meta: [
+            { name: 'application-name', content: 'WhiteRabbit Computers' },
+            { name: 'description', content: 'Montamos o seu computador a sua medida. Escolhe a sua configuração ou crie uma nova conforme as suas necessidades escolhendo os componentes que deseja. Caso não existe um componente, não hesite em contactar-nos.', id: 'desc' }
+        ]
     },
     data: function() {
         return {
@@ -632,10 +653,6 @@ export default {
     },
     mounted: function() {
 
-        document.title = 'Venda de computadores desktop - Escolhe a sua configuração'
-        document.description = 'Montamos o seu computador a sua medida. Escolhe a sua configuração ou crie uma nova conforme as suas necessidades.'
-
-
         this.$store.dispatch("validate")
 
         this.getComputers()
@@ -668,7 +685,7 @@ export default {
                 }
             }
             //return classResourceService.calculateNetPrice(total).toFixed(2) + ' ('+total+')'
-            return classResourceService.calculateNetPrice(total).toFixed(2) + " €"
+            return classResourceService.calculateNetPrice(total)
         },
         isAuthenticate() { 
             return this.$store.getters.authenticate;
