@@ -34,7 +34,7 @@ if(empty($_POST)) {
 if (isset($input))
 {
 	//Dados do computador
-  $orderinfo->computerid = filter_var($input['orderinfo']['computerid'], FILTER_SANITIZE_NUMBER_INT);	
+    $orderinfo->computerid = filter_var($input['orderinfo']['computerid'], FILTER_SANITIZE_NUMBER_INT);	
 	$orderinfo->computerdesc = filter_var($input['orderinfo']['computerdesc'], FILTER_SANITIZE_STRING);
 	$orderinfo->computercost = filter_var($input['orderinfo']['computercost'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);	
 	$orderinfo->computerprice = filter_var($input['orderinfo']['computerprice'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);	
@@ -42,17 +42,17 @@ if (isset($input))
 	$orderinfo->computervatprice = filter_var($input['orderinfo']['computervatprice'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);	
 	$orderinfo->computertotalprice = filter_var($input['orderinfo']['computertotalprice'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);	
 
-  $orderinfo->email = filter_var($input['orderinfo']['customer']['email'], FILTER_VALIDATE_EMAIL);
-  $orderinfo->taxnumber = filter_var($input['orderinfo']['customer']['taxnumber'], FILTER_SANITIZE_STRING);
-  $orderinfo->phonenumber = filter_var($input['orderinfo']['customer']['phonenumber'], FILTER_SANITIZE_STRING);
-  $orderinfo->deliveryname = filter_var($input['orderinfo']['customer']['delivery']['name'], FILTER_SANITIZE_STRING);
-  $orderinfo->deliverystreet = filter_var($input['orderinfo']['customer']['delivery']['address'], FILTER_SANITIZE_STRING);
-  $orderinfo->deliveryzipcode = filter_var($input['orderinfo']['customer']['delivery']['zip'], FILTER_SANITIZE_STRING);
-  $orderinfo->deliverycity = filter_var($input['orderinfo']['customer']['delivery']['city'], FILTER_SANITIZE_STRING);
-  $orderinfo->invoicename = filter_var($input['orderinfo']['customer']['invoice']['name'], FILTER_SANITIZE_STRING);
-  $orderinfo->invoicestreet = filter_var($input['orderinfo']['customer']['invoice']['address'], FILTER_SANITIZE_STRING);
-  $orderinfo->invoicezipcode = filter_var($input['orderinfo']['customer']['invoice']['zip'], FILTER_SANITIZE_STRING);
-  $orderinfo->invoicecity = filter_var($input['orderinfo']['customer']['invoice']['city'], FILTER_SANITIZE_STRING);
+    $orderinfo->email = filter_var($input['orderinfo']['customer']['email'], FILTER_VALIDATE_EMAIL);
+    $orderinfo->taxnumber = filter_var($input['orderinfo']['customer']['taxnumber'], FILTER_SANITIZE_STRING);
+    $orderinfo->phonenumber = filter_var($input['orderinfo']['customer']['phonenumber'], FILTER_SANITIZE_STRING);
+    $orderinfo->deliveryname = filter_var($input['orderinfo']['customer']['delivery']['name'], FILTER_SANITIZE_STRING);
+    $orderinfo->deliverystreet = filter_var($input['orderinfo']['customer']['delivery']['address'], FILTER_SANITIZE_STRING);
+    $orderinfo->deliveryzipcode = filter_var($input['orderinfo']['customer']['delivery']['zip'], FILTER_SANITIZE_STRING);
+    $orderinfo->deliverycity = filter_var($input['orderinfo']['customer']['delivery']['city'], FILTER_SANITIZE_STRING);
+    $orderinfo->invoicename = filter_var($input['orderinfo']['customer']['invoice']['name'], FILTER_SANITIZE_STRING);
+    $orderinfo->invoicestreet = filter_var($input['orderinfo']['customer']['invoice']['address'], FILTER_SANITIZE_STRING);
+    $orderinfo->invoicezipcode = filter_var($input['orderinfo']['customer']['invoice']['zip'], FILTER_SANITIZE_STRING);
+    $orderinfo->invoicecity = filter_var($input['orderinfo']['customer']['invoice']['city'], FILTER_SANITIZE_STRING);
   
 	$orderinfo->setOrderInfo();
 
@@ -310,8 +310,13 @@ if (isset($input))
         $response["message"] = "Erro no envio do email.";
     } else {
         $response["success"] = 0;
-        $response["message"] = "Erro no envio do email.";
+        $response["message"] = "Encomenda registada com sucesso.";
     }
+
+// $response["success"] = 0;
+// $response["message"] = "Encomenda registada com sucesso.";
+
+
   }
 }
 else

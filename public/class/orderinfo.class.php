@@ -71,11 +71,11 @@ class OrderInfo
 		$ret = array();
 		
 		try {
-			//fetching all drivers of a company
+			//fetching a specific order from its id
 			$query=$this->con->prepare("SELECT *
                                   FROM orderinfo 
                                   where id = :orderinfoid");
-      $query->bindParam(':orderinfoid', $this->orderinfoid);
+            $query->bindParam(':orderinfoid', $this->orderinfoid);
 			$query->execute();
 		
 			$ms = $query->fetch(PDO::FETCH_ASSOC);
@@ -196,7 +196,7 @@ class OrderInfo
                       ON oicount.email = oi.email
                       WHERE oi.email = :email
                       AND oi.status < 7
-                      ORDER BY oi.status, oi.creationdate desc
+                      ORDER BY oi.status, oi.creationdate desc, oi.id 
                       limit :offset, :itemsperpage");
         $query->bindParam(':email', $email);
         $query->bindParam(':offset', $offset, PDO::PARAM_INT);
@@ -207,7 +207,7 @@ class OrderInfo
                       INNER JOIN (SELECT count(*) as totalitems FROM orderinfo) oicount
                       ON 1=1
                       WHERE oi.status < 7
-                      ORDER BY oi.status, oi.creationdate desc
+                      ORDER BY oi.status, oi.creationdate desc, oi.id 
                       limit :offset, :itemsperpage");
         $query->bindParam(':offset', $offset, PDO::PARAM_INT);
         $query->bindParam(':itemsperpage', $itemsperpage, PDO::PARAM_INT);

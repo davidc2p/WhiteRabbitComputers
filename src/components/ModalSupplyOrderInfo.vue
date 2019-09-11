@@ -17,7 +17,7 @@
                 <!-- Modal Body -->
                 <div class="modal-body" style="margin: 20px 0; max-height: 400px; overflow-y: auto;">
                     <div class="form-group">
-                    <Message id="Message" v-bind:msg="message" :key="count" />
+                    <Message id="Message" v-bind:msg="message" />
                     </div>
                     <div class="row">
                         <div class="col-12">
@@ -76,6 +76,9 @@
 
     const classResourceService = new ClassResource()
 
+    //Vuex
+    import { mapGetters, mapActions } from 'vuex'
+
 export default {
     name: 'ModalSupplyOrderInfo',
     props: ['componentes', 'origin', 'orderid'],
@@ -93,14 +96,13 @@ export default {
             message: {
                 info: '',
                 error: ''
-            },
-
-            count: 1
-        
+            }
         }
     },
     methods: {
-        
+        ...mapActions({
+            validate: 'auth/validate'
+        })        
     },
     watch: {
         componente: function() {
@@ -108,7 +110,7 @@ export default {
         }
     },
     mounted: function() {
-        this.$store.dispatch("validate")
+        this.validate()
 
         if (this.isAuthenticate && this.isAdmin ) {
 
@@ -119,12 +121,7 @@ export default {
         }
     },
     computed: {
-        isAuthenticate() { 
-            return this.$store.getters.authenticate;
-        },
-        isAdmin() {
-            return this.$store.getters.admin;
-        }
+        ...mapGetters({isAuthenticate: 'auth/authenticate', isAdmin: 'auth/admin'})
     } 
 }
 </script>

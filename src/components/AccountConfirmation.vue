@@ -7,7 +7,7 @@
       <div class="col">&nbsp;</div>
   </div>
 
-  <Message id="Message" v-bind:msg="message" :key="count" />
+  <Message id="Message" v-bind:msg="message" />
 
   <!-- linha sem nada -->
   <div class="row">
@@ -107,10 +107,7 @@ export default {
             titles: {
                 head: 'Os desktops mais baratos do mercado',
                 desc: 'Confirme a sua conta'
-            },
-
-            count: 1,
-            count2: 1,
+            }
         }
     },
     methods: {
@@ -132,7 +129,6 @@ export default {
                         const pageElement = document.getElementById("message")
                         classResourceService.scrollToElement(pageElement)
 
-                        this.count ++
                     } else {
 
                          // Encrypt 3 second method with iv server generated
@@ -170,7 +166,6 @@ export default {
                                     const pageElement = document.getElementById("message")
                                     classResourceService.scrollToElement(pageElement)
 
-                                    this.count ++
                                 }
                               }).catch(error => {
                                   if (error.response) {
@@ -187,7 +182,6 @@ export default {
                         const pageElement = document.getElementById("message")
                         classResourceService.scrollToElement(pageElement)
 
-                        this.count ++
                     }
                 }).catch(error => {
                         if (error.response) {

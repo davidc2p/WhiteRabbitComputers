@@ -12,7 +12,7 @@
         <div class="col">&nbsp;</div>
     </div>
 
-    <Message id="Message" v-bind:msg="message" :key="count" />
+    <Message id="Message" v-bind:msg="message" />
 
     <!-- linha sem nada -->
     <div class="row">
@@ -93,7 +93,7 @@
                     <div class="row">
                         <div class="col-2">{{ oi.id }}</div>
                         <div class="col-4">{{ oi.computerdesc }}</div>
-                        <div class="col-2">{{ parseInt(oi.computertotalprice, 10).toFixed(2) }}</div>
+                        <div class="col-2">{{ Number(oi.computertotalprice).toFixed(2) }}</div>
                         <div class="col-3">{{ oi.creationdate}}</div>
                         <div class="col-1">
                             <img src="img/Forklift-icon.png" id="btnsupplyorder" v-on:click="getOrderInfoDetails(oi.id)" style="cursor: pointer;" />
@@ -110,7 +110,7 @@
                 <div class="col">
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
-                            <li v-for="(p, index) in dataPaginator" :key="index" :data-id="p.id" :class="[setActive(p.active), 'page-item']"><a class="page-link" style="cursor: pointer;" v-on:click="getOrderInfo($store.state.email, p.id)">{{p.symbol}}</a></li>
+                            <li v-for="(p, index) in dataPaginator" :key="index" :data-id="p.id" :class="[setActive(p.active), 'page-item']"><a class="page-link" style="cursor: pointer;" v-on:click="getOrderInfo(email, p.id)">{{p.symbol}}</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -134,6 +134,9 @@
     import ClassResource from '../services/ClassResource.js'
 
     const classResourceService = new ClassResource()
+    
+    //Vuex
+    import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
     name: 'Orders',
@@ -183,11 +186,13 @@ export default {
                 desc: 'Montamos o seu computador a sua medida'
             },
 
-            showModalSupplyOrderInfo: false,
-            count: 1
+            showModalSupplyOrderInfo: false
         }
     },
     methods: {
+        ...mapActions({
+            validate: 'auth/validate'
+        }),        
         setActive: function(isActive) {
             return isActive ? 'active' : ''
         },
@@ -195,7 +200,7 @@ export default {
             
             this.pagenumber = pagenumber || 1
 
-            let url = 'orderinfo/index.php?method=getAllOrderInfoByEmail&access_token=' + this.$store.state.access_token + '&email='+email+'&pagenumber=' + this.pagenumber + '&itemsperpage=' + this.itemsperpage 
+            let url = 'orderinfo/index.php?method=getAllOrderInfoByEmail&access_token=' + this.access_token + '&email='+email+'&pagenumber=' + this.pagenumber + '&itemsperpage=' + this.itemsperpage 
 
             Api.get(url)
                 .then(response => {
@@ -248,7 +253,6 @@ export default {
                         this.message.info = ''
                         this.message.error = ''
 
-                        this.count++
                     }
 
                 }).catch(error => {
@@ -259,7 +263,7 @@ export default {
         },
         getOrderInfoDetails: function(OrderInfoID) {
             
-            Api.get('orderinfo/index.php?method=getOrderInfoDetails&access_token='+this.$store.state.access_token+'&orderinfoid='+OrderInfoID)
+            Api.get('orderinfo/index.php?method=getOrderInfoDetails&access_token='+this.access_token+'&orderinfoid='+OrderInfoID)
                 .then(response => {
 
                     if (response.data.success !== undefined) {
@@ -275,7 +279,7 @@ export default {
                                 this.message.error = response.data.message
                                 break
                         }
-                        this.count++
+
                     } else {
                         this.componentes = response.data
                         this.OrderId = OrderInfoID
@@ -291,25 +295,26 @@ export default {
     },
     mounted: function() {
 
-        this.$store.dispatch("validate")
+        this.validate()
 
         if (this.isAuthenticate ) {
 
             this.pagenumber = 1
 
-            this.getOrderInfo(this.$store.state.email, 1)
+            this.getOrderInfo(this.email, 1)
     
         } else {
             this.$router.push({name: 'Login'})
         }
     },
     computed: {
-        isAuthenticate() { 
-            return this.$store.getters.authenticate;
-        },
-        isAdmin() {
-            return this.$store.getters.admin;
-        }
+        ...mapState({ 
+            email: state => state.auth.email,
+            access_token: state => state.auth.access_token,
+            name: state => state.auth.name,
+            uid: state => state.auth.uid
+        }),        
+        ...mapGetters({isAuthenticate: 'auth/authenticate', isAdmin: 'auth/admin'})
     } 
 } 
 </script>

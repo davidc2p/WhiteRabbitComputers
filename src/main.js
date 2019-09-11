@@ -22,7 +22,7 @@ global.$ = jQuery
 import './assets/css/styles.css'
 
 //Vuex store
-import store from './store'
+import store from './store/store'
 
 //Filters
 import currencyFilter from './shared/currency-filter';

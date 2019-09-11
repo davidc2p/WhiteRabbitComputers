@@ -23,12 +23,7 @@ export default {
     props: ['msg'],
     data: function() {
         return {
-            mes: {
-                type: this.msg.type,
-                email: this.msg.email,
-                info: this.msg.info,
-                error: this.msg.error
-            }
+            
         }
     },
     methods: {
@@ -60,12 +55,26 @@ export default {
                 })
         }
     },
-    watch: {
-        msg: function(newdata) {
-            this.mes.type = newdata.type
-            this.mes.email = newdata.email
-            this.mes.error = newdata.error
-            this.mes.info = newdata.info
+    computed: {
+        // msg: {
+        //     // the callback will be called immediately after the start of the observation
+        //     immediate: true, 
+        //     handler (val, oldVal) {
+        //         this.mes.type = val.type
+        //         this.mes.email = val.email
+        //         this.mes.error = val.error
+        //         this.mes.info = val.info
+        //     }
+        // }
+        //better use a computed property than a watcher
+        mes() {
+            let mes = {
+                type: this.msg.type,
+                email: this.msg.email,
+                info: this.msg.info,
+                error: this.msg.error
+            }
+            return mes
         }
     }
 }

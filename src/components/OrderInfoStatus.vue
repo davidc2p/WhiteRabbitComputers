@@ -6,7 +6,7 @@
         <div class="col">&nbsp;</div>
     </div>
 
-    <Message id="Message" v-bind:msg="message" :key="count" />
+    <Message id="Message" v-bind:msg="message" />
 
     <!-- linha sem nada -->
     <div class="row">
@@ -16,15 +16,15 @@
     <div class="row">
         <div class="col-12 col-md-3">
             <div class="btn-group-vertical">
-                <button class="btn btn-dark" :class="{'active': status=='All'}" v-on:click="getOrderInfo('All',1)">Todas</button>
-                <button class="btn btn-dark" :class="{'active': status=='0'}" v-on:click="getOrderInfo('0',1)">Recebidas</button>
-                <button class="btn btn-dark" :class="{'active': status=='1'}" v-on:click="getOrderInfo('1',1)">Disponibilidades</button>
-                <button class="btn btn-dark" :class="{'active': status=='2'}" v-on:click="getOrderInfo('2',1)">Faltas</button>
-                <button class="btn btn-dark" :class="{'active': status=='3'}" v-on:click="getOrderInfo('3',1)">Pagamento</button>
-                <button class="btn btn-dark" :class="{'active': status=='4'}" v-on:click="getOrderInfo('4',1)">Fornecedor</button>
-                <button class="btn btn-dark" :class="{'active': status=='5'}" v-on:click="getOrderInfo('5',1)">Assemblagem</button>
-                <button class="btn btn-dark" :class="{'active': status=='6'}" v-on:click="getOrderInfo('6',1)">Enviados</button>
-                <button class="btn btn-dark" :class="{'active': status=='7'}" v-on:click="getOrderInfo('7',1)">Cancelados</button>
+                <button class="btn btn-dark" :class="{'active': status=='All'}" v-on:click="getOrderInfo('All',1)">Todas <span class="badge badge-primary">{{totalOrders}}</span></button>
+                <button class="btn btn-dark" :class="{'active': status=='0'}" v-on:click="getOrderInfo('0',1)">Recebidas <span class="badge badge-light">{{allOrders[0]}}</span></button>
+                <button class="btn btn-dark" :class="{'active': status=='1'}" v-on:click="getOrderInfo('1',1)">Disponibilidades <span class="badge badge-light">{{allOrders[1]}}</span></button>
+                <button class="btn btn-dark" :class="{'active': status=='2'}" v-on:click="getOrderInfo('2',1)">Faltas <span class="badge badge-light">{{allOrders[2]}}</span></button>
+                <button class="btn btn-dark" :class="{'active': status=='3'}" v-on:click="getOrderInfo('3',1)">Pagamento <span class="badge badge-light">{{allOrders[3]}}</span></button>
+                <button class="btn btn-dark" :class="{'active': status=='4'}" v-on:click="getOrderInfo('4',1)">Fornecedor <span class="badge badge-light">{{allOrders[4]}}</span></button>
+                <button class="btn btn-dark" :class="{'active': status=='5'}" v-on:click="getOrderInfo('5',1)">Assemblagem <span class="badge badge-light">{{allOrders[5]}}</span></button>
+                <button class="btn btn-dark" :class="{'active': status=='6'}" v-on:click="getOrderInfo('6',1)">Enviados <span class="badge badge-light">{{allOrders[6]}}</span></button>
+                <button class="btn btn-dark" :class="{'active': status=='7'}" v-on:click="getOrderInfo('7',1)">Cancelados <span class="badge badge-light">{{allOrders[7]}}</span></button>
             </div>
         </div>
         <div class="col-12 col-md-8">
@@ -39,6 +39,7 @@
                         <th>Nome</th>
                         <th>Cidade</th>
                         <th>Objeto</th>
+                        <th>Preço</th>
                         <th>Status</th>
                         <th>&nbsp;</th>
                         </tr>
@@ -50,8 +51,9 @@
                             <td>{{ t.deliveryname }}</td>
                             <td>{{ t.deliverycity }}</td>
                             <td>{{ t.computerdesc }}</td>
+                            <td>{{ t.computerprice }}</td>
                             <td>
-                            <select style="width:100px" v-model="t.status" name="status" class="form-control" v-on:change="updOrderInfoStatus(t.id, t.status)">
+                            <select style="width:100px" v-model="t.status" name="status" class="form-control" v-on:change="updOrderInfoStatus(t.id, t.status, t.email, t.deliveryname, t.deliverystreet, t.deliveryzipcode, t.deliverycity, t.computerdesc, t.computerprice)">
                                 <option value="0">Recebida</option>
                                 <option value="1">Disponibilidade</option>
                                 <option value="2">Faltas</option>
@@ -65,7 +67,7 @@
                             <td style="width:50px">
                                 <div>
                                     <div class="imgSidebySide">
-                                        <img src="img/Forklift-icon.png" id="btnsupplyorder" v-on:click="getOrderInfoDetails(t.id)" style="cursor: pointer;" />
+                                        <img src="img/Forklift-icon.png" id="btnsupplyorder" v-on:click="getOrderInfoDetails(t.id, 'list')" style="cursor: pointer;" />
                                     </div>
                                 </div>
                             </td>
@@ -84,6 +86,7 @@
         </div>
     </div>
 
+    <Modal-Send-Mail v-if="showModalSendMail" :order="order" @close="showModalSendMail = false"></Modal-Send-Mail>
     <Modal-Supply-Order-Info v-if="showModalSupplyOrderInfo" :componentes="componentes" :origin="origin" :orderid="orderInfoId" @close="showModalSupplyOrderInfo = false"></Modal-Supply-Order-Info>
 </div>
 </template>
@@ -94,18 +97,23 @@
     //Components
     import Message from './Message.vue'
     import ModalSupplyOrderInfo from './ModalSupplyOrderInfo.vue'
+    import ModalSendMail from './ModalSendMail.vue'
 
     //Classes
     import ClassResource from '../services/ClassResource.js'
 
     const classResourceService = new ClassResource()
 
+    //Vuex
+    import { mapState, mapGetters, mapActions } from 'vuex'
+
     export default {
         name: 'OrderInfoStatus',
         props: ['context', 'keybody'],
         components: {
             Message,
-            ModalSupplyOrderInfo
+            ModalSupplyOrderInfo,
+            ModalSendMail
         },
         data: function() {
             return {
@@ -113,12 +121,16 @@
                 //componentes de uma encomenda
                 componentes: [],
 
+                //quantidade por estados
+                allOrders: [],
 
                 //encomendas
                 dataOrderInfo: [],
                 orderInfoId: 0,
                 status: 'All',
                 statusCorrente: 0,
+
+                order: {'email': '', 'nome': '', 'orderstatus': '', 'ordernumber': 0, 'orderamount':0, 'orderdesc': '', 'encomenda':[]},
 
                 origin: 'OrderInfoStatus',
                 
@@ -141,10 +153,13 @@
                 },
                 
                 showModalSupplyOrderInfo: false,
-                count: 1
+                showModalSendMail: false
             }
         },
         methods: {
+            ...mapActions({
+                validate: 'auth/validate'
+            }),
             setActive: function(isActive) {
                 return isActive ? 'active' : ''
             },
@@ -155,7 +170,7 @@
                 this.pagenumber = pagenumber || 1
                 this.status = status
 
-                let url = 'orderinfo/index.php?access_token='+this.$store.state.access_token+'&pagenumber=' + this.pagenumber + '&itemsperpage=' + this.itemsperpage 
+                let url = 'orderinfo/index.php?access_token='+this.access_token+'&pagenumber=' + this.pagenumber + '&itemsperpage=' + this.itemsperpage 
                 url += (status=='All')?'':'&status='+status 
 
                 Api.get(url)
@@ -175,7 +190,7 @@
                                     this.message.error = response.data.message
                                     break
                             }
-                            this.count++
+
                         } else {
                             this.dataOrderInfo = response.data
 
@@ -227,7 +242,6 @@
                                     this.message.error = ''
                                 }
 
-                                this.count++
                             }
                         }
 
@@ -237,11 +251,11 @@
                         }
                     })
             },
-            getOrderInfoDetails: function(OrderInfoID) {
+            getOrderInfoDetails: function(OrderInfoID, origin) {
                 
                 this.ValidadeCredencials()
 
-                Api.get('orderinfo/index.php?method=getOrderInfoDetails&access_token='+this.$store.state.access_token+'&orderinfoid='+OrderInfoID)
+                Api.get('orderinfo/index.php?method=getOrderInfoDetails&access_token='+this.access_token+'&orderinfoid='+OrderInfoID)
                     .then(response => {
 
                         if (response.data.success !== undefined) {
@@ -257,11 +271,19 @@
                                     this.message.error = response.data.message
                                     break
                             }
-                            this.count++
+
                         } else {
                             this.componentes = response.data
                             this.orderInfoId = OrderInfoID
-                            this.showModalSupplyOrderInfo = true
+
+                            if (origin=='list') {
+                                this.showModalSupplyOrderInfo = true
+                            }
+
+                            if (origin=='status') {
+                                this.order.encomenda = this.componentes
+                                this.showModalSendMail = true
+                            }
                         }
 
                     }).catch(error => {
@@ -270,7 +292,7 @@
                         }
                     })
             },
-            updOrderInfoStatus: function(OrderInfoID, status)  {
+            updOrderInfoStatus: function(OrderInfoID, status, email, deliveryname, deliveryaddress, deliveryzip, deliverycity, computerdesc, computerprice)  {
                 
                 this.ValidadeCredencials()
 
@@ -278,7 +300,7 @@
 
                 Api.put('orderinfo/index.php',
                     {
-                        'access_token': this.$store.state.access_token,
+                        'access_token': this.access_token,
                         'method': 'updOrderInfoStatus',
                         'orderinfoid': OrderInfoID,
                         'status': status
@@ -308,9 +330,20 @@
                         } else {
                             this.message.error = 'Aconteceu um erro na comunicação com os serviços!'
                         }
-                        
 
-                        this.count++                      
+                        this.getOrderStatus();
+
+                        this.order.email = email
+                        this.order.name = deliveryname
+                        this.order.address = deliveryaddress
+                        this.order.zip = deliveryzip
+                        this.order.city = deliverycity
+                        this.order.orderstatus = status
+                        this.order.ordernumber = OrderInfoID
+                        this.order.orderdesc = computerdesc
+                        this.order.orderamount = computerprice
+
+                        this.getOrderInfoDetails(OrderInfoID, 'status');                     
 
                     }).catch(error => {
                         if (error.response) {
@@ -319,33 +352,82 @@
                     })        
             },
             ValidadeCredencials: function() {
-                this.$store.dispatch("validate")
+                this.validate()
 
                 if (!this.isAuthenticate || !this.isAdmin == 1) {
                     this.$router.push({name: 'Login'})
                 }
-            }
+            },
+            getOrderStatus: function() {
+                
+                this.ValidadeCredencials()
+
+                Api.get('orderinfo/index.php?access_token='+this.access_token)
+                    .then(response => {
+
+                        if (response.data.success !== undefined) {
+                            this.message.info = ''
+                            this.message.error = ''
+                            switch (response.data.success) {
+                                case 0:
+                                    this.message.info = response.data.message
+                                    break
+                                case 1:
+                                    this.message.error = response.data.message
+                                    break
+                            }
+
+                        } else {
+                            let order = [];
+                            response.data.forEach(element => {
+                                if (parseInt(element.status, 10) + 1 > order.length) {
+                                    for(let i=order.length; i <= parseInt(element.status, 10); i++) {
+                                        if (i ==  parseInt(element.status, 10)) {
+                                            order.push(1);
+                                        } else {
+                                            order.push(0);
+                                        }
+                                    }
+                                } else {
+                                    order[parseInt(element.status, 10)] ++;
+                                }
+                            });
+                            this.allOrders = order;
+                            //console.log(this.allOrders);
+                        }
+
+                    }).catch(error => {
+                        if (error.response) {
+                            alert(error.response)
+                        }
+                    })
+            },            
 
         },
         mounted: function() {
             
-            this.ValidadeCredencials()
+            this.ValidadeCredencials();
 
-            this.pagenumber = 1
-            this.status = 'All'
+            this.pagenumber = 1;
+            this.status = 'All';
 
-            this.getOrderInfo(this.status, 1)
+            this.getOrderInfo(this.status, 1);
+            this.getOrderStatus();
         
         },
         computed: {
             creationDate() {
                 return data => `${data}`.substring(0, 10)
             },
-            isAuthenticate() { 
-                return this.$store.getters.authenticate
-            },
-            isAdmin() {
-                return this.$store.getters.admin
+            ...mapState({ 
+                access_token: state => state.auth.access_token
+            }),
+            ...mapGetters({isAuthenticate: 'auth/authenticate', isAdmin: 'auth/admin'}),
+            totalOrders() {
+                let tot = 0;
+                this.allOrders.forEach((element) => tot += element);
+                
+                return tot;
             }
         }
     } 

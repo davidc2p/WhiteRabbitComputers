@@ -27,14 +27,17 @@ switch($request_method)
   case 'POST':
     // Post register data
     $defs = array(
-      'method' 	    	      => array('filter'=>FILTER_SANITIZE_STRING),
-      'access_token' 	    	=> array('filter'=>FILTER_SANITIZE_STRING),
+        'method' 	    	    => array('filter'=>FILTER_SANITIZE_STRING),
+        'access_token' 	    	=> array('filter'=>FILTER_SANITIZE_STRING),
 	    'lang' 	    	        => array('filter'=>FILTER_SANITIZE_STRING),
 	    'dev' 	    	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
-      'contactName'   	    => array('filter'=>FILTER_SANITIZE_STRING),
-	    'contactEmail'	      => array('filter'=>FILTER_VALIDATE_EMAIL),
-	    'contactSubject'		  => array('filter'=>FILTER_SANITIZE_STRING),
-	    'contactMessage'		  => array('filter'=>FILTER_SANITIZE_STRING)
+        'contactName'   	    => array('filter'=>FILTER_SANITIZE_STRING),
+	    'contactEmail'	        => array('filter'=>FILTER_VALIDATE_EMAIL),
+	    'contactSubject'		=> array('filter'=>FILTER_SANITIZE_STRING),
+	    'contactMessage'		=> array('filter'=>FILTER_SANITIZE_STRING),
+	    'ordernumber'  	        => array('filter'=>FILTER_SANITIZE_NUMBER_INT),
+	    'orderdesc'  	        => array('filter'=>FILTER_SANITIZE_STRING)
+
     );
 
     if(empty($_POST)) {
@@ -105,6 +108,8 @@ switch($request_method)
               //Create a new PHPMailer instance
               $mail = new PHPMailer();
               $mail->CharSet = 'UTF-8';
+              $mail->Username   = "account@whiterabbitcomputers.com"; // SMTP account username example
+              $mail->Password   = "Biggui69"; 
               //Set who the message is to be sent from
               $mail->setFrom('account@whiterabbitcomputers.com', 'WhiteRabbitComputers');
               //Set who the message is to be sent to
@@ -135,6 +140,68 @@ switch($request_method)
             $contact->error['message'] = 'Ocorreu um erro na gravação do contacto.';
         }
 
+        header('Content-Type: application/json');
+        print json_encode($contact->error);
+      break;
+
+      case 'sendMailOrderStatus':
+
+        
+        if (  
+            isset($input['contactName']) && 
+            isset($input['contactEmail']) && 
+            isset($input['contactSubject']) && 
+            isset($data['contactMessage']) &&
+             isset($input['ordernumber']) &&
+            isset($input['orderdesc']) 
+            ) {
+
+        $message = '
+<table>
+<tr>
+    <td>
+        Caro(a) Senhor(a) '.$input['contactName'].'
+        <br/><br/>Este email foi enviado para informa-lo da evolução do estado da sua encomenda nº '.$input['ordernumber'].'.
+        <br/><br/><br/>'.$data['contactMessage'].'
+        
+        <br/><br/><br/>Pode verificar o estado da sua encomenda <a href="https://www.whiterabbitcomputers.com/login">iniciando sessão</a> na sua conta.
+        <br/>Se tiver alguma questão por favor entre em contacto connosco através do formulário de contacto.
+    </td>
+</tr>
+</table>';
+
+            //Create a new PHPMailer instance
+            $mail = new PHPMailer();
+            $mail->CharSet = 'UTF-8';
+            $mail->Username   = "account@whiterabbitcomputers.com"; // SMTP account username example
+            $mail->Password   = "Biggui69"; 
+            //Set who the message is to be sent from
+            $mail->setFrom('account@whiterabbitcomputers.com', 'WhiteRabbitComputers');
+            //Set who the message is to be sent to
+            $mail->addAddress($input['contactEmail'], $input['contactName']);
+            $mail->AddCC('dadomingues@gmail.com', 'David Domingues');
+            //Set the subject line
+            $mail->Subject = $input['contactSubject'];
+            //Read an HTML message body from an external file, convert referenced images to embedded,
+            //convert HTML into a basic plain-text alternative body
+            $CompleteMessage = $generic->encapsulateMessage($message);
+            $mail->MsgHTML($CompleteMessage);
+            //Replace the plain text body with one created manually
+            $mail->AltBody = $input['contactMessage'];
+
+            //send the message, check for errors
+            if (!$mail->send()) {
+                $contact->error['success'] = 1;
+                $contact->error['message'] = "Mailer Error: " . $mail->ErrorInfo;
+            } else {
+                $contact->error['success'] = 0;
+                $contact->error['message'] =  "Message sent!";
+            }
+        } else {
+            $contact->error['success'] = 1;
+            $contact->error['message'] = 'Ocorreu um erro no envio do contacto.';
+        }
+        
         header('Content-Type: application/json');
         print json_encode($contact->error);
       break;

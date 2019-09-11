@@ -163,6 +163,8 @@ import {Api} from '../services/Api.js'
 //Components
 import Wave from './Wave.vue'
 
+//Vuex
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
     name: 'ResumoEncomenda',
@@ -218,6 +220,10 @@ export default {
         }
     },
     methods: {
+        ...mapActions({
+            getOrderInfoByEmail: 'order/getOrderInfoByEmail',
+            getAllOrderInfo: 'order/getAllOrderInfo'
+        }),
         getOrderInfo: function(id) {
             Api.get('getorderinfo.php?orderinfoid=' + id)
                 .then(response => {
@@ -261,6 +267,26 @@ export default {
         this.orderinfoid = this.$route.params.orderinfoid
         this.getOrderInfo(this.orderinfoid)
         this.getOrderInfoDetails(this.orderinfoid)
-    }
+
+        //Update order numbers
+        if (this.email !== undefined && this.email !== null) {
+            // this.getOrderInfoByEmail(this.$store.state.auth.email);
+            this.getOrderInfoByEmail({
+                'access_token': this.access_token,
+                'email': this.email
+            });
+
+            this.getAllOrderInfo({
+                'access_token': this.access_token
+            });
+        } 
+    },
+    computed: {
+        ...mapState({ 
+            email: state => state.auth.email,
+            access_token: state => state.auth.access_token
+        }),
+        ...mapGetters({isAuthenticate: 'auth/authenticate', isAdmin: 'auth/admin'})
+    } 
 }
 </script>

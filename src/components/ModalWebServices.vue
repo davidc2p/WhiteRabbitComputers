@@ -36,18 +36,30 @@
 
                         <h3>Um exemplo de custo para a aquisição da sua loja</h3>
                         <div class="row">
-                            <div class="col-6 offset-1">Aquisição do dominio <i>NomeDaSuaLoja.com</i></div>
-                            <div class="col-5 text-right">Gratuito no primeiro ano (12.95 EUR/Ano)</div>
-                            <div class="col-6 offset-1">Aquisição de alojamento básico</div>
-                            <div class="col-3 text-right">52.80 EUR/Ano</div>                  
-                            <div class="col-6 offset-1">Instalação de uma loja PrestaShop sem template</div>
-                            <div class="col-3 text-right">50.00 EUR</div>                  
-                            <div class="col-6 offset-1">Pack de configuração de 10 produtos</div>
-                            <div class="col-3 text-right">20.00 EUR</div>    
+                            <div class="line col-5 offset-1">Aquisição do dominio <i>NomeDaSuaLoja.com</i></div>
+                            <div class="line col-5 text-right">Gratuito no primeiro ano (12.95 EUR/Ano)</div>
+                        </div>
+                        <div class="row">
+                            <div class="line col-5 offset-1">Aquisição de alojamento básico</div>
+                            <div class="line col-5 text-right">52.80 EUR/Ano</div>
+                        </div>
+                        <div class="row">
+                            <div class="line col-5 offset-1">Instalação de uma loja PrestaShop sem template</div>
+                            <div class="line col-5 text-right">50.00 EUR</div>
+                        </div>
+                        <div class="row">
+                            <div class="line col-5 offset-1">Pack de configuração de 10 produtos</div>
+                            <div class="line col-5 text-right">20.00 EUR</div>    
+                        </div>
+                        <div class="row">
                             <div class="col-12">&nbsp;</div>
-                            <div class="col-6 offset-1 heavyblack">Preço de aquisição da loja</div>
-                            <div class="col-3 text-right heavyblack">122.80 EUR*</div>                  
-                            <div class="col-8 offset-1"><i>*Preço indicativo para o primeiro ano</i></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 offset-1 heavyblack">Preço de aquisição da loja</div>
+                            <div class="col-5 text-right heavyblack">122.80 EUR*</div>                  
+                        </div>
+                        <div class="row">
+                            <div class="col-10 offset-1"><i>*Preço indicativo para o primeiro ano</i></div>
                         </div>
                         
                     </div>
@@ -59,15 +71,22 @@
                         <p>Para colocar o seu site online e/ou criar caixas de correio será sempre necessário que subscreva um dos nossos planos de alojamento de sites.</p>
                         <h3>Preço de domínios</h3>
                         <div class="row">
-                            <div class="col-6 offset-1">.eu5.net</div>
-                            <div class="col-3 text-right">Gratuito</div>
-                            <div class="col-6 offset-1">.co.uk</div>
-                            <div class="col-3 text-right">8.85 EUR/Ano</div>              
-                            <div class="col-6 offset-1">.eu</div>
-                            <div class="col-3 text-right">12.40 EUR/Ano</div>              
+                            <div class="line col-6 offset-1">.eu5.net</div>
+                            <div class="line col-4 text-right">Gratuito</div>
+                        </div>
+                        <div class="row">
+                           <div class="line col-6 offset-1">.co.uk</div>
+                            <div class="line col-4 text-right">8.85 EUR/Ano</div>              
+                        </div>
+                        <div class="row">
+                            <div class="line col-6 offset-1">.eu</div>
+                            <div class="line col-4 text-right">12.40 EUR/Ano</div>              
+                        </div>
+                        <div class="row">
                             <div class="col-6 offset-1">.com, .net,	.org, .info, .biz, .us</div>
-                            <div class="col-3 text-right">15.96 EUR/Ano</div>
-                            <div class="col-12">&nbsp;</div>
+                            <div class="col-4 text-right">15.96 EUR/Ano</div>
+                        </div>
+                        <div class="row">
                             <div class="col-11 offset-1"><i>*Na aquisição de um alojamento Best ou  Pro o primeiro ano de domínio é oferecido.</i></div>           
                         </div>
                         <p>Para mais informação: <a href="http://www.freehostingeu.com?aid=MTkyNDE4MTgyMzI0MjY=" rel="nofollow" id="AL-30229-0" target="_blank" title="web hosting"><img src="http://www.freehostingeu.com/buts/but120x60_3.png" alt="web hosting"/></a></p>
@@ -80,12 +99,18 @@
                         <p>O alojamento do site consiste em colocar fisicamente o mesmo num dos nossos servidores (computadores ligados via internet 24h por dia, 7 dias por semana com salvaguarda períodica da informação), por um determinado período de tempo. Isto vai permitir publicar e disponibilizar o seu site em qualquer parte do mundo e vai permitir também enviar e receber emails.</p>
                         <h3>Preço do alojamento</h3>
                         <div class="row">
-                            <div class="col-6 offset-1">Alojamento gratuito</div>
-                            <div class="col-3 text-right">Gratuito</div>
-                            <div class="col-6 offset-1">Alojamento Best</div>
-                            <div class="col-3 text-right">52.80 EUR/Ano</div>              
+                            <div class="line col-6 offset-1">Alojamento gratuito</div>
+                            <div class="line col-4 text-right">Gratuito</div>
+                        </div>
+                        <div class="row">
+                            <div class="line col-6 offset-1">Alojamento Best</div>
+                            <div class="line col-4 text-right">52.80 EUR/Ano</div>              
+                        </div>
+                        <div class="row">
                             <div class="col-6 offset-1">Alojamento Pro</div>
-                            <div class="col-3 text-right">85.00 EUR/Ano</div>  
+                            <div class="col-4 text-right">85.00 EUR/Ano</div>  
+                        </div>
+                        <div class="row">
                             <div class="col-12">&nbsp;</div>            
                         </div>
                         <p>Veja as diferenças em <a href="http://www.freehostingeu.com?aid=MTkyNDE4MTgyMzI0MjY=" rel="nofollow" id="AL-30229-0" target="_blank" title="web hosting"><img src="http://www.freehostingeu.com/buts/but120x60_1.png" alt="web hosting"/></a></p>

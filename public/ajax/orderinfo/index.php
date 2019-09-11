@@ -192,7 +192,7 @@ switch($request_method)
             if (isset($profile[0]['email']) && $profile[0]['email']!="" && 
                 isset($profile[0]['admin']) && $profile[0]['admin']=="1") {
             
-                $ret = $orderinfo->getOrderInfo($input['status']);  
+                $ret = $orderinfo->getAllOrderInfo($input['status']);  
 
                 header('Content-Type: application/json');
                 print json_encode($ret);  

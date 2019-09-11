@@ -17,7 +17,7 @@
                 <!-- Modal Body -->
                 <div class="modal-body" style="margin: 20px 0; max-height: 400px; overflow-y: auto;">
                     <div class="form-group">
-                    <Message id="Message" v-bind:msg="message" :key="count" />
+                    <Message id="Message" v-bind:msg="message" />
                     </div>
                     <!-- Tipo de componente -->
                     <div class="form-group row justify-content-center">
@@ -127,6 +127,7 @@
 
     //Classes
     import ClassResource from '../services/ClassResource.js'
+    import { mapState, mapGetters, mapActions } from 'vuex';
 
     const classResourceService = new ClassResource()
 
@@ -153,13 +154,13 @@ export default {
             message: {
                 info: '',
                 error: ''
-            },
-
-            count: 1
-        
+            }
         }
     },
     methods: {
+        ...mapActions({
+            validate: 'validate'
+        }),
         savedImage: function(image) {
             if (image && image != '') {
                 return '/img/component/' + image
@@ -199,7 +200,7 @@ export default {
         updateComponente: function() {
              Api.put('component/index.php',
                 {
-                    'access_token': this.$store.state.access_token,
+                    'access_token': this.access_token,
                     'id': this.id,
                     'link': this.link,
                     'description': this.description,
@@ -211,6 +212,9 @@ export default {
                     this.message.info = ''
                     this.message.error = ''
                     if (typeof response.data.success != 'undefined') {
+
+                        this.attemptUpload();
+
                         switch (response.data.success) {
                             case 0:
                                 this.message.info = response.data.message
@@ -222,10 +226,7 @@ export default {
 
                     } else {
                         this.message.error = 'Aconteceu um erro na comunicação com os serviços!'
-                    }
-
-                    this.count++                      
-
+                    }                      
                 }).catch(error => {
                     if (error.response) {
                         alert(error.response)
@@ -235,7 +236,7 @@ export default {
         insertComponente: function() {
              Api.post('component/index.php',
                 {
-                    'access_token': this.$store.state.access_token,
+                    'access_token': this.access_token,
                     'link': this.link,
                     'description': this.description,
                     'cost': this.cost,
@@ -247,6 +248,9 @@ export default {
                     this.message.info = ''
                     this.message.error = ''
                     if (typeof response.data.success != 'undefined') {
+
+                        this.attemptUpload();
+
                         switch (response.data.success) {
                             case 0:
                                 this.message.info = response.data.message
@@ -258,9 +262,7 @@ export default {
 
                     } else {
                         this.message.error = 'Aconteceu um erro na comunicação com os serviços!'
-                    }
-
-                    this.count++                  
+                    }                
 
                 }).catch(error => {
                     if (error.response) {
@@ -282,7 +284,7 @@ export default {
         }
     },
     mounted: function() {
-        this.$store.dispatch("validate")
+        this.validate()
 
         if (this.isAuthenticate && this.isAdmin ) {
 
@@ -300,12 +302,10 @@ export default {
         }
     },
     computed: {
-        isAuthenticate() { 
-            return this.$store.getters.authenticate;
-        },
-        isAdmin() {
-            return this.$store.getters.admin;
-        }
+        ...mapState({ 
+            access_token: state => state.auth.access_token
+        }),
+        ...mapGetters({isAuthenticate: 'auth/authenticate', isAdmin: 'auth/admin'})
     } 
 }
 </script>

@@ -6,7 +6,7 @@
         <div class="col">&nbsp;</div>
     </div>
 
-    <Message id="Message" v-bind:msg="message" :key="count" />
+    <Message id="Message" v-bind:msg="message" />
 
     <!-- linha sem nada -->
     <div class="row">
@@ -101,6 +101,9 @@
 
     const classResourceService = new ClassResource()
 
+    //Vuex
+    import { mapState, mapGetters, mapActions } from 'vuex'
+
 export default {
     name: 'Componentes',
     components: {
@@ -153,12 +156,14 @@ export default {
             showModalUpdateComponentes: false,
             action: '',
 
-            count: 1,
             count2: 1,
             count3: 1,
         }
     },
     methods: {
+        ...mapActions({
+            validate: 'validate'
+        }),
         setActive: function(isActive) {
             return isActive ? 'active' : ''
         },
@@ -237,7 +242,6 @@ export default {
                         this.message.info = ''
                         this.message.error = ''
 
-                        this.count++
                     }
 
                 }).catch(error => {
@@ -248,7 +252,7 @@ export default {
         },
         deleteComponente: function(id) {
             
-            Api.delete('component/index.php?access_token=' + this.$store.state.access_token + '&id=' + id)
+            Api.delete('component/index.php?access_token=' + this.access_token + '&id=' + id)
                 .then(response => {
 
                     this.message.info = ''
@@ -270,8 +274,6 @@ export default {
                         const pageElement = document.getElementById("componentes")
                         classResourceService.scrollToElement(pageElement)
                     }
-
-                    this.count++
 
                     this.pagenumber = 1
                     this.getComponents(this.componente.type, this.pagenumber)
@@ -320,7 +322,7 @@ export default {
     },
     mounted: function() {
 
-        this.$store.dispatch("validate")
+        this.validate() 
 
         if (this.isAuthenticate && this.isAdmin ) {
 
@@ -333,12 +335,10 @@ export default {
         }
     },
     computed: {
-        isAuthenticate() { 
-            return this.$store.getters.authenticate;
-        },
-        isAdmin() {
-            return this.$store.getters.admin;
-        }
+        ...mapState({ 
+            access_token: state => state.auth.access_token
+        }),
+        ...mapGetters({isAuthenticate: 'auth/authenticate', isAdmin: 'auth/admin'})
     } 
 } 
 </script>

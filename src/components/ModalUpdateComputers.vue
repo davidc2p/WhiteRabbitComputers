@@ -17,7 +17,7 @@
                 <!-- Modal Body -->
                 <div class="modal-body" :style="{ 'margin': '10px 0', 'overflow-y': 'auto', 'width': this.windowWidth + 'px', 'height': this.windowHeight + 'px' }">
                     <div class="form-group">
-                        <Message id="Message" v-bind:msg="message" :key="count" />
+                        <Message id="Message" v-bind:msg="message" />
                     </div>
 
                     <!-- Descrição do computador -->
@@ -98,6 +98,16 @@
                         <div class="col-7 configurador">
                         <slick id="caseSelector" ref="slick_case" :options="slickOptions" @afterChange="handleAfterChange_case" style="z-index: 10;">
                             <div v-for="(d, index) in computercase" :key="index"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
+                        </slick>        
+                        </div>
+                        <div class="col-1 configurador">&nbsp;</div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="offset-1 col-2 configurador">Motherboard</div>
+                        <div class="col-7 configurador">
+                        <slick id="motherboardSelector" ref="slick_mb" :options="slickOptions" @afterChange="handleAfterChange_mb" style="z-index: 10;">
+                            <div v-for="(d, index) in motherboard" :key="index"><a class="inline" href="#"><img style="width: 40px; height: 40px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
                         </slick>        
                         </div>
                         <div class="col-1 configurador">&nbsp;</div>
@@ -212,6 +222,9 @@
     import 'slick-carousel/slick/slick.css'
     import 'slick-carousel/slick/slick-theme.css'
 
+    //Vuex
+    import { mapState, mapGetters, mapActions } from 'vuex'
+
 export default {
     props: ['computer', 'action', 'ModalCounter'],
     components: {
@@ -234,6 +247,11 @@ export default {
             datacomputer: [],
 
             dataconfiguration: [],
+
+
+            motherboard: [],
+            motherboardIndex: 0,
+            motherboardUpdated: false,
 
             computercase: [],
             computercaseIndex: 0,
@@ -276,13 +294,14 @@ export default {
             message: {
                 info: '',
                 error: ''
-            },
-
-            count: 1
+            }
         
         }
     },
     methods: {
+        ...mapActions({
+            validate: 'validate'
+        }),
         printedValue: function(value) {
             return Number(value).toFixed(2)     
         },
@@ -325,7 +344,7 @@ export default {
         updateComputer: function() {
             Api.put('computer/index.php',
             {
-                'access_token': this.$store.state.access_token,
+                'access_token': this.access_token,
                 'method': 'updComputer',
                 'id': this.id,
                 'description': this.description,
@@ -355,9 +374,7 @@ export default {
 
                 } else {
                     this.message.error = 'Aconteceu um erro na comunicação com os serviços!'
-                }
-
-                this.count++                      
+                }                    
 
             }).catch(error => {
                 if (error.response) {
@@ -369,6 +386,7 @@ export default {
             //inserir cada elemento da configuração
             this.dataconfiguration = []
             this.dataconfiguration.push(this.computercase[this.computercaseIndex])
+            this.dataconfiguration.push(this.motherboard[this.motherboardIndex])
             this.dataconfiguration.push(this.processors[this.processorsIndex])
             this.dataconfiguration.push(this.ram[this.ramIndex])
             this.dataconfiguration.push(this.graphic[this.graphicIndex])
@@ -378,7 +396,7 @@ export default {
 
              Api.post('computer/index.php',
                 {
-                    'access_token': this.$store.state.access_token,
+                    'access_token': this.access_token,
                     'method': 'setComputer',
                     'description': this.description,
                     'longdesc': this.longdesc,
@@ -409,9 +427,7 @@ export default {
 
                     } else {
                         this.message.error = 'Aconteceu um erro na comunicação com os serviços!'
-                    }
-
-                    this.count++                  
+                    }               
 
                 }).catch(error => {
                     if (error.response) {
@@ -421,7 +437,7 @@ export default {
         },
         updConfiguration: function (computerid) {
             // delete configuração anterior
-            Api.delete('computer/index.php?access_token=' + this.$store.state.access_token + '&method=delComputerDetails&computerid='+computerid)
+            Api.delete('computer/index.php?access_token=' + this.access_token + '&method=delComputerDetails&computerid='+computerid)
                 .then(response => {
                                         
                 this.message.info = ''
@@ -433,6 +449,7 @@ export default {
                             //inserir cada elemento da configuração
                             this.dataconfiguration = []
                             this.dataconfiguration.push(this.computercase[this.computercaseIndex])
+                            this.dataconfiguration.push(this.motherboard[this.motherboardIndex])
                             this.dataconfiguration.push(this.processors[this.processorsIndex])
                             this.dataconfiguration.push(this.ram[this.ramIndex])
                             this.dataconfiguration.push(this.graphic[this.graphicIndex])
@@ -442,7 +459,7 @@ export default {
 
                             for (let i=0; i < this.dataconfiguration.length; i++) {    
                                 Api.post('computer/index.php', {
-                                        'access_token': this.$store.state.access_token,
+                                        'access_token': this.access_token,
                                         'method': 'setComputerDetails',
                                         'computerid': computerid,
                                         'componentid': this.dataconfiguration[i]['id'] 
@@ -460,9 +477,7 @@ export default {
 
                                     } else {
                                         this.message.error = 'Aconteceu um erro na comunicação com os serviços!'
-                                    }
-
-                                    this.count++                      
+                                    }                   
 
                                 }).catch(error => {
                                     if (error.response) {
@@ -479,9 +494,7 @@ export default {
 
                 } else {
                     this.message.error = 'Aconteceu um erro na comunicação com os serviços!'
-                }
-
-                this.count++                      
+                }                
 
             }).catch(error => {
                 if (error.response) {
@@ -504,6 +517,16 @@ export default {
                                 this.computercaseUpdated = true
                         
                             break
+
+                            case 'Mb':
+                                this.motherboard.push({ 'id': 0, 'type': 'Mb', 'description': 'Escolhe uma motherboard...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
+                                for (let i=0; i < response.data.length; i++) {
+                                  this.motherboard.push(response.data[i])
+                                }
+                                this.reInit_Mb()
+                                this.motherboardUpdated = true
+                        
+                            break                            
 
                             case 'Cpu':
                                 this.processors.push({ 'id': 0, 'type': 'Cpu', 'description': 'Escolhe um processador...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
@@ -601,6 +624,16 @@ export default {
                                 }
                             break;
 
+                            case 'Mb':
+                                if (this.motherboard) {
+                                    for (let j=1; j < this.motherboard.length; j++) {
+                                        if (this.motherboard[j].id == this.dataconfiguration[i].id) {
+                                            this.$refs.slick_mb.goTo(j, true)
+                                        }
+                                    }
+                                }
+                            break;
+
                             case 'PG':
                                 if (this.graphic) {
                                     for (let j=1; j < this.graphic.length; j++) {
@@ -685,6 +718,15 @@ export default {
                 this.$refs.slick_case.goTo(currIndex, true)
             })
         },
+        reInit_Mb() {
+            // Helpful if you have to deal with v-for to update dynamic lists
+            let currIndex = this.$refs.slick_mb.currentSlide()
+            this.$refs.slick_mb.destroy()
+            this.$nextTick(() => {
+                this.$refs.slick_mb.create()
+                this.$refs.slick_mb.goTo(currIndex, true)
+            })
+        },        
         reInit_gpu() {
             // Helpful if you have to deal with v-for to update dynamic lists
             let currIndex = this.$refs.slick_gpu.currentSlide()
@@ -742,6 +784,9 @@ export default {
         handleAfterChange_case(event, slick_case, currentSlide) {
             this.computercaseIndex = currentSlide
         },
+        handleAfterChange_mb(event, slick_mb, currentSlide) {
+            this.motherboardIndex = currentSlide
+        },
         handleAfterChange_proc(event, slick_proc, currentSlide) {
             this.processorsIndex = currentSlide
         },
@@ -786,7 +831,7 @@ export default {
     },
     mounted: function() {
         
-        this.$store.dispatch("validate")
+        this.validate()
 
         if (this.isAuthenticate && this.isAdmin ) {
 
@@ -800,6 +845,7 @@ export default {
             }
 
             this.getComponents('Caixa')
+            this.getComponents('Mb')
             this.getComponents('Cpu')
             this.getComponents('PG')
             this.getComponents('Disco')
@@ -828,9 +874,10 @@ export default {
     computed: {
         cost: function() {
             let cost = 0
-            if (this.computercase.length > 0 && this.processors.length > 0 && this.graphic.length > 0 && this.fan.length > 0 && this.disk.length > 0 && this.ram.length > 0 && this.power.length > 0) {
+            if (this.computercase.length > 0 && this.motherboard.length > 0 && this.processors.length > 0 && this.graphic.length > 0 && this.fan.length > 0 && this.disk.length > 0 && this.ram.length > 0 && this.power.length > 0) {
                 cost = Number(this.computercase[this.computercaseIndex].cost) 
                 + Number(this.processors[this.processorsIndex].cost) 
+                + Number(this.motherboard[this.motherboardIndex].cost) 
                 + Number(this.ram[this.ramIndex].cost) 
                 + Number(this.graphic[this.graphicIndex].cost) 
                 + Number(this.disk[this.diskIndex].cost)
@@ -846,14 +893,13 @@ export default {
             return classResourceService.calculateNetPrice(this.cost).toFixed(2)
             //return classResourceService.calculateNetPrice(total).toFixed(2) + " €"
         },
-        isAuthenticate() { 
-            return this.$store.getters.authenticate;
-        },
-        isAdmin() {
-            return this.$store.getters.admin;
-        },
+        ...mapState({ 
+            access_token: state => state.auth.access_token
+        }),
+        ...mapGetters({isAuthenticate: 'auth/authenticate', isAdmin: 'auth/admin'}),
+        
         isLoadable: function() {
-            if (this.computercaseUpdated && this.processorsUpdated && this.ramUpdated && this.graphicUpdated && this.diskUpdated && this.fanUpdated && this.powerUpdated) {
+            if (this.computercaseUpdated && this.motherboardUpdated && this.processorsUpdated && this.ramUpdated && this.graphicUpdated && this.diskUpdated && this.fanUpdated && this.powerUpdated) {
                 return true
             } else {
                 return false

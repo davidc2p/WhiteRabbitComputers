@@ -7,7 +7,7 @@
       <div class="col">&nbsp;</div>
   </div>
 
-  <Message id="Message" v-bind:msg="message" :key="count" />
+  <Message id="Message" v-bind:msg="message" />
 
   <!-- linha sem nada -->
   <div class="row">
@@ -52,6 +52,9 @@
 
     const classResourceService = new ClassResource()
 
+    //Vuex
+    import { mapActions } from 'vuex'
+
 export default {
     name: 'ForgetPassword',
     components: {
@@ -71,13 +74,13 @@ export default {
             titles: {
                 head: 'Os desktops mais baratos do mercado',
                 desc: 'Montamos o seu computador a sua medida'
-            },
-
-            count: 1,
-            count2: 1,
+            }
         }
     },
     methods: {
+        ...mapActions({
+            validate: 'auth/validate'
+        }),      
         retrieve: function() {
 
           Api.put('login/index.php', {
@@ -99,8 +102,6 @@ export default {
                       const pageElement = document.getElementById("message")
                       classResourceService.scrollToElement(pageElement)
 
-                      this.count ++
-
                   } else {
 
                     this.message.info = ''
@@ -109,7 +110,6 @@ export default {
                     const pageElement = document.getElementById("message")
                     classResourceService.scrollToElement(pageElement)
 
-                    this.count ++
                   }
               }).catch(error => {
                     if (error.response) {
@@ -144,7 +144,7 @@ export default {
     },
     mounted: function() {
 
-        this.$store.dispatch("validate")
+        this.validate()
         
     }
 } 

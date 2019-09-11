@@ -1,11 +1,20 @@
 <template>
 <div id="Home">
 
-    <div class="row">
-        <div class="col"><Wave id="Wave" :titles="titles" /></div>
-    </div>
+    <Wave id="Wave" :titles="titles" />
 
-    
+    <div>
+        <b-jumbotron bg-variant="dark" text-variant="white" border-variant="dark">
+            <template slot="header">Computadores desktop a medida</template>
+
+            <template slot="lead">
+                Montamos o seu PC ao melhor preço.
+            </template>
+            <p>
+                Os melhores componentes ao melhor preço. As nossas configurações são estudadas para ter o melhor preço para o melhor desempenho.
+            </p>
+        </b-jumbotron>
+    </div>
 
     <!-- linha sem nada -->
     <div class="row">
@@ -33,6 +42,7 @@
                 </div>
             </div>
         </div>
+        <div class="col-12 d-md-none">&nbsp;</div>
         <div class="col-12 col-md-4">
             <div class="card h-100">
                 <img id="compimage2" class="compimage" :src="'/img/component/' + this.computador2.image" width="178" height="204" alt="Computador médio">
@@ -52,6 +62,7 @@
                 </div>
             </div>
         </div>
+        <div class="col-12 d-md-none">&nbsp;</div>
         <div class="col-12 col-md-4">
             <div class="card h-100">
                 <img id="compimage3" class="compimage" :src="'/img/component/' + this.computador3.image" width="178" height="204" alt="Computador gaming">
@@ -197,6 +208,8 @@ import ClassResource from '../services/ClassResource.js'
 
 const classResourceService = new ClassResource()
 
+//Vuex
+import { mapActions } from 'vuex'
 
 export default {
     name: 'Home',
@@ -237,6 +250,9 @@ export default {
         ]
     },
     methods: {
+        ...mapActions({
+            validate: 'auth/validate'
+        }),        
         setPrice: function(number) {
             return (Number(number).toFixed(2) + ' Euros' )
         },
@@ -335,9 +351,9 @@ export default {
         this.getComputer(3)
         this.getAllComputers()
 
-        this.$store.dispatch("validate")
-        console.log(process.env.VUE_APP_BASE_URI)
-        console.log(process.env.VUE_APP_SECRET_CODE)
+        this.validate()
+        // console.log(process.env.VUE_APP_BASE_URI)
+        // console.log(process.env.VUE_APP_SECRET_CODE)
     },
     watch: {
         keybody: function() {},
@@ -345,3 +361,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.card {
+    background-color: #EBCF19;
+}
+</style>

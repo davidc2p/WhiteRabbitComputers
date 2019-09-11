@@ -7,7 +7,7 @@
       <div class="col">&nbsp;</div>
   </div>
 
-  <Message id="Message" v-bind:msg="message" :key="count" />
+  <Message id="Message" :msg="message" />
 
     <!-- linha sem nada -->
     <div id="configuration" class="row">
@@ -20,16 +20,9 @@
             <div class="row">
                 <div class="col offset-1"><h3>Escolher uma configuração:</h3></div>
             </div>
-            
-            <div class="row">
-                <div class="offset-1 col-2 configurador">Configuração</div>
-                <div class="col-7 configurador">
-                    <slick id="confSelector" ref="slick_conf" :options="slickOptions" @afterChange="handleAfterChange_conf" @beforeChange="handleBeforeChange_conf" style="z-index: 10;">
-                    <div v-for="(c, index) in computer" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + c.image" :alt="c.description">{{ c.description }}</a></div>       
-                    </slick>
-                </div>
-                <div class="col-1 configurador">&nbsp;</div>
-            </div>
+
+            <ViewComponente v-if="computerLoaded" componenteToServe="conf" :componente="computer" :id="computerId" @changeComponente="changeComputer" />
+
 
             <div class="row">
                 <div class="col">&nbsp;</div>
@@ -49,75 +42,14 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="offset-1 col-2 configurador">Caixa</div>
-                <div class="col-7 configurador">
-                <slick id="caseSelector" ref="slick_case" :options="slickOptions" @afterChange="handleAfterChange_case" style="z-index: 10;">
-                    <div v-for="(d, index) in computercase" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
-                </slick>        
-                </div>
-                <div class="col-1 configurador">&nbsp;</div>
-            </div>
-
-            <div class="row">
-                <div class="offset-1 col-2 configurador">Processador</div>
-                <div class="col-7 configurador">
-                <slick id="processorSelector" ref="slick_proc" :options="slickOptions" @afterChange="handleAfterChange_proc" style="z-index: 10;">
-                    <div v-for="(d, index) in processors" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
-                </slick>        
-                </div>
-                <div class="col-1 configurador">&nbsp;</div>
-            </div>
-
-            <div class="row">
-                <div class="offset-1 col-2 configurador">RAM</div>
-                <div class="col-7 configurador">
-                <slick id="ramSelector" ref="slick_ram" :options="slickOptions" @afterChange="handleAfterChange_ram" style="z-index: 10;">
-                    <div v-for="(d, index) in ram" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
-                </slick>        
-                </div>
-                <div class="col-1 configurador">&nbsp;</div>
-            </div>
-
-            <div class="row">
-                <div class="offset-1 col-2 configurador">Placa gráfica</div>
-                <div class="col-7 configurador">
-                <slick id="gpuSelector" ref="slick_gpu" :options="slickOptions" @afterChange="handleAfterChange_gpu" style="z-index: 10;">
-                    <div v-for="(d, index) in graphic" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
-                </slick>        
-                </div>
-                <div class="col-1 configurador">&nbsp;</div>
-            </div>
-
-            <div class="row">
-                <div class="offset-1 col-2 configurador">Disco</div>
-                <div class="col-7 configurador">
-                <slick id="diskSelector" ref="slick_disk" :options="slickOptions" @afterChange="handleAfterChange_disk" style="z-index: 10;">
-                    <div v-for="(d, index) in disk" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
-                </slick>        
-                </div>
-                <div class="col-1 configurador">&nbsp;</div>
-            </div>
-
-            <div class="row">
-                <div class="offset-1 col-2 configurador">Cooler</div>
-                <div class="col-7 configurador">
-                <slick id="fanSelector" ref="slick_fan" :options="slickOptions" @afterChange="handleAfterChange_fan" style="z-index: 10;">
-                    <div v-for="(d, index) in fan" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
-                </slick>        
-                </div>
-                <div class="col-1 configurador">&nbsp;</div>
-            </div>
-
-            <div class="row">
-                <div class="offset-1 col-2 configurador">Alimentação</div>
-                <div class="col-7 configurador">
-                <slick id="powerSelector" ref="slick_power" :options="slickOptions" @afterChange="handleAfterChange_power" style="z-index: 10;">
-                    <div v-for="(d, index) in power" :key="index"><a class="inline" href="#"><img style="width: 80px; height: 80px; margin-right: 10px;" :src="'/img/component/' + d.image" :alt="d.description">{{ d.description }}</a></div>       
-                </slick>        
-                </div>
-                <div class="col-1 configurador">&nbsp;</div>
-            </div>
+            <ViewComponente v-if="componenteLoaded" componenteToServe="Caixa" :componente="componente" :id="computercaseid" @changeComponente="changeComponente" />
+            <ViewComponente v-if="componenteLoaded" componenteToServe="Mb" :componente="componente" :id="motherboardid" @changeComponente="changeComponente" />
+            <ViewComponente v-if="componenteLoaded" componenteToServe="Cpu" :componente="componente" :id="processorsid" @changeComponente="changeComponente" />
+            <ViewComponente v-if="componenteLoaded" componenteToServe="RAM" :componente="componente" :id="ramid" @changeComponente="changeComponente" />
+            <ViewComponente v-if="componenteLoaded" componenteToServe="PG" :componente="componente" :id="graphicid" @changeComponente="changeComponente" />
+            <ViewComponente v-if="componenteLoaded" componenteToServe="Disco" :componente="componente" :id="diskid" @changeComponente="changeComponente" />
+            <ViewComponente v-if="componenteLoaded" componenteToServe="Fan" :componente="componente" :id="fanid" @changeComponente="changeComponente" />
+            <ViewComponente v-if="componenteLoaded" componenteToServe="Power" :componente="componente" :id="powerid" @changeComponente="changeComponente" />
 
             <!-- linha sem nada -->
             <div class="d-lg-none" v-if="total > 0">
@@ -155,12 +87,12 @@
 </template>
 
 <script >
-    import Slick from 'vue-slick'
     import {Api} from '../services/Api.js'
 
     //Components
     import Message from './Message.vue'
     import Wave from './Wave.vue'
+    import ViewComponente from './sharedComponents/ViewComponente.vue'
 
     //Classes
     import ClassResource from '../services/ClassResource.js'
@@ -170,12 +102,15 @@
     import 'slick-carousel/slick/slick.css'
     import 'slick-carousel/slick/slick-theme.css'
 
+    //Vuex
+    import { mapActions } from 'vuex'
+
 export default {
     name: 'Configurador',
     components: {
         Message,
         Wave,
-        Slick
+        ViewComponente
     },
     head: {
         title: {
@@ -193,36 +128,24 @@ export default {
         return {
       
             computer: [],
-            computerIndex: 0,
+            computerId: 0,
+            computerLoaded: false,
 
             computerdetails: [],
-            
-            computercase: [],
-            computercaseIndex: 0,
 
-            processors: [],
-            processorsIndex: 0,
+            componente: [],
+            componenteLoaded: false,
 
-            ram: [],
-            ramIndex: 0,
+            computercaseid: 0,
+            processorsid: 0,
+            motherboardid: 0,
+            ramid: 0,
+            graphicid: 0,
+            diskid: 0,
+            fanid: 0,
+            powerid: 0,
 
-            graphic: [],
-            graphicIndex: 0,
-
-            disk: [],
-            diskIndex: 0,
-
-            fan: [],
-            fanIndex: 0,
-
-            power: [],
-            powerIndex: 0,
-
-            //slick
-            slickOptions: {
-                slidesToShow: 1,
-                dots: false
-            },
+            encomenda: [],
 
             message: {
                 info: '',
@@ -232,100 +155,72 @@ export default {
             titles: {
                 head: 'Os desktops mais baratos do mercado',
                 desc: 'Montamos o seu computador a sua medida'
-            },
-
-            count: 1,
-            count2: 1,
+            }
         }
     },
     methods: {
+        ...mapActions({
+            validate: 'auth/validate'
+        }),        
         routing: function () {
-            let encomenda = []
-            encomenda.push(this.computercase[this.computercaseIndex])
-            encomenda.push(this.processors[this.processorsIndex])
-            encomenda.push(this.ram[this.ramIndex])
-            encomenda.push(this.graphic[this.graphicIndex])
-            encomenda.push(this.disk[this.diskIndex])
-            encomenda.push(this.fan[this.fanIndex])
-            encomenda.push(this.power[this.powerIndex])
+            this.encomenda = []
 
-            this.$router.push({ name: 'Encomendar', 
-                                params: { computerid: 0, computerData: { encomenda } } 
-                                })
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'Caixa' && parseInt(item.id, 10) === this.computercaseid && this.computercaseid > 0 }));
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'Cpu' && parseInt(item.id, 10) === this.processorsid && this.processorsid > 0 }));
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'Mb' && parseInt(item.id, 10) === this.motherboardid && this.motherboardid > 0 }));
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'RAM' && parseInt(item.id, 10) === this.ramid && this.ramid > 0 }));
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'PG' && parseInt(item.id, 10) === this.graphicid && this.graphicid > 0 }));
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'Disco' && parseInt(item.id, 10) === this.diskid && this.diskid > 0 }));
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'Fan' && parseInt(item.id, 10) === this.fanid && this.fanid > 0 }));
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'Power' && parseInt(item.id, 10) === this.powerid && this.powerid > 0 }));
+            this.encomenda = this.encomenda.filter((element) => {
+                    return element !== undefined;
+            });
+
+            let encOk = 0;
+            this.encomenda.forEach((item) => {
+                if (item.type === 'Caixa' || item.type === 'Cpu' || item.type === 'Disco' || item.type === 'RAM' || item.type === 'Mb' || item.type === 'Power') {
+                    encOk ++;
+                }
+            });
+
+            if (encOk < 6) {
+                this.message.error = 'Deverá seleccionar todos os elementos do computador!'
+
+                this.$nextTick(function() {
+                    const pageElement = document.getElementById("configuration")
+                    classResourceService.scrollToElement(pageElement)
+                })
+            } else {
+
+                let encomenda = this.encomenda;
+
+                //return only one element
+                //let fan = this.componente.find((item) => {return item.type === 'Fan' && parseInt(item.id, 10) === this.fanid });
+                
+                this.$router.push({ 
+                    name: 'Encomendar', 
+                    params: { computerid: 0, computerData: { encomenda }} 
+                });
+            }
         },
-        getComponents: function(type) {
-            Api.get('component/index.php?type=' + type)
+        getAllComponents: function() {
+            Api.get('component/index.php')
                 .then(response => {
-                                        
-                    if (response.data[0].type) {
-                        switch(response.data[0].type) {
-                            case 'Caixa':
-                                this.computercase.push({ 'id': 0, 'type': 'Caixa', 'description': 'Escolhe uma caixa...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
-                                for (let i=0; i < response.data.length; i++) {
-                                  this.computercase.push(response.data[i])
-                                }
-                                this.reInit_case()
-                        
-                            break
 
-                            case 'Cpu':
-                                this.processors.push({ 'id': 0, 'type': 'Cpu', 'description': 'Escolhe um processador...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
-                                for (let i=0; i < response.data.length; i++) {
-                                  this.processors.push(response.data[i])
-                                }
-                                this.reInit_proc()
-                        
-                            break
+                    let comp  = []                                        
+                    comp.push({ 'id': '0', 'type': 'Caixa', 'description': 'Escolhe uma caixa...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
+                    comp.push({ 'id': '0', 'type': 'Cpu', 'description': 'Escolhe um processador...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
+                    comp.push({ 'id': '0', 'type': 'Mb', 'description': 'Escolhe uma motherboard...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
+                    comp.push({ 'id': '0', 'type': 'PG', 'description': 'Escolhe uma placa gráfica...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
+                    comp.push({ 'id': '0', 'type': 'Disco', 'description': 'Escolhe um disco...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
+                    comp.push({ 'id': '0', 'type': 'RAM', 'description': 'Escolhe a memória...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
+                    comp.push({ 'id': '0', 'type': 'Fan', 'description': 'Escolhe um cooler...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
+                    comp.push({ 'id': '0', 'type': 'Power', 'description': 'Escolhe uma alimentação...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
+                    response.data.forEach((item) => comp.push(item));
 
-                            case 'PG':
-                                this.graphic.push({ 'id': 0, 'type': 'PG', 'description': 'Escolhe uma placa gráfica...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
-                                for (let i=0; i < response.data.length; i++) {
-                                  this.graphic.push(response.data[i])
-                                }
-                                this.reInit_gpu()
-                                
-                            break
-
-                            case 'Disco':
-                                this.disk.push({ 'id': 0, 'type': 'Disco', 'description': 'Escolhe um disco...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
-                                for (let i=0; i < response.data.length; i++) {
-                                  this.disk.push(response.data[i])
-                                }
-                                this.reInit_disk()
-                                
-                            break
-
-                             case 'RAM':
-                                this.ram.push({ 'id': 0, 'type': 'RAM', 'description': 'Escolhe a memória...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
-                                for (let i=0; i < response.data.length; i++) {
-                                  this.ram.push(response.data[i])
-                                }
-                                this.reInit_ram()
-                                
-                            break
-
-                            case 'Fan':
-                                this.fan.push({ 'id': 0, 'type': 'Fan', 'description': 'Escolhe um cooler...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
-                                for (let i=0; i < response.data.length; i++) {
-                                  this.fan.push(response.data[i])
-                                }
-                                this.reInit_fan()
-                                
-                            break
-
-                             case 'Power':
-                                this.power.push({ 'id': 0, 'type': 'Power', 'description': 'Escolhe uma alimentação...', 'cost': 0, 'link': '', 'image': 'blank.gif'})
-                                for (let i=0; i < response.data.length; i++) {
-                                  this.power.push(response.data[i])
-                                }
-                                this.reInit_power()
-                                
-                            break
-
-                            default: 
-                            break
-                        }
-                    }
+                    this.componente = comp;
+                    this.componenteLoaded = true;
 
                     //wait for the dom to refresh in order to proceed
                     this.$nextTick(function() {
@@ -338,7 +233,7 @@ export default {
                         alert(error.response)
                     }
                 })
-        },
+        }, 
         getComputers: function() {
             Api.get('computer/index.php?method=getComputer')
                 .then(response => {
@@ -347,7 +242,6 @@ export default {
                     for (let i=0; i < response.data.length; i++) {
                         this.computer.push(response.data[i])
                     }
-                    this.reInit_conf()
                     
                     if (!this.computer.success) {
                         for (let j = 1; j <  this.computer.length; j++) {
@@ -365,333 +259,194 @@ export default {
                         } 
                     }
 
+                    this.computerLoaded = true;
+
                 }).catch(error => {
                     if (error.response) {
                         alert(error.response)
                     }
                 })
         },
-        next() {
-            this.$refs.slick.next();
-        },
+        changeComponente: function(obj) {
+            //console.log(`id: ${obj.id} select: ${obj.select} type: ${obj.type}`);
+            this.computerId = 0;
+            
+            if (obj.type==='Caixa') {
+                this.computercaseid = parseInt(obj.id, 10);
+            }
+            if (obj.type==='Cpu') {
+                this.processorsid = parseInt(obj.id, 10);
+            }
+            if (obj.type==='Mb') {
+                this.motherboardid = parseInt(obj.id, 10);
+            }
+            if (obj.type==='RAM') {
+                this.ramid = parseInt(obj.id, 10);
+            }
+            if (obj.type==='PG') {
+                this.graphicid = parseInt(obj.id, 10);
+            }
+            if (obj.type==='Disco') {
+                this.diskid = parseInt(obj.id, 10);
+            }
+            if (obj.type==='Fan') {
+                this.fanid = parseInt(obj.id, 10);
+            }
+            if (obj.type==='Power') {
+                this.powerid = parseInt(obj.id, 10);
+            }
+            this.encomenda = []
 
-        prev() {
-            this.$refs.slick.prev();
-        },
-        reInit_conf() {
-            // Helpful if you have to deal with v-for to update dynamic lists
-            let currIndex = this.$refs.slick_conf.currentSlide()
-            this.$refs.slick_conf.destroy()
-            this.$nextTick(() => {
-                this.$refs.slick_conf.create()
-                this.$refs.slick_conf.goTo(currIndex, true)
-            })
-        },
-        reInit_case() {
-            // Helpful if you have to deal with v-for to update dynamic lists
-            let currIndex = this.$refs.slick_case.currentSlide()
-            this.$refs.slick_case.destroy()
-            this.$nextTick(() => {
-                this.$refs.slick_case.create()
-                this.$refs.slick_case.goTo(currIndex, true)
-            })
-        },
-        reInit_gpu() {
-            // Helpful if you have to deal with v-for to update dynamic lists
-            let currIndex = this.$refs.slick_gpu.currentSlide()
-            this.$refs.slick_gpu.destroy()
-            this.$nextTick(() => {
-                this.$refs.slick_gpu.create()
-                this.$refs.slick_gpu.goTo(currIndex, true)
-            })
-        },
-        reInit_ram() {
-            // Helpful if you have to deal with v-for to update dynamic lists
-            let currIndex = this.$refs.slick_ram.currentSlide()
-            this.$refs.slick_ram.destroy()
-            this.$nextTick(() => {
-                this.$refs.slick_ram.create()
-                this.$refs.slick_ram.goTo(currIndex, true)
-            })
-        },
-        reInit_proc() {
-            // Helpful if you have to deal with v-for to update dynamic lists
-            let currIndex = this.$refs.slick_proc.currentSlide()
-            this.$refs.slick_proc.destroy()
-            this.$nextTick(() => {
-                this.$refs.slick_proc.create()
-                this.$refs.slick_proc.goTo(currIndex, true)
-            })
-        },
-        reInit_disk() {
-            // Helpful if you have to deal with v-for to update dynamic lists
-            let currIndex = this.$refs.slick_disk.currentSlide()
-            this.$refs.slick_disk.destroy()
-            this.$nextTick(() => {
-                this.$refs.slick_disk.create()
-                this.$refs.slick_disk.goTo(currIndex, true)
-            })
-        },
-        reInit_fan() {
-            // Helpful if you have to deal with v-for to update dynamic lists
-            let currIndex = this.$refs.slick_fan.currentSlide()
-            this.$refs.slick_fan.destroy()
-            this.$nextTick(() => {
-                this.$refs.slick_fan.create()
-                this.$refs.slick_fan.goTo(currIndex, true)
-            })
-        },
-        reInit_power() {
-            // Helpful if you have to deal with v-for to update dynamic lists
-            let currIndex = this.$refs.slick_power.currentSlide()
-            this.$refs.slick_power.destroy()
-            this.$nextTick(() => {
-                this.$refs.slick_power.create()
-                this.$refs.slick_power.goTo(currIndex, true)
-            })
-        },          
-        // Events listeners
-        handleAfterChange_conf(event, slick_conf, currentSlide) {
-            // console.log('handleAfterChange_conf', event, slick_conf, currentSlide);
-            this.computerIndex = currentSlide
-            //alert(slick.dataset.id)
-            if (this.computer.length > 0 && this.computerdetails.length > 0 && currentSlide > 0) {
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'Caixa' && parseInt(item.id, 10) === this.computercaseid && this.computercaseid > 0 }));
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'Cpu' && parseInt(item.id, 10) === this.processorsid && this.processorsid > 0 }));
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'Mb' && parseInt(item.id, 10) === this.motherboardid && this.motherboardid > 0 }));
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'RAM' && parseInt(item.id, 10) === this.ramid && this.ramid > 0 }));
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'PG' && parseInt(item.id, 10) === this.graphicid && this.graphicid > 0 }));
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'Disco' && parseInt(item.id, 10) === this.diskid && this.diskid > 0 }));
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'Fan' && parseInt(item.id, 10) === this.fanid && this.fanid > 0 }));
+            this.encomenda.push(this.componente.find((item) => {return item.type === 'Power' && parseInt(item.id, 10) === this.powerid && this.powerid > 0 }));
+            this.encomenda = this.encomenda.filter((element) => {
+                return element !== undefined;
+            });
 
-                let details
+        },
+        changeComputer: function(obj) {
+            //console.log(`id: ${obj.id} select: ${obj.select} type: ${obj.type}`);
+
+            //loop through computerdetails and find all the components
+            let details = [];
+            if (obj.select > 0) {
                 for (let h=0; h < this.computerdetails.length; h++) {
-                    if (this.computer[this.computerIndex].id == this.computerdetails[h][0].computerid) {
+                    if (obj.select == this.computerdetails[h][0].computerid) {
                         details = this.computerdetails[h]
                     }
                 }
-                //let details = this.computerdetails[currentSlide - 1]
-                this.$refs.slick_case.goTo(0, true)
-                this.$refs.slick_gpu.goTo(0, true)
-                this.$refs.slick_proc.goTo(0, true)
-                this.$refs.slick_disk.goTo(0, true)
-                this.$refs.slick_ram.goTo(0, true)
-                this.$refs.slick_fan.goTo(0, true)
-                this.$refs.slick_power.goTo(0, true)
 
                 for (let i=0; i < details.length; i++) {
                     switch (details[i].type) {
                         case 'Caixa':
-                            if (this.computercase) {
-                                for (let j=1; j < this.computercase.length; j++) {
-                                    if (this.computercase[j].id == details[i].id) {
-                                        this.$refs.slick_case.goTo(j, true)
-                                    }
+                            this.caixaid = 0;
+                            for (let j=0; j < this.componente.length; j++) {
+                                if (this.componente[j].id == details[i].id) {
+                                    this.computercaseid = parseInt(details[i].id, 10);
+                                }
+                            }
+                        break;
+
+                        case 'Mb':
+                            this.motherboardid = 0;
+                            for (let j=0; j < this.componente.length; j++) {
+                                if (this.componente[j].id == details[i].id) {
+                                    this.motherboardid = parseInt(details[i].id, 10);
                                 }
                             }
                         break;
 
                         case 'PG':
-                            if (this.graphic) {
-                                for (let j=1; j < this.graphic.length; j++) {
-                                    if (this.graphic[j].id == details[i].id) {
-                                        this.$refs.slick_gpu.goTo(j, true)
-                                    }
+                            this.pgid = 0;
+                            for (let j=0; j < this.componente.length; j++) {
+                                if (this.componente[j].id == details[i].id) {
+                                    this.graphicid = parseInt(details[i].id, 10);
                                 }
                             }
                         break;
 
                         case 'Cpu':
-                            if (this.processors) {
-                                for (let j=1; j < this.processors.length; j++) {
-                                    if (this.processors[j].id == details[i].id) {
-                                        this.$refs.slick_proc.goTo(j, true)
-                                    }
+                            this.cpuid = 0;
+                            for (let j=0; j < this.componente.length; j++) {
+                                if (this.componente[j].id == details[i].id) {
+                                    this.processorsid = parseInt(details[i].id, 10);
                                 }
                             }
                         break;
 
                         case 'Disco':
-                            if (this.disk) {
-                                for (let j=1; j < this.disk.length; j++) {
-                                    if (this.disk[j].id == details[i].id) {
-                                        this.$refs.slick_disk.goTo(j, true)
-                                    }
+                            this.discoid = 0;
+                            for (let j=0; j < this.componente.length; j++) {
+                                if (this.componente[j].id == details[i].id) {
+                                    this.diskid = parseInt(details[i].id, 10);
                                 }
                             }
                         break;
 
                         case 'RAM':
-                            if (this.ram) {
-                                for (let j=1; j < this.ram.length; j++) {
-                                    if (this.ram[j].id == details[i].id) {
-                                        this.$refs.slick_ram.goTo(j, true)
-                                    }
+                            this.ramid = 0;
+                            for (let j=0; j < this.componente.length; j++) {
+                                if (this.componente[j].id == details[i].id) {
+                                    this.ramid = parseInt(details[i].id, 10);
                                 }
                             }
                         break;
 
                         case 'Fan':
-                            if (this.fan) {
-                                for (let j=1; j < this.fan.length; j++) {
-                                    if (this.fan[j].id == details[i].id) {
-                                        this.$refs.slick_fan.goTo(j, true)
-                                    }
+                            this.fanid = 0;
+                            for (let j=0; j < this.componente.length; j++) {
+                                if (this.componente[j].id == details[i].id) {
+                                    this.fanid = parseInt(details[i].id, 10);
                                 }
                             }
                         break;
 
                         case 'Power':
-                            if (this.power) {
-                                for (let j=1; j < this.power.length; j++) {
-                                    if (this.power[j].id == details[i].id) {
-                                        this.$refs.slick_power.goTo(j, true)
-                                    }
+                            this.powerid = 0;
+                            for (let j=1; j < this.componente.length; j++) {
+                                if (this.componente[j].id == details[i].id) {
+                                    this.powerid = parseInt(details[i].id, 10);
                                 }
                             }
                         break;                    
                     }
                 }
 
-            } 
-        },
-        handleAfterChange_case(event, slick_case, currentSlide) {
-            //console.log('handleAfterChange_case', event, slick_case, currentSlide);
-            
-            this.computercaseIndex = currentSlide
-            if (currentSlide > 0) {
-              this.computerIndex = 0
-              this.$refs.slick_conf.goTo(this.computerIndex, true)
+                this.encomenda = []
+
+                this.encomenda.push(this.componente.find((item) => {return item.type === 'Caixa' && parseInt(item.id, 10) === this.computercaseid && this.computercaseid > 0 }));
+                this.encomenda.push(this.componente.find((item) => {return item.type === 'Cpu' && parseInt(item.id, 10) === this.processorsid && this.processorsid > 0 }));
+                this.encomenda.push(this.componente.find((item) => {return item.type === 'Mb' && parseInt(item.id, 10) === this.motherboardid && this.motherboardid > 0 }));
+                this.encomenda.push(this.componente.find((item) => {return item.type === 'RAM' && parseInt(item.id, 10) === this.ramid && this.ramid > 0 }));
+                this.encomenda.push(this.componente.find((item) => {return item.type === 'PG' && parseInt(item.id, 10) === this.graphicid && this.graphicid > 0 }));
+                this.encomenda.push(this.componente.find((item) => {return item.type === 'Disco' && parseInt(item.id, 10) === this.diskid && this.diskid > 0 }));
+                this.encomenda.push(this.componente.find((item) => {return item.type === 'Fan' && parseInt(item.id, 10) === this.fanid && this.fanid > 0 }));
+                this.encomenda.push(this.componente.find((item) => {return item.type === 'Power' && parseInt(item.id, 10) === this.powerid && this.powerid > 0 }));
+                this.encomenda = this.encomenda.filter((element) => {
+                    return element !== undefined;
+                });
             }
-        },
-        handleAfterChange_proc(event, slick_proc, currentSlide) {
-            //console.log('handleAfterChange_proc', event, slick_proc, currentSlide);
-            
-            this.processorsIndex = currentSlide
-            if (currentSlide > 0) {
-              this.computerIndex = 0
-              this.$refs.slick_conf.goTo(this.computerIndex, true)
-            }
-        },
-        handleAfterChange_ram(event, slick_ram, currentSlide) {
-            //console.log('handleAfterChange_ram', event, slick_ram, currentSlide);
-            this.ramIndex = currentSlide
-            if (currentSlide > 0) {
-              this.computerIndex = 0
-              this.$refs.slick_conf.goTo(this.computerIndex, true)
-            }
-        },
-        handleAfterChange_gpu(event, slick_gpu, currentSlide) {
-            //console.log('handleAfterChange_gpu', event, slick_gpu, currentSlide);
-            
-            this.graphicIndex = currentSlide
-            if (currentSlide > 0) {
-              this.computerIndex = 0
-              this.$refs.slick_conf.goTo(this.computerIndex, true)
-            }
-        },
-        handleAfterChange_disk(event, slick_disk, currentSlide) {
-            //console.log('handleAfterChange_gpu', event, slick_disk, currentSlide);
-            this.diskIndex = currentSlide
-            if (currentSlide > 0) {
-              this.computerIndex = 0
-              this.$refs.slick_conf.goTo(this.computerIndex, true)
-            }
-        },      
-        handleAfterChange_fan(event, slick_fan, currentSlide) {
-            //console.log('handleAfterChange_gpu', event, slick_disk, currentSlide);
-            this.fanIndex = currentSlide
-            if (currentSlide > 0) {
-              this.computerIndex = 0
-              this.$refs.slick_conf.goTo(this.computerIndex, true)
-            }
-        },
-        handleAfterChange_power(event, slick_power, currentSlide) {
-            //console.log('handleAfterChange_gpu', event, slick_disk, currentSlide);
-            this.powerIndex = currentSlide
-            if (currentSlide > 0) {
-              this.computerIndex = 0
-              this.$refs.slick_conf.goTo(this.computerIndex, true)
-            }
-        },
-        handleBeforeChange_conf(event, slick, currentSlide, nextSlide) {
-            // console.log('handleBeforeChange', event, slick, currentSlide, nextSlide);
-            /*
-            if (currentSlide > 0 && nextSlide == 0) {
-                this.$refs.slick_case.goTo(0, true)
-                this.$refs.slick_gpu.goTo(0, true)
-                this.$refs.slick_proc.goTo(0, true)
-                this.$refs.slick_disk.goTo(0, true)
-                this.$refs.slick_ram.goTo(0, true)
-                this.$refs.slick_fan.goTo(0, true)
-                this.$refs.slick_power.goTo(0, true)
-            }
-            */
-        }
-/*
-        handleBreakpoint(event, slick, breakpoint) {
-            console.log('handleBreakpoint', event, slick, breakpoint);
-        },
-        handleDestroy(event, slick) {
-            console.log('handleDestroy', event, slick);
-        },
-        handleEdge(event, slick, direction) {
-            console.log('handleEdge', event, slick, direction);
-        },
-        handleInit(event, slick) {
-            console.log('handleInit', event, slick);
-        },
-        handleReInit(event, slick) {
-            console.log('handleReInit', event, slick);
-        },
-        handleSetPosition(event, slick) {
-            console.log('handleSetPosition', event, slick);
-        },
-        handleSwipe(event, slick, direction) {
-            console.log('handleSwipe', event, slick, direction);
-        },
-        handleLazyLoaded(event, slick, image, imageSource) {
-            console.log('handleLazyLoaded', event, slick, image, imageSource);
-        },
-        handleLazeLoadError(event, slick, image, imageSource) {
-            console.log('handleLazeLoadError', event, slick, image, imageSource);
-        }
-*/
+        },       
     },
     mounted: function() {
 
-        this.$store.dispatch("validate")
+        this.validate()
 
         this.getComputers()
 
-        this.getComponents('Caixa')
-        this.getComponents('Cpu')
-        this.getComponents('PG')
-        this.getComponents('Disco')
-        this.getComponents('RAM')
-        this.getComponents('Fan')
-        this.getComponents('Power')
+        this.getAllComponents();
         
 
         if (this.isAuthenticate) {
-            this.contactEmail = this.$store.state.email
+            this.contactEmail = this.email
         }
     },
     computed: {
         total: function() {
             let total = 0
-            if (this.processorsIndex > 0 && this.computercaseIndex > 0  && this.diskIndex > 0 && this.ramIndex > 0) {
-                if (this.computercase.length > 0 && this.processors.length > 0 && this.disk.length > 0 && this.ram.length > 0) {
-                    total = Number(this.computercase[this.computercaseIndex].cost) 
-                    + Number(this.processors[this.processorsIndex].cost) 
-                    + Number(this.ram[this.ramIndex].cost) 
-                    + Number(this.graphic[this.graphicIndex].cost) 
-                    + Number(this.disk[this.diskIndex].cost)
-                    + Number(this.fan[this.fanIndex].cost)
-                    + Number(this.power[this.powerIndex].cost)
+
+            if (this.computer && this.componente && this.componente.length > 0) {
+                
+                let calculate = 0;
+                this.encomenda.forEach((item) => {
+                    if (item.type === 'Caixa' || item.type === 'Cpu' || item.type === 'Disco' || item.type === 'RAM' || item.type === 'Mb' || item.type === 'Power') {
+                        calculate ++;
+                    }
+                    total += Number(item.cost);
+                });
+
+                if (calculate !== 6) {
+                    total = 0;
                 }
             }
             //return classResourceService.calculateNetPrice(total).toFixed(2) + ' ('+total+')'
             return classResourceService.calculateNetPrice(total)
-        },
-        isAuthenticate() { 
-            return this.$store.getters.authenticate;
-        },
-        isAdmin() {
-            return this.$store.getters.admin;
         }
     }
 } 

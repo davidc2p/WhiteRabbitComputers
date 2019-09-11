@@ -6,7 +6,7 @@
         <div class="col">&nbsp;</div>
     </div>
 
-    <Message id="Message" v-bind:msg="message" :key="count" />
+    <Message id="Message" v-bind:msg="message" />
 
     <!-- linha sem nada -->
     <div class="row">
@@ -78,6 +78,10 @@
 
     const classResourceService = new ClassResource()
 
+    //Vuex
+    import { mapState, mapGetters, mapActions } from 'vuex'
+
+
 export default {
     name: 'Computers',
     components: {
@@ -130,12 +134,14 @@ export default {
             showModalUpdateComputers: false,
             action: '',
 
-            count: 1,
             count2: 1,
             count3: 1,
         }
     },
     methods: {
+        ...mapActions({
+            validate: 'validate'
+        }),
         setActive: function(isActive) {
             return isActive ? 'active' : ''
         },
@@ -210,7 +216,6 @@ export default {
                         this.message.info = ''
                         this.message.error = ''
 
-                        this.count++
                     }
 
                 }).catch(error => {
@@ -221,7 +226,7 @@ export default {
         },
         deleteComputer: function(id) {
             
-            Api.delete('computer/index.php?method=delComputer&access_token=' + this.$store.state.access_token + '&id=' + id)
+            Api.delete('computer/index.php?method=delComputer&access_token=' + this.access_token + '&id=' + id)
                 .then(response => {
 
                     this.message.info = ''
@@ -229,7 +234,7 @@ export default {
                     if (typeof response.data.success != 'undefined') {
                         switch (response.data.success) {
                             case 0:
-                                Api.delete('computer/index.php?access_token=' + this.$store.state.access_token + '&method=delComputerDetails&computerid='+id)
+                                Api.delete('computer/index.php?access_token=' + this.access_token + '&method=delComputerDetails&computerid='+id)
                                     .then(response => {
                                         this.message.info = ''
                                         this.message.error = ''
@@ -243,9 +248,7 @@ export default {
 
                                         } else {
                                             this.message.error = 'Aconteceu um erro na comunicação com os serviços!'
-                                        }
-
-                                        this.count++                  
+                                        }               
 
                                     }).catch(error => {
                                         if (error.response) {
@@ -265,8 +268,6 @@ export default {
                         const pageElement = document.getElementById("componentes")
                         classResourceService.scrollToElement(pageElement)
                     }
-
-                    this.count++
 
                     this.pagenumber = 1
                     this.getComputers(this.pagenumber)
@@ -302,7 +303,8 @@ export default {
         document.title = 'Venda de computadores desktop - Escolhe a sua configuração'
         document.description = 'Montamos o seu computador a sua medida. Escolhe a sua configuração ou crie uma nova conforme as suas necessidades.'
 
-        this.$store.dispatch("validate")
+        //this.$store.dispatch("validate")
+        this.validate()
 
         if (this.isAuthenticate && this.isAdmin ) {
 
@@ -315,12 +317,10 @@ export default {
         }
     },
     computed: {
-        isAuthenticate() { 
-            return this.$store.getters.authenticate;
-        },
-        isAdmin() {
-            return this.$store.getters.admin;
-        }
+        ...mapState({ 
+            access_token: state => state.auth.access_token
+        }),
+        ...mapGetters({isAuthenticate: 'auth/authenticate', isAdmin: 'auth/admin'})
     } 
 } 
 </script>
